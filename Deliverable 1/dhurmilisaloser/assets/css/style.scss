@@ -5,7 +5,7 @@
 
 a, html, body, div, span, object, iframe,
 p, h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-table, caption, tbody, tfoot, thead, tr, th, td, span{
+table, caption, tbody, tfoot, thead, tr, th, td, span, li{
   margin: 0;
   padding: 0;
   border: 0;
@@ -13,7 +13,7 @@ table, caption, tbody, tfoot, thead, tr, th, td, span{
   font-family: octet;
 }
 
-h1, h2, h3, p{
+h1, h2, h3, p, li{
 	line-height: 1.715em;
 	font-weight: 500;
 }
@@ -362,6 +362,27 @@ svg{
     }
   }
 }
+
+.nav-pills{
+  font-size: 15px;
+}
+
+.secondary-pills{
+  position: relative;
+  margin: 0 auto;
+  margin-top: 20px;
+  width: 30%;
+
+  li{
+    a{
+      margin: 0 10px;
+      font-size: 20px;
+      color: #FF0066;
+      background-color: #CCEEFF;
+    }
+  }
+}
+
 
 /******
 HEXGRID

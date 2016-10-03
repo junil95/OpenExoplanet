@@ -242,7 +242,6 @@ svg {
     margin-left: 5%;
     overflow: hidden;
     display: inline-block;
-    list-style: none;
     text-align: left; }
     #info .about #details li {
       font-family: "Montserrat",sans-serif;

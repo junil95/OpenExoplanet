@@ -4,6 +4,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
 import net.lingala.zip4j.exception.ZipException;
@@ -98,6 +100,13 @@ public class PullingTools {
   public static void pullOecSeperateFiles() throws IOException, ZipException {
     String zipDest = "Data/oec/oecSeperateFiles.zip";
     saveFileFromUrl(zipDest, oecSeperateFiles);
+    
+    //Delete the old version of the catalogue if it already exists
+    String p = "Data/oec/open_exoplanet_catalogue-master";
+    if (Files.isDirectory(Paths.get(p))){
+      FileUtils.deleteDirectory(new File(p));
+    }
+    
     ZipFile zipFile = new ZipFile(zipDest);
     List<FileHeader> fileHeaders = zipFile.getFileHeaders();
     //unzip only the systems folder since it is the only thing we require

@@ -33,19 +33,25 @@ public class DifferenceDetector {
   /**
    * Url for getting oec as seperate files per system
    */
-public static final String localOecFiles = "./Data/oec/oec.xml";
-  
+	public static final String localOecFiles = "./Data/oec/oec.xml";
+	  
   /**
    * Url for getting the exoplanet Eu catalogue
    */
-public static final String LocalExoplanetEu = "./Data/exoplanetEu/exoplanetEu.csv";
-  
+	public static final String LocalExoplanetEu = "./Data/exoplanetEu/exoplanetEu.csv";
+	  
   /**
    * Url for getting the nasa Archive catalogue
    */
-public static final String LocalNasaArchive = "./Data/nasaArchive/nasaArchive.csv";
+	public static final String LocalNasaArchive = "./Data/nasaArchive/nasaArchive.csv";
+	
+	/**
+	 * The index for the 
+	 */
+	public static final int nasaIdIndex = 270;
 	  
-
+	public static final int exoplanetIdIndex = 0;
+	
 	/**
 	 * Updates the local copy to the latest updated master copy from Nasa and Exoplanet.eu.
 	 * @throws IOException 
@@ -85,8 +91,8 @@ public static final String LocalNasaArchive = "./Data/nasaArchive/nasaArchive.cs
 	 * @throws SAXException
 	 * @throws ParserConfigurationException
 	 */
-	public static ArrayList<String> getNewPlanetIDs() throws IOException, SAXException, ParserConfigurationException{
-		ArrayList<String> newPlanets = new ArrayList<String>();
+	public static ArrayList<HashMap<String, String[]>> getNewPlanetIDs() throws IOException, SAXException, ParserConfigurationException{
+		ArrayList<HashMap<String, String[]>> newPlanets = new ArrayList<HashMap<String, String[]>>;
 		HashMap<String, List<String[]>> info = readCSVs();
 		
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -105,24 +111,26 @@ public static final String LocalNasaArchive = "./Data/nasaArchive/nasaArchive.cs
 	    	total.add(name);
 	    }
 	    
+	    // Temp for stroing current
+	    HashMap<String, String[]> newPlanetsTempExoplanet = new HashMap<String, String[]>();
 	    // Getting names of our unknown/new planets
 	    for(int i = 0; i < info.get("exoplanetEntries").size(); i++){    	
-	    	if(total.contains(info.get("exoplanetEntries").get(i)[0]) == false){
-	    		newPlanets.add(info.get("exoplanetEntries").get(i)[0]);
+	    	if(total.contains(info.get("exoplanetEntries").get(i)[exoplanetIdIndex]) == false){
+	    		newPlanetsTempExoplanet.put((info.get("exoplanetEntries").get(i)[exoplanetIdIndex]), info.get("exoplanetEntries").get(i));
 	    	}
 	    }
 	    
+	    // Temp for stroing current
+	    HashMap<String, String[]> newPlanetsTempNasa = new HashMap<String, String[]>();
 	    // Getting names of our unknown/new planets
 	    for(int i = 0; i < info.get("nasaArchives").size(); i++){
-	    	if(total.contains(info.get("nasaArchives").get(i)[270]) == false){
-	    		newPlanets.add(info.get("nasaArchives").get(i)[270]);
+	    	if(total.contains(info.get("nasaArchives").get(i)[nasaIdIndex]) == false){
+	    		newPlanetsTempNasa.put((info.get("nasaArchives").get(i)[nasaIdIndex]), info.get("nasaArchives").get(i));
 	    	}
 	    }
 	    
-	    for(int i = 0; i < newPlanets.size(); i++){
-	    	System.out.println(newPlanets.get(i));
-	    }
-	    
+	    newPlanets.add(newPlanetsTempExoplanet);
+	    newPlanets.add(newPlanetsTempNasa);
 	    return newPlanets;
 	}
 	

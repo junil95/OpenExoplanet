@@ -33,7 +33,7 @@ public class DifferenceDetector {
   /**
    * Url for getting oec as seperate files per system
    */
-	public static final String localOecFiles = "./Data/oec/oec.xml";
+	public static final String localOecFiles = "../Data/oec/oec.xml";
 	  
   /**
    * Url for getting the exoplanet Eu catalogue
@@ -48,9 +48,12 @@ public class DifferenceDetector {
 	/**
 	 * The index for the 
 	 */
-	public static final int nasaIdIndex = 270;
+	public static final String nasaColumnID = "pl_name";
 	  
-	public static final int exoplanetIdIndex = 0;
+	public static final String exoplanetColumnID = "# name";
+	
+	public static final String exoplanetAlternateColumnID = "	alternate_names";
+
 	
 	/**
 	 * Updates the local copy to the latest updated master copy from Nasa and Exoplanet.eu.
@@ -85,6 +88,16 @@ public class DifferenceDetector {
 	};
 	
 	/**
+	 * Returns the string ignoring non alphanumeric characters.
+	 * @param line The line for characters to be removed
+	 * @return A line with only alphanumeric characters
+	 */
+	private static String onlyAlphaNumeric(String line){
+		// Regex stripping all non alphanumerics to blank
+		return line.replaceAll("[^A-Za-z0-9]", "");
+	}
+	
+	/**
 	 * Return the names of all new planets not in the oce.
 	 * @return A list of new names not in the oce.
 	 * @throws IOException
@@ -92,7 +105,7 @@ public class DifferenceDetector {
 	 * @throws ParserConfigurationException
 	 */
 	public static ArrayList<HashMap<String, String[]>> getNewPlanetIDs() throws IOException, SAXException, ParserConfigurationException{
-		ArrayList<HashMap<String, String[]>> newPlanets = new ArrayList<HashMap<String, String[]>>;
+		ArrayList<HashMap<String, String[]>> newPlanets = new ArrayList<HashMap<String, String[]>>();
 		HashMap<String, List<String[]>> info = readCSVs();
 		
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -104,19 +117,41 @@ public class DifferenceDetector {
 		// Getting all known names in a set
 	    Set<String> total = new HashSet<String>();
 	    
+	    // Adding the default names
 	    NodeList nodeList = doc.getElementsByTagName("name");
 	    for (int i=0; i<nodeList.getLength(); i++) {
 	        // Get element
 	    	String name = nodeList.item(i).getTextContent();
-	    	total.add(name);
+	    	total.add(onlyAlphaNumeric(name));
+	    }
+	    
+	    //Getting the index for our ids
+	    int exoplanetIdIndex = 0;
+	    int exoplanetAlternateIdIndex = 0;
+	    // Failsafe for nasa index is 270
+	    int nasaIdIndex = 270;
+	    for(int i = 0; i < info.get("exoplanetEntries").get(0).length; i++){
+	    	if(info.get("exoplanetEntries").get(0)[i].equals(exoplanetColumnID)){
+	    		exoplanetIdIndex = i;
+	    	}
+	    	// Getting alternate name index
+	    	else if(info.get("exoplanetEntries").get(0)[i].equals(exoplanetAlternateColumnID)){
+	    		exoplanetAlternateIdIndex = i;
+	    	}
+	    }
+	    for(int i = 0; i < info.get("nasaArchives").get(0).length; i++){
+	    	if(info.get("nasaArchives").get(0)[i].equals(nasaColumnID)){
+	    		nasaIdIndex = i;
+	    		break;
+	    	}
 	    }
 	    
 	    // Temp for stroing current
 	    HashMap<String, String[]> newPlanetsTempExoplanet = new HashMap<String, String[]>();
 	    // Getting names of our unknown/new planets
 	    for(int i = 0; i < info.get("exoplanetEntries").size(); i++){    	
-	    	if(total.contains(info.get("exoplanetEntries").get(i)[exoplanetIdIndex]) == false){
-	    		newPlanetsTempExoplanet.put((info.get("exoplanetEntries").get(i)[exoplanetIdIndex]), info.get("exoplanetEntries").get(i));
+	    	if(total.contains(info.get("exoplanetEntries").get(i)[exoplanetIdIndex]) == false && total.contains(info.get("exoplanetEntries").get(i)[exoplanetAlternateIdIndex]) == false){
+	    		newPlanetsTempExoplanet.put(onlyAlphaNumeric((info.get("exoplanetEntries").get(i)[exoplanetIdIndex])), info.get("exoplanetEntries").get(i));
 	    	}
 	    }
 	    
@@ -125,9 +160,11 @@ public class DifferenceDetector {
 	    // Getting names of our unknown/new planets
 	    for(int i = 0; i < info.get("nasaArchives").size(); i++){
 	    	if(total.contains(info.get("nasaArchives").get(i)[nasaIdIndex]) == false){
-	    		newPlanetsTempNasa.put((info.get("nasaArchives").get(i)[nasaIdIndex]), info.get("nasaArchives").get(i));
+	    		newPlanetsTempNasa.put(onlyAlphaNumeric((info.get("nasaArchives").get(i)[nasaIdIndex])), info.get("nasaArchives").get(i));
 	    	}
 	    }
+	    
+	    // Dealing with the altnerate name column in exoplanet eu
 	    
 	    newPlanets.add(newPlanetsTempExoplanet);
 	    newPlanets.add(newPlanetsTempNasa);

@@ -367,10 +367,9 @@ svg{
 }
 
 .secondary-pills{
+  text-align: center;
   position: relative;
-  margin: 0 auto;
   margin-top: 20px;
-  width: 30%;
 
   li{
     a{
@@ -381,7 +380,6 @@ svg{
     }
   }
 }
-
 
 /******
 HEXGRID

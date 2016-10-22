@@ -117,6 +117,7 @@ public class PullingTools {
     }
   }
   
+  //Temp for testing purposes, remove after
   public static void main(String[] args) {
     try {
       pullExoplanetEu();

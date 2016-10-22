@@ -38,12 +38,12 @@ public class DifferenceDetector {
   /**
    * Url for getting the exoplanet Eu catalogue
    */
-	public static final String LocalExoplanetEu = "./Data/exoplanetEu/exoplanetEu.csv";
+	public static final String LocalExoplanetEu = "../Data/exoplanetEu/exoplanetEu.csv";
 	  
   /**
    * Url for getting the nasa Archive catalogue
    */
-	public static final String LocalNasaArchive = "./Data/nasaArchive/nasaArchive.csv";
+	public static final String LocalNasaArchive = "../Data/nasaArchive/nasaArchive.csv";
 	
 	/**
 	 * The index for the 

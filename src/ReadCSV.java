@@ -3,8 +3,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ReadCSV {
   
@@ -19,6 +22,10 @@ public class ReadCSV {
   private static final String[] cataloguePaths = new String[]{PullingTools.localExoplanetEu,
           PullingTools.localNasaArchive};
   
+  /**
+   * Hashmap will store column indexes for different catalogues. So catalogue name as it appears in
+   * the config file will be mapped to a hashmap of column names to indexes.
+   */
   private static HashMap<String, HashMap<String, Integer>> allCatalogueIndexes;
   
   /**
@@ -26,6 +33,11 @@ public class ReadCSV {
    */
   private static ArrayList<String> catalogueNames;
   
+  /**
+   * Remove non alphanumeric characters from the strings in the given list
+   * @param stringList
+   * @return List of strings containing only alphanumerica characters
+   */
   public static ArrayList<String> onlyAlphanumericList(ArrayList<String> stringList) {
     String word;
     for (int i = 0; i < stringList.size(); i++) {
@@ -36,6 +48,12 @@ public class ReadCSV {
     return stringList;
   }
   
+  /**
+   * Method used to map column names in the catalogues with their associated indexes. This method
+   * will also populate the global list containing the catalogue names
+   * @throws IOException
+   * @throws MissingColumnNameException
+   */
   private static void mapIndexes()
           throws IOException, MissingColumnNameException {
     CSVReader r;
@@ -47,14 +65,14 @@ public class ReadCSV {
       catColNames.add(onlyAlphanumericList(new ArrayList<>(Arrays.asList(r.readNext()))));
       r.close();
     }
-  
+    
     //read config file column names
     r = new CSVReader(new FileReader(configPath));
     
     //store the entire config file in a list
     List<String[]> configData = r.readAll();
     r.close();
-  
+    
     allCatalogueIndexes = new HashMap<>();
     HashMap<String, Integer> catColIndex;
     String colName;
@@ -85,7 +103,16 @@ public class ReadCSV {
   }
   
   //TODO consider the case where the columns change and the application is still on, the indexes will be mapped wrong then
-  public static HashMap<String, HashMap<String, Integer>> getIndexMappings() throws IOException, MissingColumnNameException {
+  
+  /**
+   * Retrieve the index mappings of the columns in the catalogue. So catalogue name as it appears in
+   * the config file will be mapped to a hashmap of column names to indexes
+   * @return index mappings of columns
+   * @throws IOException
+   * @throws MissingColumnNameException
+   */
+  public static HashMap<String, HashMap<String, Integer>> getIndexMappings() throws IOException,
+          MissingColumnNameException {
     HashMap<String, HashMap<String, Integer>> indexCopy = new HashMap<>();
     if (allCatalogueIndexes == null) {
       //will only need to do the mapping the first time this method is called
@@ -93,14 +120,14 @@ public class ReadCSV {
     }
     
     //Create a deep copy of the index mappings
-    for (String key:allCatalogueIndexes.keySet()) {
+    for (String key : allCatalogueIndexes.keySet()) {
       indexCopy.put(key, new HashMap<>(allCatalogueIndexes.get(key)));
     }
     return indexCopy;
   }
   
   /**
-   *@return A list of catalogue names corresponding to the config file
+   * @return A list of catalogue names corresponding to the config file
    */
   public static ArrayList<String> getCatalogueNames() throws IOException, MissingColumnNameException {
     if (catalogueNames == null)
@@ -108,14 +135,81 @@ public class ReadCSV {
     return new ArrayList<>(catalogueNames);
   }
   
-  //TODO, case where some enters the wrong label ********
-  public static HashMap<String, ArrayList<String>> mapPlanetToData(String cataloguePath, String catalogueLabel) throws IOException, MissingColumnNameException {
+  public static Set<String> significantColumns()
+          throws IOException, MissingColumnNameException {
+    Set<String> sigColumns = new HashSet<>();
+    //Scroll through list of labels in the config file and find the essential labels
+    for (String label : getIndexMappings().get(getCatalogueNames().get(0)).keySet()) {
+      if (!(label.contains("error") || label.contains("discovery") || label.contains("update"))){
+        sigColumns.add(label);
+      }
+    }
+    System.out.println(sigColumns);
+    return sigColumns;
+  }
+  
+//  public static ArrayList<String> orderedIndexesOfSigColumns(String catalogueLabel)
+//          throws IOException, MissingColumnNameException {
+//    HashMap<String, HashMap<String, Integer>> iMappings = getIndexMappings();
+//    Set<String> labelsConfig;
+//    //This will return a set with only significant columns
+//    labelsConfig = significantColumns();
+//
+//
+//    //Now find the indexes of the important columns
+//    ArrayList<Integer> indexes = new ArrayList<>();
+//    for (String iLabel:labelsConfig) {
+//      //make sure that column exists in the catalogue
+//      if (iMappings.get(catalogueLabel).get(iLabel) != -1)
+//        indexes.add(iMappings.get(catalogueLabel).get(iLabel));
+//    }
+//
+//    //Sort the columns so they are in order of how they appear in the catalogues
+//    Collections.sort(indexes);
+//  }
+
+  
+  //TODO, case where some enters the wrong label
+  /**
+   * Map planet name to corresponding data
+   * @param cataloguePath Path to catalogue
+   * @param catalogueLabel Catalogue name label as seen in the config file
+   * @return Mapping of planet to data
+   * @throws IOException
+   * @throws MissingColumnNameException
+   */
+  public static HashMap<String, ArrayList<String>> mapPlanetToData(String cataloguePath,
+                                                                   String catalogueLabel) throws
+          IOException, MissingColumnNameException {
     CSVReader r = new CSVReader(new FileReader(cataloguePath));
     List<String[]> allData = r.readAll();
+    r.close();
     HashMap<String, ArrayList<String>> planetToData = new HashMap<>();
     HashMap<String, HashMap<String, Integer>> iMappings = getIndexMappings();
-    for (String[] row : allData) {
-      planetToData.put(row[iMappings.get(catalogueLabel).get("name")], new ArrayList<>(Arrays.asList(row)));
+    Set<String> labelsConfig;
+    //This will return a set with only significant columns
+    labelsConfig = significantColumns();
+    
+    
+    //Now find the indexes of the important columns
+    ArrayList<Integer> indexes = new ArrayList<>();
+    for (String iLabel:labelsConfig) {
+      //make sure that column exists in the catalogue
+      if (iMappings.get(catalogueLabel).get(iLabel) != -1)
+        indexes.add(iMappings.get(catalogueLabel).get(iLabel));
+    }
+    
+    //Sort the columns so they are in order of how they appear in the catalogues
+    Collections.sort(indexes);
+  
+    ArrayList<String> columnValues = new ArrayList<>();
+    for (int i=1; i < allData.size(); i++) {
+      for (int index:indexes) {
+        columnValues.add(allData.get(i)[index]);
+      }
+      //map by planet name
+      planetToData.put(allData.get(i)[iMappings.get(catalogueLabel).get("pl_name")], columnValues);
+      columnValues = new ArrayList<>();
     }
     return planetToData;
   }
@@ -128,113 +222,14 @@ public class ReadCSV {
   
   public static void main(String[] args) {
     try {
-      System.out.println(getIndexMappings());
+      System.out.println(mapPlanetToData(PullingTools.localNasaArchive, "nasa").get("11 Com b"));
+      System.out.println(allCatalogueIndexes);
     } catch (IOException e) {
       e.printStackTrace();
     } catch (MissingColumnNameException e) {
       e.printStackTrace();
     }
-  
+    
   }
   
-  /*
-   * This method returns a hash map of key as planet name, and values as 
-   * information about that planet. It takes in a string which is the name 
-   * of the file. 
-   */
-//  public static HashMap<String, ArrayList<String>> readFile(String fileName)
-//          throws IOException {
-//
-//    BufferedReader reader = null;
-//
-//    //stores data from csv file in a list format (separated by comma)
-//    ArrayList<String> data;
-//    String firstLine = "";
-//    String line = "";
-//    String splitBy = ",";
-//    String planetName;
-//
-//    reader = new BufferedReader(new FileReader(fileName));
-//    //read the first line to find the index of which column is planet name
-//    //stored in and also to find number of columns there are in the file
-//    firstLine = reader.readLine();
-//    data = (ArrayList<String>) Arrays.asList(firstLine.split(splitBy));
-//
-//    //finds the total number of attributes in the csv file
-//    int totalColumns = data.size();
-//
-//    //find the index of where the name of the planet is
-//    int planetIndex = findIndexOfPlanetName(data);
-//
-//    //return exception if no planet col found
-////    if(planetIndex == -1){
-////      PlanetAttributeNotFoundException e = new
-////          PlanetAttributeNotFoundException("Cannot find planet name column");
-////    }
-//
-//    //create a hash map
-//    HashMap<String, ArrayList<String>> hashMap = new HashMap<
-//            String, ArrayList<String>>();
-//
-//    //traverse through file till the end
-//    while ((line = reader.readLine()) != null) {
-//
-//      //split the current line by a comma
-//      data = (ArrayList<String>) Arrays.asList(line.split(splitBy));
-//
-//      //key of hash map
-//      planetName = data.get(planetIndex);
-//
-//      //stores values of hash map
-//      ArrayList<String> planetInfo = new ArrayList<String>();
-//
-//      //traverse through the each row
-//      for (int i = 0; i < totalColumns; i++) {
-//        //add information about the planet into an array
-//        //dont add the name of the planet into the list
-//        if (i != planetIndex) {
-//          planetInfo.add(data.get(i));
-//        }
-//      }
-//
-//      //add key, value to hash map
-//      hashMap.put(planetName, planetInfo);
-//    }
-//    return hashMap;
-//  }
-//
-  /*
-   * This method finds the index of the column at which all planet names are 
-   * stored in. It takes in an array list of strings and looks for a certain
-   * name of the field and outputs an integer; the index."
-   */
-//  public int findIndexOfPlanetName(ArrayList<String> firstLine) {
-//
-//    //initialize index;
-//    int index = -1;
-//
-//    //traverse through the list of data to find the index of the col which
-//    //has name of all planet names
-//    for (int i = 0; i <= firstLine.size(); i++) {
-//      //match current item with constants
-//      //found index if matched
-//      if (firstLine.get(i).equals(matchName1) || firstLine.get(i).
-//              equals(matchName2))
-//        index = i;
-//    }
-//    return index;
-//  }
-
-//  public static int findIndexOfColumn(String columnName, String filePath) {
-//    try {
-//      CSVReader reader = new CSVReader();
-//
-//    } catch (IOException e) {
-//      e.printStackTrace();
-//    } finally {
-//      // Closes the Reader
-//
-//    }
-//
-//  }
 }

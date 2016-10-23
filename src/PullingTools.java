@@ -38,6 +38,21 @@ public class PullingTools {
   public static final String nasaArchive = "http://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?table=exoplanets&format=csv&select=*";
   
   /**
+   * Url for getting oec as single file per system
+   */
+  public static final String localOecFile = "Data/oec/oec.xml";
+  
+  /**
+   * Url for getting the exoplanet Eu catalogue
+   */
+  public static final String localExoplanetEu = "Data/exoplanetEu/exoplanetEu.csv";
+  
+  /**
+   * Url for getting the nasa Archive catalogue
+   */
+  public static final String localNasaArchive = "Data/nasaArchive/nasaArchive.csv";
+  
+  /**
    * Method used to fetch a file from the url and save it
    * @param fileName The path to save the file
    * @param fileUrl The url to fetch the file from
@@ -53,7 +68,7 @@ public class PullingTools {
    * @throws IOException When fetching or saving the file fails
    */
   public static void pullExoplanetEu() throws IOException {
-    saveFileFromUrl("Data/exoplanetEu/exoplanetEu.csv", exoplanetEu);
+    saveFileFromUrl(localExoplanetEu, exoplanetEu);
   }
   
   /**
@@ -61,7 +76,7 @@ public class PullingTools {
    * @throws IOException When fetching or saving the file fails
    */
   public static void pullNasaArchive() throws IOException {
-    saveFileFromUrl("Data/nasaArchive/nasaArchive.csv", nasaArchive);
+    saveFileFromUrl(localNasaArchive, nasaArchive);
   }
   
   /**
@@ -81,7 +96,7 @@ public class PullingTools {
             new GZIPInputStream(new FileInputStream(destFileName));
     
     FileOutputStream out =
-            new FileOutputStream("Data/oec/oec.xml");
+            new FileOutputStream(localOecFile);
     
     int len;
     while ((len = gzis.read(buffer)) > 0) {

@@ -29,22 +29,6 @@ import net.lingala.zip4j.exception.ZipException;
  * A class used to highlight the difference between the local/master/ and pulled databases from Nasa and Exoplanet.eu.
  */
 public class DifferenceDetector {
-	
-  /**
-   * Url for getting oec as seperate files per system
-   */
-	public static final String localOecFiles = "../Data/oec/oec.xml";
-	  
-  /**
-   * Url for getting the exoplanet Eu catalogue
-   */
-	public static final String LocalExoplanetEu = "../Data/exoplanetEu/exoplanetEu.csv";
-	  
-  /**
-   * Url for getting the nasa Archive catalogue
-   */
-	public static final String LocalNasaArchive = "../Data/nasaArchive/nasaArchive.csv";
-	
 	/**
 	 * The index for the 
 	 */
@@ -66,12 +50,12 @@ public class DifferenceDetector {
 		
 		try{
 			// Reading the local exoplanets
-			reader = new CSVReader(new FileReader(LocalExoplanetEu));
+			reader = new CSVReader(new FileReader(PullingTools.localExoplanetEu));
 		    List<String[]> exoplanetEntries = reader.readAll();
 		    info.put("exoplanetEntries", exoplanetEntries);
 		    
 		    // Reading the local nasa archives
-		    reader = new CSVReader(new FileReader(LocalNasaArchive));
+		    reader = new CSVReader(new FileReader(PullingTools.localNasaArchive));
 		    List nasaEntries = reader.readAll();
 		    info.put("nasaArchives", nasaEntries);
 		}
@@ -92,9 +76,10 @@ public class DifferenceDetector {
 	 * @param line The line for characters to be removed
 	 * @return A line with only alphanumeric characters
 	 */
-	private static String onlyAlphaNumeric(String line){
+	public static String onlyAlphaNumeric(String line){
 		// Regex stripping all non alphanumerics to blank
-		return line.replaceAll("[^A-Za-z0-9]", "");
+		line = line.replaceAll("[^A-Za-z0-9]", "");
+		return line.toLowerCase();
 	}
 	
 	/**
@@ -110,7 +95,7 @@ public class DifferenceDetector {
 		
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-		Document doc = dBuilder.parse(localOecFiles);
+		Document doc = dBuilder.parse(PullingTools.localOecFile);
 		
 		doc.getDocumentElement().normalize();
 	
@@ -173,7 +158,7 @@ public class DifferenceDetector {
 	
 	public static void main(String[] args) {
 	    try {
-	    	getNewPlanetIDs();
+			System.out.println(getNewPlanetIDs());
 	    	
 	      } catch (IOException | SAXException | ParserConfigurationException e) {
 	        e.printStackTrace();

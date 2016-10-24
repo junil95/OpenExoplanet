@@ -38,9 +38,35 @@ public class PullingTools {
   public static final String nasaArchive = "http://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?table=exoplanets&format=csv&select=*";
   
   /**
+   * Url for getting oec as single file per system
+   */
+  public static final String localOecFile = "Data/oec/oec.xml";
+  
+  /**
+   * Url for getting the exoplanet Eu catalogue
+   */
+  public static final String localExoplanetEu = "Data/exoplanetEu/exoplanetEu.csv";
+  
+  /**
+   * Url for getting the nasa Archive catalogue
+   */
+  public static final String localNasaArchive = "Data/nasaArchive/nasaArchive.csv";
+  
+  /**
+   * Paths to store old version of the catalogue Eu
+   */
+  public static final String localExoplanetEuOld ="Data/exoplanetEu/exoplanetEuOld.csv";
+  
+  /**
+   * Path to store the old version of the catalogue NASA
+   */
+  public static final String localNasaArchiveOld = "Data/nasaArchive/nasaArchiveOld.csv";
+  
+  /**
    * Method used to fetch a file from the url and save it
+   *
    * @param fileName The path to save the file
-   * @param fileUrl The url to fetch the file from
+   * @param fileUrl  The url to fetch the file from
    * @throws IOException When fetching or saving the file fails
    */
   private static void saveFileFromUrl(String fileName, String fileUrl) throws IOException {
@@ -50,22 +76,25 @@ public class PullingTools {
   
   /**
    * Fetch and save the Exoplanet Eu catalogue
+   *
    * @throws IOException When fetching or saving the file fails
    */
   public static void pullExoplanetEu() throws IOException {
-    saveFileFromUrl("Data/exoplanetEu/exoplanetEu.csv", exoplanetEu);
+    saveFileFromUrl(localExoplanetEu, exoplanetEu);
   }
   
   /**
    * Fetch and save the NASA archive catalogue
+   *
    * @throws IOException When fetching or saving the file fails
    */
   public static void pullNasaArchive() throws IOException {
-    saveFileFromUrl("Data/nasaArchive/nasaArchive.csv", nasaArchive);
+    saveFileFromUrl(localNasaArchive, nasaArchive);
   }
   
   /**
    * Fetch, save and decompress the oec catalogue contained in one file
+   *
    * @throws IOException When fetching or saving the file fails
    */
   public static void pullOecOneFile() throws IOException {
@@ -81,7 +110,7 @@ public class PullingTools {
             new GZIPInputStream(new FileInputStream(destFileName));
     
     FileOutputStream out =
-            new FileOutputStream("Data/oec/oec.xml");
+            new FileOutputStream(localOecFile);
     
     int len;
     while ((len = gzis.read(buffer)) > 0) {
@@ -94,8 +123,6 @@ public class PullingTools {
   
   /**
    * Fetch, save and unzip the oec catalogue contained in seperate files by system
-   * @throws IOException
-   * @throws ZipException
    */
   public static void pullOecSeperateFiles() throws IOException, ZipException {
     String zipDest = "Data/oec/oecSeperateFiles.zip";
@@ -103,7 +130,7 @@ public class PullingTools {
     
     //Delete the old version of the catalogue if it already exists
     String p = "Data/oec/open_exoplanet_catalogue-master";
-    if (Files.isDirectory(Paths.get(p))){
+    if (Files.isDirectory(Paths.get(p))) {
       FileUtils.deleteDirectory(new File(p));
     }
     
@@ -115,6 +142,26 @@ public class PullingTools {
         zipFile.extractFile(fh.getFileName(), "Data/oec");
       }
     }
+  }
+  
+  private static void renameOldCatalogueVersion(String oldPath, String newPath) throws IOException {
+    //rename the old catalogues
+    File oldName = new File(oldPath);
+    File newName = new File(newPath);
+    //remove exoplanetEuOld if it exists
+    if (newName.exists())
+      newName.delete();
+    //Now rename
+    if (!oldName.renameTo(newName)) {
+      throw new IOException("Unable to rename " + oldPath + " to " + newPath);
+    }
+  }
+  
+  public static void createLatestCatalogueCopy() throws IOException {
+    renameOldCatalogueVersion(localExoplanetEu, localExoplanetEuOld);
+    PullingTools.pullExoplanetEu();
+    renameOldCatalogueVersion(localNasaArchive, localNasaArchiveOld);
+    PullingTools.pullNasaArchive();
   }
   
   //Temp for testing purposes, remove after

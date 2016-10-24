@@ -158,7 +158,7 @@ public class DifferenceDetector {
 	
 	public static void main(String[] args) {
 	    try {
-	    	getNewPlanetIDs();
+			System.out.println(getNewPlanetIDs());
 	    	
 	      } catch (IOException | SAXException | ParserConfigurationException e) {
 	        e.printStackTrace();

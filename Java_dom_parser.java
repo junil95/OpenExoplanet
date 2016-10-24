@@ -11,8 +11,6 @@ import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -26,12 +24,16 @@ import org.xml.sax.SAXException;
 public class Java_dom_parser {
 
     /**
+     * @param search_elm : planet or star , everything else will fail
      * @param planet
      * @return 
      */
-    public static String getPlanetParentNode (String Planet){
+    public static String getParentNode (String search_elm,String Planet){
         String pln_name = "";
         String sys_name = "";
+        if(!(search_elm.equalsIgnoreCase("planet") || search_elm.equalsIgnoreCase("star"))){
+            return "Invalid search element, please enter 'Star' or 'Planet'";
+        }
         DocumentBuilderFactory factory;
         factory = DocumentBuilderFactory.newInstance();
         try {
@@ -52,8 +54,9 @@ public class Java_dom_parser {
                     Element elm;
                     elm = (Element) system;
                     NodeList planetlist;
-                    //store each planet in a list for the systems
-                    planetlist = elm.getElementsByTagName("planet");
+                    //store each planet/star in a list for the systems
+                    //System.out.println(search_elm.toLowerCase());
+                    planetlist = elm.getElementsByTagName(search_elm.toLowerCase());
                     for(int j=0; j<planetlist.getLength();j++){
                         Node pln;
                         pln = planetlist.item(j);
@@ -74,7 +77,7 @@ public class Java_dom_parser {
                             //loop through the list until name matches the passed in planet name
                             if (p_name.equalsIgnoreCase(Planet)){
                                 String[] lines = sys.split(System.getProperty("line.separator"));
-                                sys_name = "System Name: "+ lines[1].trim();
+                                sys_name = lines[1].trim();
                                 pln_name = "Planet Name: "+ p_name.trim();  
                             }
                         }
@@ -86,9 +89,9 @@ public class Java_dom_parser {
         } catch (ParserConfigurationException | SAXException | IOException ex) {
             Logger.getLogger(Java_dom_parser.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return (sys_name +"\n" + pln_name + "\n");
+        return sys_name;
     }
-    
+    /*
     public static String getStarParentNode (String star){
         String star_name = "";
         String sys_name = "";
@@ -148,10 +151,12 @@ public class Java_dom_parser {
         }
         return (sys_name +"\n" + star_name + "\n");
     }
+*/
 
     public static void main(String[] args) {
-        System.out.println(getPlanetParentNode("2MASS J07465196+3905404 b"));
-        System.out.println(getStarParentNode("NGC 2682 YBP 1514"));
+        System.out.println(getParentNode("staR","NGC 2682 YBP 1514"));
+        //System.out.println(getStarParentNode("NGC 2682 YBP 1514"));
+        //System.out.println("PlaNet".toLowerCase());
     }
     
 }

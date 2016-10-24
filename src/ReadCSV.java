@@ -148,73 +148,7 @@ public class ReadCSV {
     }
     return sigColumns;
   }
-  
-//  public static ArrayList<String> orderedIndexesOfSigColumns(String catalogueLabel)
-//          throws IOException, MissingColumnNameException {
-//    HashMap<String, HashMap<String, Integer>> iMappings = getIndexMappings();
-//    Set<String> labelsConfig;
-//    //This will return a set with only significant columns
-//    labelsConfig = significantColumns();
-//
-//
-//    //Now find the indexes of the important columns
-//    ArrayList<Integer> indexes = new ArrayList<>();
-//    for (String iLabel:labelsConfig) {
-//      //make sure that column exists in the catalogue
-//      if (iMappings.get(catalogueLabel).get(iLabel) != -1)
-//        indexes.add(iMappings.get(catalogueLabel).get(iLabel));
-//    }
-//
-//    //Sort the columns so they are in order of how they appear in the catalogues
-//    Collections.sort(indexes);
-//  }
-
-  
-//  //TODO, case where some enters the wrong label
-//  /**
-//   * Map planet name to corresponding data
-//   * @param cataloguePath Path to catalogue
-//   * @param catalogueLabel Catalogue name label as seen in the config file
-//   * @return Mapping of planet to data
-//   * @throws IOException
-//   * @throws MissingColumnNameException
-//   */
-//  public static HashMap<String, ArrayList<String>> mapPlanetToData(String cataloguePath,
-//                                                                   String catalogueLabel) throws
-//          IOException, MissingColumnNameException {
-//    CSVReader r = new CSVReader(new FileReader(cataloguePath));
-//    List<String[]> allData = r.readAll();
-//    r.close();
-//    HashMap<String, ArrayList<String>> planetToData = new HashMap<>();
-//    HashMap<String, HashMap<String, Integer>> iMappings = getIndexMappings();
-//    Set<String> labelsConfig;
-//    //This will return a set with only significant columns
-//    labelsConfig = significantColumns();
-//
-//
-//    //Now find the indexes of the important columns
-//    ArrayList<Integer> indexes = new ArrayList<>();
-//    for (String iLabel:labelsConfig) {
-//      //make sure that column exists in the catalogue
-//      if (iMappings.get(catalogueLabel).get(iLabel) != -1)
-//        indexes.add(iMappings.get(catalogueLabel).get(iLabel));
-//    }
-//
-//    //Sort the columns so they are in order of how they appear in the catalogues
-//    Collections.sort(indexes);
-//
-//    ArrayList<String> columnValues = new ArrayList<>();
-//    for (int i=1; i < allData.size(); i++) {
-//      for (int index:indexes) {
-//        columnValues.add(allData.get(i)[index]);
-//      }
-//      //map by planet name
-//      planetToData.put(allData.get(i)[iMappings.get(catalogueLabel).get("pl_name")], columnValues);
-//      columnValues = new ArrayList<>();
-//    }
-//    return planetToData;
-//  }
-  
+    
   //TODO, case where a column is removed between older and newer versions of the database
   /**
    * Map planet name to corresponding data

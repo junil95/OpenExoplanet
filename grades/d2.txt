@@ -1,0 +1,73 @@
+CSCC01 Deliverable 2 Marking Guide
+-----------------------------------
+
+T23 SegFault
+TOTAL: 81
+
+Personas:  15 / 20
+
+  Format: 4 / 4
+
+      must contain: gender, age, personality, skills, environment,
+      attitude towards technology in general, attitude towards
+      computer software, goals when using the system
+
+      Too many irrelevant details are not useful!
+
+  Information content:  4 / 8
+
+      The purpose of each persona is clear. Personas suggest different
+      system requirements.
+
+      * Missing goals for using your system.
+      * Missing ability with version control software.
+
+  Coverage: 7 / 8
+    * See comment beside Alison Singer's persona.
+
+      personas must include at least two of the following type of users:
+
+      -- "Hanno type"
+
+      -- Hanno's grad student: can approve modifications to the data,
+           but cannot add other such users (only Hanno can)
+
+      -- A less tech-savvy astronomer: Sure, Hanno is the client who
+           makes the order, but the software will be released as
+           open-source, so other types of users are 100% realistic.
+
+
+Product Backlog:  36 / 50
+
+    2 / 10 : User stories follow the format
+                "As __name__ (__role__), I want __something__."
+		("so that __benefit__" is optional)
+	       AND each __name__ corresponds to one of the personas.
+
+    6 / 10 : User stories, together, reflect all the user
+    	        requirements (from all prospective users).
+
+    10 / 10 : User stories correspond to actual requirements (no
+    	        "invented" features).
+
+    9 / 10 : User stories contain enough information for devs to
+                estimate how long it would take to implement it.
+
+    9 / 10 : Each user story addresses one specific requirement (no
+                "world peace" stories).
+
+
+Presentation:  20 / 20
+
+  4 / 4 : well-presented, is easy to read and to navigate
+
+  4 / 4 : spelling and grammar
+
+  10 / 10 : looks professional
+
+  2 / 2 : quality of the README file
+
+
+Interview: 10 / 10
+
+

@@ -1,0 +1,51 @@
+CSCC01 -- Deliverable 1 -- Marking Guidelines
+
+SegFault - Team 23
+
+1) Introduce the team:     8.5 out of 10
+
+  team's name present: 1/1
+
+  team logo present: 1/1
+
+  picture of the entire team present: 1/1
+
+  team's goals presented: 3
+    spelling and grammar: 1/1
+    clarity: 1/1
+    realistic yet ambitious goals: 1/1
+
+  team's strengths explained: 4
+    spelling and grammar: 1/1
+    clarity: 1/1
+    makes good use of each member's background: 0.5/2
+      - Lacking details. A paragraph is better.
+
+
+2) Introduce the team members:        28 out of 30
+
+   I am assuming 5 members. If your team has four members,
+   scale accordingly.
+
+   for each member:
+      approx 150 words: 0/1, 1/1, 1/1, 1/1, 1/1
+      spelling and grammar: 1/1, 1/1, 1/1, 1/1, 1/1
+      clarity: 1/1, 1/1, 1/1, 1/1, 1/1
+      professionalism: 2/2, 2/2, 2/2, 2/2, 2/2
+
+   The members' introductions are consistent w.r.t. person (in
+   first/third person), style, qualities/interests described, etc., so
+   that the overall introduction reads well:      4/5
+    - One biography is not like the others. Hmm...
+
+
+3) Team agreement:      9 out of 10
+
+    methods of communication, including wait time for replies, clearly stated:  2/2
+    meeting times arranged:  2/2
+    contingency planning (member is sick, missing meetings, not performing up to standards, etc.):  2/2
+    use of version control is discussed:  2/2
+    some planning of individual roles:  1/2
+      - Why can't we decide on expertise now?
+
+TOTAL: 45.5/50

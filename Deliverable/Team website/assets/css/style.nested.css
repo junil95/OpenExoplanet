@@ -210,7 +210,6 @@ svg {
   padding-bottom: 5px; }
 
 #info .tab-content ul {
-  list-style: none;
   padding: 0 0; }
 
 #info .about {
@@ -242,6 +241,7 @@ svg {
     margin-left: 5%;
     overflow: hidden;
     display: inline-block;
+    list-style: none;
     text-align: left; }
     #info .about #details li {
       font-family: "Montserrat",sans-serif;
@@ -270,10 +270,9 @@ svg {
   font-size: 15px; }
 
 .secondary-pills {
+  text-align: center;
   position: relative;
-  margin: 0 auto;
-  margin-top: 20px;
-  width: 30%; }
+  margin-top: 20px; }
   .secondary-pills li a {
     margin: 0 10px;
     font-size: 20px;

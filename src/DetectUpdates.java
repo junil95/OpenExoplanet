@@ -15,9 +15,10 @@ public class DetectUpdates {
   //TODO: Won't work if there are new column additions. Can we do anything about this? Maybe, just check the columns in the old list. What about cases where the planet names are repeated so key isnt unique?
   //TODO: Problems when columns are removed. long decimals, maybe round them?, also if planet name slightly changes Problem with numbers, scientific notation if it exists, date formats since we are doing only alphanumeric
   public static ArrayList<HashMap<String, HashMap<String, String>>> detectUpdates(
-          HashMap<String, HashMap<String, String>> oldCopy, HashMap<String,
+          HashMap<String, HashMap<String, String>> oldCopyData, HashMap<String,
           HashMap<String, String>> newCopy) {
-    
+  
+    HashMap<String, HashMap<String, String>> oldCopy = new HashMap<>(oldCopyData);
     HashMap<String, HashMap<String, String>> newPlanets = new HashMap<>();
     HashMap<String, HashMap<String, String>> beforeUpdate = new HashMap<>();
     HashMap<String, HashMap<String, String>> afterUpdate = new HashMap<>();
@@ -93,7 +94,7 @@ public class DetectUpdates {
   //Temp for testing purposes, remove after
   public static void main(String[] args) {
     try {
-      PullingTools.createLatestCatalogueCopy();
+      //PullingTools.createLatestCatalogueCopy();
       ArrayList<HashMap<String, HashMap<String, String>>> data = detectUpdates(ReadCSV.mapPlanetToData(PullingTools.localExoplanetEuOld, "eu"), ReadCSV.mapPlanetToData(PullingTools.localExoplanetEu, "eu"));
       System.out.println(data.get(1));
       System.out.println(data.get(0));

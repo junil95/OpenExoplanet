@@ -57,8 +57,7 @@ public class DetectUpdates {
   //TODO: What if column orders are different in the two databases?
   public static ArrayList<HashMap<String, HashMap<String, String>>> getSpecificColumnUpdates(
           HashMap<String, HashMap<String, String>> beforeUpdate,
-          HashMap<String, HashMap<String, String>> afterUpdate) throws IOException,
-          ReadCSV.MissingColumnNameException {
+          HashMap<String, HashMap<String, String>> afterUpdate){
 
     HashMap<String, HashMap<String, String>> diffAfterUpdate = new HashMap<>();
     HashMap<String, HashMap<String, String>> diffBeforeUpdate = new HashMap<>();
@@ -92,8 +91,9 @@ public class DetectUpdates {
   //Temp for testing purposes, remove after
   public static void main(String[] args) {
     try {
-      //UpdateTools.PullingTools.createLatestCatalogueCopy();
-      ArrayList<HashMap<String, HashMap<String, String>>> data = detectUpdates(ReadCSV.mapPlanetToData(PullingTools.localExoplanetEuOld, "eu"), ReadCSV.mapPlanetToData(PullingTools.localExoplanetEu, "eu"));
+      UpdateTools.PullingTools.createLatestCatalogueCopy();
+      ReadCSV.mapIndexes();
+      ArrayList<HashMap<String, HashMap<String, String>>> data = detectUpdates(ReadCSV.mapPlanetToData(PullingTools.localExoplanetEuOld, ReadCSV.EU), ReadCSV.mapPlanetToData(PullingTools.localExoplanetEu, ReadCSV.EU));
       System.out.println(data.get(1));
       System.out.println(data.get(0));
       System.out.println(data.get(2));

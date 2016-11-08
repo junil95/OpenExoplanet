@@ -1,7 +1,79 @@
 package ModelStarSystems;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+
+import UpdateTools.ReadCSV;
+
+//TODO store converted units
 /**
  * Created by dhrumil on 06/11/16.
  */
-public class CelestialObjects {
+public abstract class CelestialObjects {
+  /**
+   * Store properties of the celestial object
+   */
+  private HashMap<String, String> properties;
+  
+  /**
+   * Store the name
+   */
+  private String name;
+  
+  /**
+   * Store the child
+   */
+  private CelestialObjects child;
+  
+  /**
+   * Store the parent
+   */
+  private CelestialObjects parent;
+  
+  public String getName() {
+    return name;
+  }
+  
+  public void setName(String name) {
+    this.name = name;
+  }
+  
+  public CelestialObjects getChild() {
+    return child;
+  }
+  
+  public void setChild(CelestialObjects child) {
+    this.child = child;
+  }
+  
+  public CelestialObjects getParent() {
+    return parent;
+  }
+  
+  public void setParent(CelestialObjects parent) {
+    this.parent = parent;
+  }
+  
+  public void setProperties(HashSet<String> objectLabels, String labelPrefix, HashMap<String, String> properties) {
+    this.properties = new HashMap<>();
+    
+    for (String label : objectLabels) {
+      //don't need to add the system name to the system properties
+      if (!label.contains("name")){
+        //Remove the first 3 digits of the label
+        this.properties.put(label.substring(3), null);
+      }
+    }
+    
+    for (String property : properties.keySet()) {
+      if (property.startsWith(labelPrefix) && (this.properties.containsKey(property.substring(3)))){
+        this.properties.replace(property.substring(3), properties.get(property));
+      }
+    }
+  }
+  
+  public HashMap<String, String> getProperties() {
+    return new HashMap<String, String>(properties);
+  }
 }

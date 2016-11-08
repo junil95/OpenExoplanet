@@ -50,6 +50,7 @@ st_distance_error_max,star_distance_error_max,st_disterr1
 st_distance,star_distance,st_dist
 sy_right_ascension,ra,ra_str
 sy_declination,dec,dec_str
+sy_name,star_name,pl_hostname
 pl_alternate_names,alternate_names,
 st_alternate_names,star_alternate_names,
 st_magV_min,,st_vjerr

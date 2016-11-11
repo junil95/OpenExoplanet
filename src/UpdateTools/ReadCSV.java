@@ -283,7 +283,7 @@ public class ReadCSV {
       test.put("st_name", "slave");
       test.put("pl_radius", "0231");
       test.put("st_radius", "0932");
-      Systems s = SystemBuilder.buildSystemWithHashMap(test);
+      Systems s = SystemBuilder.buildSystemWithHashMap(test, "eu");
       System.out.println(s.getChild().getProperties());
       
     } catch (IOException e) {

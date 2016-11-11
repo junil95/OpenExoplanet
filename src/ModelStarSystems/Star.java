@@ -14,7 +14,8 @@ public class Star extends CelestialObjects {
    *
    * @param properties Star labels. Note, the star labels need to start with st
    */
-  public Star(String name, HashMap<String, String> properties, Planet planet) {
+  public Star(String name, HashMap<String, String> properties, Planet planet, String source) {
+    setSource(source);
     setName(name);
     planet.setParent(this);
     setChild(planet);

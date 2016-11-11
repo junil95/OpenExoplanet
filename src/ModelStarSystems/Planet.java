@@ -13,7 +13,8 @@ public class Planet extends CelestialObjects {
    *
    * @param properties Planet labels. Note, the planet labels need to start with pl
    */
-  public Planet(String name, HashMap<String, String> properties) {
+  public Planet(String name, HashMap<String, String> properties, String source) {
+    setSource(source);
     setName(name);
     setProperties(ReadCSV.getPlanetLabels(), "pl_", properties);
   }

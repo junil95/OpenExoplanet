@@ -38,14 +38,14 @@ public class SystemBuilder {
         }
       }
     }
-    planet = new Planet(planetName, planetProperties);
-    star = new Star(starName, starProperties, planet);
-    system = new Systems(systemName, systemProperties, star);
+    planet = new Planet(planetName, planetProperties, databaseName);
+    star = new Star(starName, starProperties, planet, databaseName);
+    system = new Systems(systemName, systemProperties, star, databaseName);
     
     return system;
   }
   
-  public static Systems buildSystemWithHashMap(HashMap<String, String> sProperties) throws MissingCelestialObjectNameException {
+  public static Systems buildSystemWithHashMap(HashMap<String, String> sProperties, String database) throws MissingCelestialObjectNameException {
     HashMap<String, String> systemProperties = new HashMap<>();
     HashMap<String, String> starProperties = new HashMap<>();
     HashMap<String, String> planetProperties = new HashMap<>();
@@ -75,9 +75,9 @@ public class SystemBuilder {
     }
     if (planetName.equals("") || systemName.equals("") || starName.equals(""))
       throw new MissingCelestialObjectNameException();
-    planet = new Planet(planetName, planetProperties);
-    star = new Star(starName, starProperties, planet);
-    system = new Systems(systemName, systemProperties, star);
+    planet = new Planet(planetName, planetProperties, database);
+    star = new Star(starName, starProperties, planet, database);
+    system = new Systems(systemName, systemProperties, star, database);
     return system;
   }
   

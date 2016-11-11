@@ -31,6 +31,11 @@ public abstract class CelestialObjects {
    */
   private CelestialObjects parent;
   
+  /**
+   * Store the database source
+   */
+  private String source;
+  
   public String getName() {
     return name;
   }
@@ -39,8 +44,17 @@ public abstract class CelestialObjects {
     this.name = name;
   }
   
+  public String getSource() {
+    return source;
+  }
+  
+  public void setSource(String source) {
+    this.source = source;
+  }
+  
   public CelestialObjects getChild() {
     return child;
+    
   }
   
   public void setChild(CelestialObjects child) {

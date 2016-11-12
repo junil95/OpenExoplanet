@@ -26,65 +26,95 @@ import org.xml.sax.SAXException;
  * @author junil
  */
 public class SystemFinder {
-        public static String getSystem(CelestialObjects celesObj) throws SAXException, XPathExpressionException{
-        //get name of planet or star
-        String name = celesObj.getName();
-        String searchelm = "";
-        String sysname = "";
-        //identify the proper search element
-        if(celesObj instanceof Planet){
-            searchelm = "star/planet";
-            
-        }
-        else if(celesObj instanceof Star){
-            searchelm = "star";
-        }
-        //System.out.println(searchelm);
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder;
-        //Document doc = null;
-        try {
-            builder = factory.newDocumentBuilder();
-            Document doc = builder.parse(PullingTools.localOecFile);
+        public static String getSystem(CelestialObjects celesObj) throws MissingCelestialObjectException {
+          //get name of planet or star
+          String name = DifferenceDetector.onlyAlphaNumeric(celesObj.getName());
+          String searchelm = "";
+          String sysname = "";
+          //identify the proper search element
+          if(celesObj instanceof Planet){
+              searchelm = "star/planet";
+          }
+          else if(celesObj instanceof Star){
+              searchelm = "star";
+          }
+          DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+          DocumentBuilder builder;
+          try {
+              builder = factory.newDocumentBuilder();
+              Document doc = builder.parse(PullingTools.localOecFile);
+              // Create XPathFactory object
+              XPathFactory xpathFactory = XPathFactory.newInstance();
+              // Create XPath object
+              XPath xpath = xpathFactory.newXPath();
+              //lowercase criteria that gets rid of spaces and special characters
+              String lowerCase = "name[translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ+-~!@#$%^&*()_=,./:;[]* ','abcdefghijklmnopqrstuvwxyz')";
+              XPathExpression expr = xpath.compile("//system["+searchelm+"/"+lowerCase+"='"+name+"']]/name[1]");
+              //evaluate expression result on XML document
+              NodeList nodes = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
+              for (int i = 0; i < nodes.getLength(); i++){
+                  sysname = nodes.item(i).getTextContent();
+              }
+              //case: binary system
+              if((DifferenceDetector.onlyAlphaNumeric(sysname)).equalsIgnoreCase("")){
+                  expr = xpath.compile("//system[binary//"+searchelm+"/"+lowerCase+"='"+name+"']]/name[1]");
+                  //evaluate expression result on XML document
+                  nodes = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
+                  for (int i = 0; i < nodes.getLength(); i++){
+                      sysname = nodes.item(i).getTextContent();
+                  }
+              }
 
-            // Create XPathFactory object
-            XPathFactory xpathFactory = XPathFactory.newInstance();
+          } catch (ParserConfigurationException | IOException e) {
+          }   catch (SAXException | XPathExpressionException ex) {
+                  Logger.getLogger(SystemFinder.class.getName()).log(Level.SEVERE, null, ex);
+              }
+          //case: an unidentifiable planet or star
+          if((DifferenceDetector.onlyAlphaNumeric(sysname)).equalsIgnoreCase("")){
+              throw new SystemFinder.MissingCelestialObjectException(celesObj.getName());
+              //return "Does Not Exist";
+          }
+          else{
+              return sysname;
+          }
+        }
 
-            // Create XPath object
-            XPath xpath = xpathFactory.newXPath();
-            XPathExpression expr = xpath.compile("//system["+searchelm+"/name='"+name+"']/name[1]");
-            
-            //evaluate expression result on XML document
-            NodeList nodes = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
-            //sysname = nodes.item(0).getTextContent();
-            for (int i = 0; i < nodes.getLength(); i++){
-                //System.out.println(nodes.item(i).getTextContent());
-                sysname = nodes.item(i).getTextContent();
-            }
-            //case: binary system
-            if((DifferenceDetector.onlyAlphaNumeric(sysname)).equalsIgnoreCase("")){
-                expr = xpath.compile("//system[binary//"+searchelm+"/name='"+name+"']/name[1]");
-                //System.out.println("//system[binary//"+searchelm+"/name='"+name+"']/name[1]");
+        public static boolean systemCheck(Systems sys){
+            String name = DifferenceDetector.onlyAlphaNumeric(sys.getName());
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder;
+            boolean exist = false;
+
+            try {
+                builder = factory.newDocumentBuilder();
+                Document doc = builder.parse(PullingTools.localOecFile);
+                // Create XPathFactory object
+                XPathFactory xpathFactory = XPathFactory.newInstance();
+                // Create XPath object
+                XPath xpath = xpathFactory.newXPath();
+                String lowerCase = "text()[translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ+-~!@#$%^&*()_=,./:;[]* ','abcdefghijklmnopqrstuvwxyz')";
+                XPathExpression expr = xpath.compile("//system/name["+lowerCase+"='" + name+"']]");
                 //evaluate expression result on XML document
-                nodes = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
-                //sysname = nodes.item(0).getTextContent();
+                NodeList nodes = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
                 for (int i = 0; i < nodes.getLength(); i++){
-                //System.out.println(nodes.item(i).getTextContent());
-                    sysname = nodes.item(i).getTextContent();
-                }
+                    //check if the system names match
+                    if(sys.getName().equalsIgnoreCase(nodes.item(i).getTextContent())){
+                       exist = true;
+                    }
             }
-            
-        } catch (ParserConfigurationException | IOException e) {
-            e.printStackTrace();
+            } catch (ParserConfigurationException | IOException e) {
+        }   catch (SAXException | XPathExpressionException ex) {
+                Logger.getLogger(SystemFinder.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            return exist;
         }
-        //case: an unidentifiable planet or star
-        if((DifferenceDetector.onlyAlphaNumeric(sysname)).equalsIgnoreCase("")){
-            return "Does Not Exist";
+        /**
+         * Thrown when a CelestialObject is not found in OEC
+         */
+        public static class MissingCelestialObjectException extends Exception {
+          public MissingCelestialObjectException(String objName) {
+            super(objName + "not in OEC database");
+          }
         }
-        else{
-            return sysname;
-        }
-    }
-      
-}
 
+    }

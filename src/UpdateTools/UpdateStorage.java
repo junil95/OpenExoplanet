@@ -18,12 +18,19 @@ import ModelStarSystems.SystemBuilder;
  * sets can be accessed by any other classes since they're all public.  
  */
 public class UpdateStorage {
-    public static Set<Systems> updates = new HashSet<Systems>();
-    public static Set<Systems> stars = new HashSet<Systems>();
-    public static Set<Systems> systems = new HashSet<Systems>();
-    public static Set<Systems> planets = new HashSet<Systems>();
-    public static ArrayList<Systems> oldAttributes = new ArrayList<Systems>();
-    public static ArrayList<Systems> newAttributes = new ArrayList<Systems>();
-    
-    
+  public Set<Systems> updates;
+  public Set<Systems> stars;
+  public Set<Systems> systems;
+  public Set<Systems> planets;
+  public ArrayList<Systems> oldAttributes;
+  public ArrayList<Systems> newAttributes;
+  
+  public UpdateStorage() {
+    updates = new HashSet<>();
+    stars = new HashSet<>();
+    systems = new HashSet<>();
+    planets = new HashSet<>();
+    oldAttributes = new ArrayList<>();
+    newAttributes = new ArrayList<>();
+  }
 }

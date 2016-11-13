@@ -81,7 +81,7 @@ public abstract class CelestialObjects {
     }
     
     for (String property : properties.keySet()) {
-      if (property.startsWith(labelPrefix) && (this.properties.containsKey(property.substring(3)))){
+      if (property.startsWith(labelPrefix) && (this.properties.containsKey(property.substring(3))) && (!properties.get(property).equals(""))){
         this.properties.replace(property.substring(3), properties.get(property));
       }
     }

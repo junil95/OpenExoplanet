@@ -18,23 +18,21 @@ public class SystemBuilder {
     Star star;
     Planet planet;
     String systemName = "", starName = "", planetName = "";
+    planetName = csvRow.get(columnIndexes.get("pl_name"));
+    columnIndexes.remove("pl_name");
+    starName = csvRow.get(columnIndexes.get("st_name"));
+    columnIndexes.remove("st_name");
+    systemName = csvRow.get(columnIndexes.get("sy_name"));
+    columnIndexes.remove("sy_name");
+    
     for (String key : columnIndexes.keySet()) {
       if (columnIndexes.get(key) != -1) {
         if (key.startsWith("pl_")) {
-          if (key.equals("pl_name"))
-            planetName = csvRow.get(columnIndexes.get(key));
-          else
-            planetProperties.put(key, csvRow.get(columnIndexes.get(key)));
+          planetProperties.put(key, csvRow.get(columnIndexes.get(key)));
         } else if (key.startsWith("st_")) {
-          if (key.equals("st_name"))
-            starName = csvRow.get(columnIndexes.get(key));
-          else
-            starProperties.put(key, csvRow.get(columnIndexes.get(key)));
+          starProperties.put(key, csvRow.get(columnIndexes.get(key)));
         } else if (key.startsWith("sy_")) {
-          if (key.equals("sy_name"))
-            systemName = csvRow.get(columnIndexes.get(key));
-          else
-            systemProperties.put(key, csvRow.get(columnIndexes.get(key)));
+          systemProperties.put(key, csvRow.get(columnIndexes.get(key)));
         }
       }
     }

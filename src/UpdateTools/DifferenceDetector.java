@@ -36,46 +36,7 @@ import static UpdateTools.ReadCSV.onlyAlphanumericList;
  *         databases from Nasa and Exoplanet.eu.
  */
 public class DifferenceDetector {
-  /**
-   * The index for the
-   */
-  public static final String nasaColumnID = "pl_name";
   
-  public static final String exoplanetColumnID = "# name";
-  
-  public static final String exoplanetAlternateColumnID = "	alternate_names";
-  
-  
-  /**
-   * Updates the local copy to the latest updated master copy from Nasa and Exoplanet.eu.
-   */
-  public static HashMap<String, List<String[]>> readCSVs() throws IOException {
-    HashMap<String, List<String[]>> info = new HashMap<String, List<String[]>>();
-    
-    CSVReader reader = null;
-    
-    try {
-      // Reading the local exoplanets
-      reader = new CSVReader(new FileReader(PullingTools.localExoplanetEu));
-      List<String[]> exoplanetEntries = reader.readAll();
-      info.put("exoplanetEntries", exoplanetEntries);
-      
-      // Reading the local nasa archives
-      reader = new CSVReader(new FileReader(PullingTools.localNasaArchive));
-      List nasaEntries = reader.readAll();
-      info.put("nasaArchives", nasaEntries);
-    } catch (IOException e) {
-      e.printStackTrace();
-    } finally {
-      // Closes the Reader
-      reader.close();
-    }
-    
-    
-    return info;
-  }
-  
-  ;
   
   /**
    * Returns the string ignoring non alphanumeric characters.
@@ -160,6 +121,7 @@ public class DifferenceDetector {
 //	    newPlanets.add(newPlanetsTempNasa);
 //	    return newPlanets;
 //	}
+  
   public static UpdateStorage getNewPlanetIDs(String databasePath, String database, UpdateStorage us) throws IOException {
     HashMap<String, HashMap<String, String>> planetDataOther = mapPlanetToData(databasePath, database);
     //will get only alphanumeric planet names
@@ -225,11 +187,7 @@ public class DifferenceDetector {
           planetNames.add(onlyAlphaNumeric(nameNl.item(j).getTextContent()));
         }
       }
-    } catch (SAXException e) {
-      e.printStackTrace();
-    } catch (IOException e) {
-      e.printStackTrace();
-    } catch (ParserConfigurationException e) {
+    } catch (SAXException | IOException | ParserConfigurationException e) {
       e.printStackTrace();
     }
     return planetNames;

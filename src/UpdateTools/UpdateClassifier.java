@@ -5,6 +5,7 @@
  */
 package UpdateTools;
 import ModelStarSystems.*;
+import UpdateTools.SystemFinder.*;
 
 
 /**
@@ -12,28 +13,33 @@ import ModelStarSystems.*;
  * @author junil
  */
 public class UpdateClassifier {
-//    public static void classify() throws SystemFinder.MissingCelestialObjectException{
-//        for(Systems s: UpdateStorage.updates){
-//            //get planet and star objects along with their names for each system
-//            String systemName = s.getName();
-//            Star star = (Star) s.getChild();
-//            String starName = star.getName();
-//            Planet planet = (Planet) star.getChild();
-//            String planetName = planet.getName();
-//            if(!(SystemFinder.systemCheck(s))){
-//                //need to add entire system
-//                UpdateStorage.systems.add(s);
-//            }
-//            else if(SystemFinder.getSystem(star).equalsIgnoreCase("Does Not Exist")){
-//                //need to add star
-//                UpdateStorage.stars.add(s);
-//            }
-//            else if(SystemFinder.getSystem(planet).equalsIgnoreCase("Does Not Exist")){
-//                //add planets
-//                UpdateStorage.planets.add(s);
-//            }
-//
-//        }
-//    }
+    public static void classify(UpdateStorage updatesFound) throws SystemFinder.MissingCelestialObjectException{
+        for(Systems s: updatesFound.updates){
+            //get planet and star objects along with their names for each system
+            Star star = (Star) s.getChild();
+            Planet planet = (Planet) star.getChild();
+            String check1;
+            String check2;
+            if(!(SystemFinder.systemCheck(s))){
+                //need to add entire system
+                updatesFound.systems.add(s);
+            }
+            try{
+                check1 = SystemFinder.getSystem(star);
+            }catch (SystemFinder.MissingCelestialObjectException e){
+                //if no name is retrieved from getSystem then we need to add star
+                updatesFound.stars.add(s);
+            }
+            try{
+                check2 = SystemFinder.getSystem(planet);
+            }catch (SystemFinder.MissingCelestialObjectException e1){
+                //if no name is retrieved from getSystem then we need to add star
+                updatesFound.planets.add(s);
+            }
+
+        }
+        //clear updates set so we know we already completed classifying these systems
+        updatesFound.updates.clear();
+    }
 
 }

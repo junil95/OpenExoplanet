@@ -43,7 +43,7 @@ public class ReadCSV {
   /**
    * Key to access NASA data from allCatalogueIndexes hashmap
    */
-  private static final String NASA = "nasa";
+  public static final String NASA = "nasa";
   
   /**
    * Store all labels from the config file

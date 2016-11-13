@@ -24,6 +24,7 @@ import ModelStarSystems.SystemBuilder;
 import ModelStarSystems.Systems;
 
 import static UpdateTools.ReadCSV.EU;
+import static UpdateTools.ReadCSV.NASA;
 import static UpdateTools.ReadCSV.getIndexMappings;
 import static UpdateTools.ReadCSV.mapPlanetToData;
 import static UpdateTools.ReadCSV.onlyAlphanumericList;
@@ -197,7 +198,7 @@ public class DifferenceDetector {
     try {
       ReadCSV.mapIndexes();
       UpdateStorage us = new UpdateStorage();
-      us = getNewPlanetIDs(PullingTools.localExoplanetEu, EU, us);
+      us = getNewPlanetIDs(PullingTools.localNasaArchive, NASA, us);
       for (Systems s : us.updates) {
         System.out.println(s.getChild().getChild().getName());
       }

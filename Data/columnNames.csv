@@ -45,9 +45,9 @@ st_mass_error_min,star_mass_error_min,st_masserr2
 st_mass_error_max,star_mass_error_max,st_masserr1
 st_spectral_type,star_sp_type,
 st_metallicity,star_metallicity,st_metratio
-st_distance_error_min,star_distance_error_min,st_disterr2
-st_distance_error_max,star_distance_error_max,st_disterr1
-st_distance,star_distance,st_dist
+sy_distance_error_min,star_distance_error_min,st_disterr2
+sy_distance_error_max,star_distance_error_max,st_disterr1
+sy_distance,star_distance,st_dist
 sy_right_ascension,ra,ra_str
 sy_declination,dec,dec_str
 sy_name,star_name,pl_hostname
@@ -72,5 +72,5 @@ st_magK,mag_k,st_k
 st_magK_min,,st_kerr
 st_magK_max,,st_kerr
 st_temperature,star_teff,st_teff
-st_temperature_min,star_teff_error_min,st_tefferr2
-st_temperature_max,star_teff_error_max,st_tefferr1
+st_temperature_error_min,star_teff_error_min,st_tefferr2
+st_temperature_error_max,star_teff_error_max,st_tefferr1

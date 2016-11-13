@@ -65,7 +65,6 @@ public class DetectUpdatesTest {
     boolean detected = false;
   
     for (Systems s : us.updates) {
-      System.out.println(s.getChild().getChild().getName());
       if(DifferenceDetector.onlyAlphaNumeric(s.getChild().getChild().getName()).
               equals(fakePlanetNameSigChar)){
         detected = true;
@@ -86,6 +85,63 @@ public class DetectUpdatesTest {
    */
   @Test
   public void detectPlanetUpdatesNASA() throws IOException, ReadCSV.MissingColumnNameException {
+    //create a temporary copy of eu database in the current package
+    String tmpFilePath = "tmp.csv";
+    String tmpFilePathOld = "tmp2.csv";
+    File tmp2 = new File(tmpFilePathOld);
+    File tmp = new File(tmpFilePath);
+    String fakePlanetNameSigChar = "mariol";
+    String fakePlanet = "269.496333,0.000000,17.96642222,0.00000000,17h57m59.12s,-30.715175," +
+            "0.000000,-30d42m54.6s,359.835949,0.000000,-3.213775,0.000000,269.563475,0.000000," +
+            "-7.276647,0.000000,1,,,,,0,0,810.00,100.00,-100.00,0,1,,,,,,,,,,,0,,,,,,0,,,,,," +
+            ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,," +
+            ",,,,,,,,,,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0,,,,,0,,,,,0,0,,,,,0,0,,,," +
+            ",0,0,,,,,,0,0,,,,,0,0,0.11,0.01,-0.01,0,0,1,,,,,0,0,,,,0,,0,,,,,,0,,,,,0,,,,,0,," +
+            ",,,0,0,0,0,0,0,3,0,,,,Mario &&& L,MOA 2010-BLG-328L,b,1,0,3,Microlensing," +
+            "2013,Furusawa et al. 2013,2013-12,MOA,1.8 m MOA Telescope,MOA CCD Array,Ground," +
+            "Furusawa et al. 2013,0,0,0,0,0,0,0,0,0,0," +
+            "http://exoplanet.eu/catalog/moa-2010-blg-328l_b/,,,,,,0,0.920000,0.160000," +
+            "-0.160000,0,1,,,,,0,,,,,0,,,,,0,,,,,0,,,,,0,,,,,,,,,0,0.02895,0.00692," +
+            "-0.00692,0,9.20000,2.20000,-2.20000,0,1,0.02895,0.00692,-0.00692,0,9.20000," +
+            "2.20000,-2.20000,0,1,Mass,,,,,,,,,,,,,0,,,,,0,,,,,0,,,,,0,,,,,0,,,,,0,,,," +
+            ",0,,,,,,0,,,,,0,,,,,0,,,,,0,3,0,2015-06-04";
+    FileUtils.copyFile(new File(PullingTools.localNasaArchive), tmp);
+    //Now add a fake planet to the end of the file
+    Writer output;
+    output = new BufferedWriter(new FileWriter(tmpFilePath, true));  //clears file every time
+    output.append(fakePlanet);
+    output.close();
+    
+    //Create a temporary copy of the old version of the EU database
+    FileUtils.copyFile(new File(PullingTools.localNasaArchive), tmp2);
+    
+    //Now detect new planets
+    //Gets columns dynamically so need to map indexes
+    ReadCSV.mapIndexes();
+    
+    UpdateStorage us = new UpdateStorage();
+    
+    //Now create hashmaps of planets and their corresponding data
+    us = DetectUpdates.detectUpdates(ReadCSV.mapPlanetToData(tmpFilePathOld, ReadCSV.NASA),
+            ReadCSV.mapPlanetToData(tmpFilePath, ReadCSV.NASA), us, ReadCSV.NASA);
+    
+    boolean detected = false;
+
+    for (Systems s : us.updates) {
+      if(DifferenceDetector.onlyAlphaNumeric(s.getChild().getChild().getName()).
+              equals(fakePlanetNameSigChar)){
+        detected = true;
+        break;
+      }
+    }
+    //Delete tmp files
+    tmp.delete();
+    tmp2.delete();
+    assertTrue(detected);
+  }
+  
+  @Test
+  public void detectAttributeUpdatesEu() throws IOException, ReadCSV.MissingColumnNameException {
     //create a temporary copy of eu database in the current package
     String tmpFilePath = "tmp.csv";
     String tmpFilePathOld = "tmp2.csv";
@@ -118,9 +174,8 @@ public class DetectUpdatesTest {
             ReadCSV.mapPlanetToData(tmpFilePath, ReadCSV.EU), us, ReadCSV.EU);
     
     boolean detected = false;
-
+    
     for (Systems s : us.updates) {
-      System.out.println(s.getChild().getChild().getName());
       if(DifferenceDetector.onlyAlphaNumeric(s.getChild().getChild().getName()).
               equals(fakePlanetNameSigChar)){
         detected = true;

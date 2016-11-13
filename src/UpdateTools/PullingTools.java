@@ -178,6 +178,7 @@ public class PullingTools {
       pullNasaArchive();
       pullOecSeperateFiles();
       pullOecOneFile();
+      System.out.println("Done");
     } catch (IOException e) {
       e.printStackTrace();
     } catch (ZipException e) {

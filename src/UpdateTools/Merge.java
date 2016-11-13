@@ -19,11 +19,11 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.StringReader;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 /**
  * Created by Rishi on 2016-11-12.
- * Specific attribute merges yet to be added
  */
 public class Merge {
 
@@ -129,6 +129,99 @@ public class Merge {
             DOMSource source = new DOMSource(sysdoc);
             StreamResult result = new StreamResult(new File(PullingTools.oecData + system.getName() + ".xml"));
             transformer.transform(source, result);
+
+        } catch (Exception e){
+
+        }
+    }
+
+    public static void newValues(Systems system, String xmlVal){
+
+        try{
+
+            //system file directory
+            File dir = new File(PullingTools.oecData + system.getName() + ".xml");
+
+            //parsing xmlVal string into a document
+            DocumentBuilder documentbuild = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            InputSource is = new InputSource();
+            is.setCharacterStream(new StringReader(xmlVal));
+            Document valDoc = documentbuild.parse(is);
+
+            //parsing system file into a document
+            DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            Document sysdoc = db.parse(dir);
+
+            //checking and setting system values
+            Element syselem = sysdoc.getDocumentElement();
+
+            for(String key: system.getProperties().keySet()){
+                if(system.getProperties().get(key) != null){
+                    NodeList sysElemList = syselem.getElementsByTagName(key);
+                    if(sysElemList.item(0) == null){
+                        Node imported = sysdoc.importNode(generateXML.xmlValue(key, system.getProperties().get(key)), true);
+                        syselem.insertBefore(imported, syselem.getElementsByTagName("star").item(0));
+                    }
+                    else {
+                        sysElemList.item(0).setTextContent(system.getProperties().get(key));
+                    }
+
+                }
+            }
+            NodeList starlist = syselem.getElementsByTagName("star");
+
+            //for each star
+            for(int i = 0; i<starlist.getLength(); i++){
+                //Find the correct star to put value under
+                String starname = starlist.item(i).getFirstChild().getTextContent();
+                if(starname.equals(system.getChild().getName())){
+                    //correct star found
+                    Element corrstar = (Element) starlist.item(i);
+
+                    //check and set star values
+                    HashMap<String, String> starprop = system.getChild().getProperties();
+                    for(String key: starprop.keySet()){
+                        if(starprop.get(key) != null){
+                            NodeList starElemList = corrstar.getElementsByTagName(key);
+                            if(starElemList.item(0) == null){
+                                Node imported = sysdoc.importNode(generateXML.xmlValue(key, starprop.get(key)), true);
+                                corrstar.insertBefore(imported,corrstar.getElementsByTagName("planet").item(0));
+                            }
+                            else {
+                                starElemList.item(0).setTextContent(starprop.get(key));
+                            }
+                        }
+                    }
+
+
+                    NodeList planetlist = corrstar.getElementsByTagName("planet");
+                    //for each planet
+                    for(int p = 0; p<planetlist.getLength(); p++){
+                        String planetname = planetlist.item(p).getFirstChild().getTextContent();
+                        if(planetname.equals(system.getChild().getChild().getName())){
+                            //correct planet found
+                            Element corrplanet = (Element) planetlist.item(i);
+
+                            //check and set planet values
+                            HashMap<String, String> planetprop = system.getChild().getChild().getProperties();
+                            for(String key: planetprop.keySet()){
+                                if(planetprop.get(key) != null){
+                                    NodeList planetElemList = corrplanet.getElementsByTagName(key);
+                                    if(planetElemList.item(0) == null){
+                                        Node imported = sysdoc.importNode(generateXML.xmlValue(key, planetprop.get(key)), true);
+                                        corrplanet.appendChild(imported);
+                                    }
+                                    else{
+                                        planetElemList.item(0).setTextContent(planetprop.get(key));
+                                    }
+                                }
+                            }
+                        }
+                        break; //break planet loop once the correct planet's values have been updated
+                    }
+                }
+                break; //break the star loop once the correct star's values have been updated
+            }
 
         } catch (Exception e){
 

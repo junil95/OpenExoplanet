@@ -5,7 +5,6 @@
  */
 package UpdateTools;
 import ModelStarSystems.*;
-import UpdateTools.SystemFinder.*;
 
 
 /**
@@ -13,7 +12,7 @@ import UpdateTools.SystemFinder.*;
  * @author junil
  */
 public class UpdateClassifier {
-    public static void classify(UpdateStorage updatesFound) throws SystemFinder.MissingCelestialObjectException{
+    public static UpdateStorage classify(UpdateStorage updatesFound) throws SystemFinder.MissingCelestialObjectException{
         for(Systems s: updatesFound.updates){
             //get planet and star objects along with their names for each system
             Star star = (Star) s.getChild();
@@ -40,6 +39,7 @@ public class UpdateClassifier {
         }
         //clear updates set so we know we already completed classifying these systems
         updatesFound.updates.clear();
+        return updatesFound;
     }
-
+    
 }

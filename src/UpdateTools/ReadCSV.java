@@ -169,7 +169,8 @@ public class ReadCSV {
   //TODO, case where a column is removed between older and newer versions of the database
   
   /**
-   * Map planet name to corresponding data
+   * Map planet name to corresponding data. Remember, the inner hashmap will only contain
+   * columns that actually exist in that database
    *
    * @param cataloguePath  Path to catalogue
    * @param catalogueLabel Catalogue name label as seen in the config file
@@ -188,7 +189,7 @@ public class ReadCSV {
       colWithVal = new HashMap<>();
       for (String col : sigColWithIndex.keySet()) {
         //dont need to consider columns that are not in the database or the pl_name column
-        if (sigColWithIndex.get(col) != -1 && !(col.equals("pl_name"))) {
+        if (sigColWithIndex.get(col) != -1) {
           colWithVal.put(col, allData.get(i)[sigColWithIndex.get(col)]);
         }
       }
@@ -253,10 +254,6 @@ public class ReadCSV {
       planetLabels = getSpecificLabelType("pl");
     return new HashSet<String>(planetLabels);
   }
-  
-  
-  
-  
   
   /**
    * Thrown when a column name in the config file doesn't actually exist in the database

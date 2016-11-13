@@ -51,8 +51,8 @@ st_distance,star_distance,st_dist
 sy_right_ascension,ra,ra_str
 sy_declination,dec,dec_str
 sy_name,star_name,pl_hostname
-pl_alternate_names,alternate_names,
-st_alternate_names,star_alternate_names,
+pl_alternatenames,alternate_names,
+st_alternatenames,star_alternate_names,
 st_magV_min,,st_vjerr
 st_magV_max,,st_vjerr
 st_magV,mag_v,st_vj

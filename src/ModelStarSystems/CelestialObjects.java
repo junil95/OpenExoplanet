@@ -74,7 +74,7 @@ public abstract class CelestialObjects {
     
     for (String label : objectLabels) {
       //don't need to add the system name to the system properties
-      if (!label.contains("name")){
+      if (!label.contains("_name")){
         //Remove the first 3 digits of the label
         this.properties.put(label.substring(3), null);
       }

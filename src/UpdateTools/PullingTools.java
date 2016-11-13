@@ -45,6 +45,11 @@ public class PullingTools {
   public static final String localOecFile = "Data/oec/oec.xml";
   
   /**
+   * Path to multiple oec directory
+   */
+  public static final String oecData = "Data/oec/open_exoplanet_catalogue-master/";
+  
+  /**
    * Url for getting the exoplanet Eu catalogue
    */
   public static final String localExoplanetEu = "Data/exoplanetEu/exoplanetEu.csv";

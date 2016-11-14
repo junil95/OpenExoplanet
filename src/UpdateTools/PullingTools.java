@@ -47,7 +47,7 @@ public class PullingTools {
   /**
    * Path to the oec folder containing catalogue data
    */
-  public static final String oecData = "Data/oec/open_exoplanet_catalogue-master/";
+  public static final String oecData = "Data/oec/open_exoplanet_catalogue-master/systems/";
 
   /**
    * Url for getting the exoplanet Eu catalogue

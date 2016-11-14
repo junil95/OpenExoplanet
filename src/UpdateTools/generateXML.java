@@ -228,7 +228,7 @@ public class generateXML {
 
 	}
 
-	public static Element xmlValue(String tag, String value){
+	public static Node xmlValue(String tag, String value){
 		try {
 			DocumentBuilderFactory df = DocumentBuilderFactory.newInstance();
 			DocumentBuilder db = df.newDocumentBuilder();
@@ -249,16 +249,18 @@ public class generateXML {
 		try {
 			ReadCSV.mapIndexes();
 			CSVReader r = new CSVReader(new FileReader(PullingTools.localExoplanetEu));
-			List<String[]> allData = r.readAll();
-			Systems s = SystemBuilder.buildSystemWithCSVRow(Arrays.asList(allData.get(1)), ReadCSV.EU);
-            System.out.println(xmlStar(s));
+			CSVReader q = new CSVReader(new FileReader(PullingTools.localNasaArchive));
+			List<String[]> allEUData = r.readAll();
+			List<String[]> allNASAData = q.readAll();
+			Systems s = SystemBuilder.buildSystemWithCSVRow(Arrays.asList(allEUData.get(1)), ReadCSV.EU);
+			Systems n = SystemBuilder.buildSystemWithCSVRow(Arrays.asList(allNASAData.get(1)), ReadCSV.NASA);
+            System.out.println(xmlPlanet(n));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (MissingColumnNameException e){
 			e.printStackTrace();
 		}
-
 
 
 	}

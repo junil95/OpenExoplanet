@@ -12,6 +12,10 @@ import static UpdateTools.ReadCSV.NASA;
 import static UpdateTools.ReadCSV.mapIndexes;
 import static UpdateTools.ReadCSV.mapPlanetToData;
 
+/**
+ * Created by Tirth Shah on 2016-11-14.
+ */
+
 public class UpdateStorage {
 
     //created HashSets and array lists to store various system objects
@@ -196,7 +200,7 @@ public class UpdateStorage {
             planetConflicts = u.findPlanetConflicts();
             for(int i = 0; i < planetConflicts.size(); i++){
                 for (int j = 0; j < planetConflicts.get(i).size(); j++){
-                    System.out.print(planetConflicts.get(i).get(j).getName() + "   ");
+                    System.out.print(planetConflicts.get(i).get(j).getChild().getChild().getName() + "   ");
                 }
             }
             //System.out.println(u.findPlanetConflicts());
@@ -207,6 +211,8 @@ public class UpdateStorage {
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ReadCSV.MissingColumnNameException e) {
+            e.printStackTrace();
+        } catch (ArrayIndexOutOfBoundsException e){
             e.printStackTrace();
         }
 //    } catch (SystemBuilder.MissingCelestialObjectNameException e) {

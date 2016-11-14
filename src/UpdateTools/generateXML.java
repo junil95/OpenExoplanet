@@ -25,10 +25,18 @@ import org.xml.sax.InputSource;
 import ModelStarSystems.*;
 import UpdateTools.ReadCSV.MissingColumnNameException;
 
+/**
+ * @author Rishi A class used to generate XML strings for planets, stars or systems.
+ * 				 This class also generates XML elements for specific system/star/planet properties.
+ */
+
 public class generateXML {
 	public static String xmlPlanet(Systems system){
 		/**
 		 * Takes a system object and returns an XML String for planet
+		 *
+		 * @param system Is a system object for which the planet has to be converted to an XML string
+		 * @return The XML String for planet
 		 */
 		CelestialObjects planet = system.getChild().getChild(); //planet
 		HashMap<String, String> prop = planet.getProperties(); //planet properties
@@ -87,6 +95,8 @@ public class generateXML {
 	public static String xmlStar(Systems system){
 		/**
 		 * Takes a system object and returns an XML String for star
+		 * @param system Is a system object for which the star and planet have to be converted to XML string
+		 * @return The XML String for star including the planet under it
 		 */
 		CelestialObjects star = system.getChild();
 		HashMap<String, String> prop = star.getProperties();
@@ -154,10 +164,11 @@ public class generateXML {
 
 
 	}
-
 	public static String xmlSystem(Systems system){
 		/**
 		 * Takes a system object and returns an XML String for system
+		 * @param system Is a system object for which the system, star and planet have to be converted to XML string
+		 * @return The XML String for system including the star under it and the planet under the star
 		 */
 		CelestialObjects sys = system;
 		HashMap<String, String> prop = sys.getProperties();
@@ -227,8 +238,13 @@ public class generateXML {
 		return null;
 
 	}
-
-	public static Node xmlValue(String tag, String value){
+	public static Element xmlValue(String tag, String value){
+		/**
+		 * Takes two strings and returns a node with first string tag and second string text content
+		 * @param tag Is a string which will be the tag of the returned node
+		 * @param value Is a string which will be the text content of the returned node
+		 * @return The Node needed to replace the old Node and update the old OEC database value
+		 */
 		try {
 			DocumentBuilderFactory df = DocumentBuilderFactory.newInstance();
 			DocumentBuilder db = df.newDocumentBuilder();

@@ -23,13 +23,17 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by Rishi on 2016-11-12.
+ * @author Rishi A class used to create new systems, but also merge new stars, new planets or new
+ *               values to the old system files
  */
 public class Merge {
 
-
-
     public static void newSystem(Systems system, String xmlSystem){
+        /**
+         * Creates a new system XML file
+         * @param system The system object corresponding to the new system
+         * @param xmlSystem The system string which will be parsed into the new system file
+         */
         try {
 
             //parsing xmlSystem string into a document
@@ -52,7 +56,11 @@ public class Merge {
     }
 
     public static void newStar(Systems system, String xmlStar){
-
+        /**
+         * Merges new star into existing system file
+         * @param system The system object corresponding to the new star
+         * @param xmlSystem The star string which will be merged into the existing system file
+         */
         try {
 
             //system file directory
@@ -90,7 +98,11 @@ public class Merge {
     }
 
     public static void newPlanet(Systems system, String xmlPlanet){
-
+        /**
+         * Merges new planet into existing system file
+         * @param system The system object corresponding to the new planet
+         * @param xmlPlanet The planet string which will be merged into the existing system file
+         */
         try {
 
             //system file directory
@@ -135,18 +147,15 @@ public class Merge {
         }
     }
 
-    public static void newValues(Systems system, String xmlVal){
-
+    public static void newValues(Systems system){
+        /**
+         * Modifies and merges specific values in system, star, or planet properties
+         * @param system The system object whose properties contain ONLY the values needed to be updated
+         */
         try{
 
             //system file directory
             File dir = new File(PullingTools.oecData + system.getName() + ".xml");
-
-            //parsing xmlVal string into a document
-            DocumentBuilder documentbuild = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            InputSource is = new InputSource();
-            is.setCharacterStream(new StringReader(xmlVal));
-            Document valDoc = documentbuild.parse(is);
 
             //parsing system file into a document
             DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -243,16 +252,17 @@ public class Merge {
     public static void main(String argv[]){
         /** Tests
          * If running test in oecData path, be sure to give ai new system and remove s
+         **/
         try{
 
             ReadCSV.mapIndexes();
             CSVReader r = new CSVReader(new FileReader(PullingTools.localExoplanetEu));
             List<String[]> allData = r.readAll();
             Systems s = SystemBuilder.buildSystemWithCSVRow(Arrays.asList(allData.get(1)), ReadCSV.EU);
-            newPlanet(s, generateXML.xmlPlanet(s));
+            s.setName("Test");
+            newSystem(s, generateXML.xmlSystem(s));
         } catch (Exception e){
 
         }
-         **/
     }
 }

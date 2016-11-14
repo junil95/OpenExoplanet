@@ -152,7 +152,6 @@ public class generateXMLTest {
 
             //test if expected node and actual node have the same name and text content/value
             assertEquals(expectedNode.getLocalName(), xmlValue(tag, value).getLocalName());
-            System.out.println(value);
             assertEquals(expectedNode.getTextContent(), xmlValue(tag, value).getTextContent());
 
         } catch (IOException e) {

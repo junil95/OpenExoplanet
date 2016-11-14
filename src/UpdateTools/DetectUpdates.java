@@ -70,7 +70,7 @@ public class DetectUpdates {
   
     for (String planet : afterUpdate.keySet()) {
       try {
-        s = SystemBuilder.buildSystemWithHashMap(beforeUpdate.get(planet), database);
+        s = SystemBuilder.buildSystemWithHashMap(afterUpdate.get(planet), database);
         us.newAttributes.add(s);
       } catch (SystemBuilder.MissingCelestialObjectNameException e) {
         e.printStackTrace();

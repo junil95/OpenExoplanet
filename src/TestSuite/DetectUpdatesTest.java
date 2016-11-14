@@ -37,7 +37,7 @@ public class DetectUpdatesTest {
     File tmp2 = new File(tmpFilePathOld);
     File tmp = new File(tmpFilePath);
     String fakePlanetNameSigChar = "mariol";
-    String fakePlanet = "\nMario & L,19.4,1.5,1.5,19.4,1.5,1.5,,,,326.03,0.32,0.32,1.29,0.05,0.05," +
+    String fakePlanet = "Mario & L,19.4,1.5,1.5,19.4,1.5,1.5,,,,326.03,0.32,0.32,1.29,0.05,0.05," +
             "0.231,0.005,0.005,,,,0.011664,2008,2015-08-21,94.8,1.5,1.5,2452899.6,1.6,1.6,,,,,,," +
             ",,,,,,,,,,,,296.7,5.6,5.6,,,,,,,,Published in a refereed paper,Radial Velocity," +
             ",,,,11 Com,185.1791667,17.7927778,4.74,,,,,110.6,10.5,10.5,-0.35,0.09,0.09,2.7,0.3," +
@@ -140,6 +140,12 @@ public class DetectUpdatesTest {
     assertTrue(detected);
   }
   
+  /**
+   * Detect updates to individual columns
+   * @throws IOException
+   * @throws ReadCSV.MissingColumnNameException
+   */
+  
   @Test
   public void detectAttributeUpdatesEu() throws IOException, ReadCSV.MissingColumnNameException {
     //create a temporary copy of eu database in the current package
@@ -148,7 +154,12 @@ public class DetectUpdatesTest {
     File tmp2 = new File(tmpFilePathOld);
     File tmp = new File(tmpFilePath);
     String fakePlanetNameSigChar = "mariol";
-    String fakePlanet = "\nMario & L,19.4,1.5,1.5,19.4,1.5,1.5,,,,326.03,0.32,0.32,1.29,0.05,0.05," +
+    String fakePlanet = "Mario & L,19.4,1.5,1.5,19.4,1.5,1.5,777777,7777,,326.03,0.32,0.32,1.29,0.05,0.05," +
+            "0.231,0.005,0.005,,,,0.011664,2008,2015-08-21,94.8,1.5,1.5,2452899.6,1.6,1.6,,,,,,," +
+            ",,,,,,,,,,,,296.7,5.6,5.6,,,,,,,,Published in a refereed paper,Radial Velocity," +
+            ",,,,11 Com,185.1791667,17.7927778,4.74,,,,,110.6,10.5,10.5,-0.35,0.09,0.09,2.7,0.3," +
+            "0.3,19.0,2.0,2.0,G8 III,,,,4742.0,100.0,100.0,,,";
+    String fakePlanetOld = "Mario & L,9999,1.5,1.5,19.4,1.5,1.5,,,,326.03,0.32,0.32,1.29,0.05,0.05," +
             "0.231,0.005,0.005,,,,0.011664,2008,2015-08-21,94.8,1.5,1.5,2452899.6,1.6,1.6,,,,,,," +
             ",,,,,,,,,,,,296.7,5.6,5.6,,,,,,,,Published in a refereed paper,Radial Velocity," +
             ",,,,11 Com,185.1791667,17.7927778,4.74,,,,,110.6,10.5,10.5,-0.35,0.09,0.09,2.7,0.3," +
@@ -156,14 +167,18 @@ public class DetectUpdatesTest {
     FileUtils.copyFile(new File(PullingTools.localExoplanetEu), tmp);
     //Now add a fake planet to the end of the file
     Writer output;
-    output = new BufferedWriter(new FileWriter(tmpFilePath, true));  //clears file every time
+    output = new BufferedWriter(new FileWriter(tmpFilePath, true));
     output.append(fakePlanet);
     output.close();
     
     //Create a temporary copy of the old version of the EU database
     FileUtils.copyFile(new File(PullingTools.localExoplanetEu), tmp2);
+    output = new BufferedWriter(new FileWriter(tmpFilePathOld, true));
+    //Change the value in this file as well
+    output.append(fakePlanetOld);
+    output.close();
     
-    //Now detect new planets
+    //Now detect changes in attributes
     //Gets columns dynamically so need to map indexes
     ReadCSV.mapIndexes();
     
@@ -172,19 +187,34 @@ public class DetectUpdatesTest {
     //Now create hashmaps of planets and their corresponding data
     us = DetectUpdates.detectUpdates(ReadCSV.mapPlanetToData(tmpFilePathOld, ReadCSV.EU),
             ReadCSV.mapPlanetToData(tmpFilePath, ReadCSV.EU), us, ReadCSV.EU);
+  
+    //Delete tmp files
+    tmp.delete();
+    tmp2.delete();
     
     boolean detected = false;
-    
-    for (Systems s : us.updates) {
-      if(DifferenceDetector.onlyAlphaNumeric(s.getChild().getChild().getName()).
-              equals(fakePlanetNameSigChar)){
+    //Test if the new value of the attribute is detected and stored
+    for (Systems s : us.newAttributes) {
+      System.out.println(s.getChild().getChild().getProperties());
+      if(s.getChild().getChild().getProperties().get("mass").equals("19.4")&&(s.getChild().getChild().getProperties().get("radius").
+              equals("777777"))){
         detected = true;
         break;
       }
     }
-    //Delete tmp files
-    tmp.delete();
-    tmp2.delete();
     assertTrue(detected);
+    
+    //Test if the old value of the attribute is stored
+    detected=false;
+    for (Systems s : us.oldAttributes) {
+      System.out.println(s.getChild().getChild().getProperties());
+      if(s.getChild().getChild().getProperties().get("mass").equals("19.4")&&(s.getChild().getChild().getProperties().get("radius").
+              equals(null))){
+        detected = true;
+        break;
+      }
+    }
+    assertTrue(detected);
+    
   }
 }

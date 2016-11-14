@@ -18,7 +18,7 @@ body {
     display: flex;
     flex-direction: column; }
 
-#title {
+#top-panel {
   position: relative;
   margin-top: 25px; }
 
@@ -46,8 +46,20 @@ body {
           position: relative;
           margin: 5px 5px;
           margin-right: 10px; }
-        .wrapper #left-panel #row-subpanel #changed-list .changed-row .name {
-          text-align: left; }
+        .wrapper #left-panel #row-subpanel #changed-list .child-1 {
+          position: relative;
+          left: 25px; }
+        .wrapper #left-panel #row-subpanel #changed-list .child-2 {
+          position: relative;
+          left: 50px; }
+        .wrapper #left-panel #row-subpanel #changed-list .child-3 {
+          position: relative;
+          left: 75px; }
+        .wrapper #left-panel #row-subpanel #changed-list .selected {
+          border-style: solid;
+          border-radius: 10px;
+          border-color: blue;
+          border-width: 3px; }
         .wrapper #left-panel #row-subpanel #changed-list .added {
           background-color: #2ecc71;
           border-radius: 10px; }
@@ -70,7 +82,6 @@ body {
       flex-direction: column; }
     .wrapper #right-panel table {
       overflow: auto;
-      height: 500px;
       width: 90%; }
       .wrapper #right-panel table th, .wrapper #right-panel table td {
         text-align: left;

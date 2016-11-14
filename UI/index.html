@@ -25,102 +25,50 @@
 <body>
     <div class="container" id="total">
         <div class="container" id="top-panel">
-            <h1 id="title"> Exoplanet Organizer! </h1>
+          <div class="col-xs-12">
+          <nav class="navbar navbar-inverse navbar-embossed" role="navigation">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
+                <span class="sr-only">Toggle navigation</span>
+              </button>
+              <a class="navbar-brand" href="#">Exoplanet Organizer!</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-collapse-01">
+              <ul class="nav navbar-nav navbar-left">
+                <li><a href="#fakelink">Update</a></li>
+                <li><a href="#fakelink">Github</a></li>
+                <li><a href="#fakelink">Options</a></li>
+               </ul>
+            </div><!-- /.navbar-collapse -->
+          </nav><!-- /navbar -->
+        </div>
         </div>
         <div class="wrapper">
             <div class="container col-xs-4" id="left-panel">
                 <div id="row-subpanel">
                     <h3> Changes Made </h1>
-            <ul id="changed-list">
-              <li class="changed row changed-row">
-                <label class="checkbox col-xs-offset-1 col-xs-4" for="checkbox1">
-                  <input type="checkbox" value="" id="checkbox1" data-toggle="checkbox" class="custom-checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
+                      <label class="checkbox col-xs-offset-1 col-xs-4" for="checkboxall" onclick="checkAll()">
+                        <input type="checkbox" value="" id="checkboxall" data-toggle="checkbox" class="custom-checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
+                        Check All
+                      </label>
+              <ul id="changed-list">
+              <li class="selected row changed-row" onclick="selectRow(0)">
+                <label class="checkbox col-xs-offset-1 col-xs-4" for="checkbox0">
+                  <input type="checkbox" value="" id="checkbox0" data-toggle="checkbox" class="custom-checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
                   Planet A
                 </label>
-              </li>
-              <li class="added row">
-                <label class="checkbox col-xs-offset-1 col-xs-4" for="checkbox2">
-                  <input type="checkbox" value="" id="checkbox2" data-toggle="checkbox" class="custom-checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
-                  Planet B
-                </label>
-              </li>
-              <li class="conflict row">
-                <label class="checkbox col-xs-offset-1 col-xs-4" for="checkbox3">
-                  <input type="checkbox" value="" id="checkbox3" data-toggle="checkbox" class="custom-checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
-                  Planet C
-                </label>
-              </li>
-              <li class="resolved row">
-                <label class="checkbox col-xs-offset-1 col-xs-4" for="checkbox4">
-                  <input type="checkbox" value="" id="checkbox4" data-toggle="checkbox" class="custom-checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
-                  Planet D
-                </label>
-              </li>
-              <li class="resolved row">
-                <label class="checkbox col-xs-offset-1 col-xs-4" for="checkbox5">
-                  <input type="checkbox" value="" id="checkbox5" data-toggle="checkbox" class="custom-checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
-                  Planet E
-                </label>
-              </li>
-              <li class="resolved row">
-                <label class="checkbox col-xs-offset-1 col-xs-4" for="checkbox6">
-                  <input type="checkbox" value="" id="checkbox6" data-toggle="checkbox" class="custom-checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
-                  Planet F
-                </label>
-              </li>
-              <li class="conflict row">
-                <label class="checkbox col-xs-offset-1 col-xs-4" for="checkbox7">
-                  <input type="checkbox" value="" id="checkbox7" data-toggle="checkbox" class="custom-checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
-                  Planet C
-                </label>
-              </li>
-              <li class="conflict row">
-                <label class="checkbox col-xs-offset-1 col-xs-4" for="checkbox8">
-                  <input type="checkbox" value="" id="checkbox8" data-toggle="checkbox" class="custom-checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
-                  Planet C
-                </label>
-              </li>
-              <li class="conflict row">
-                <label class="checkbox col-xs-offset-1 col-xs-4" for="checkbox9">
-                  <input type="checkbox" value="" id="checkbox9" data-toggle="checkbox" class="custom-checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
-                  Planet C
-                </label>
-              </li>
-              <li class="conflict row">
-                <label class="checkbox col-xs-offset-1 col-xs-4" for="checkbox10">
-                  <input type="checkbox" value="" id="checkbox10" data-toggle="checkbox" class="custom-checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
-                  Planet C
-                </label>
-              </li>
-              <li class="conflict row">
-                <label class="checkbox col-xs-offset-1 col-xs-4" for="checkbox11">
-                  <input type="checkbox" value="" id="checkbox11" data-toggle="checkbox" class="custom-checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
-                  Planet C
-                </label>
-              </li>
-              <li class="resolved row">
-                <label class="checkbox col-xs-offset-1 col-xs-4" for="checkbox12">
-                  <input type="checkbox" value="" id="checkbox12" data-toggle="checkbox" class="custom-checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
-                  Planet F
-                </label>
-              </li>
-              <li class="resolved row">
-                <label class="checkbox col-xs-offset-1 col-xs-4" for="checkbox13">
-                  <input type="checkbox" value="" id="checkbox13" data-toggle="checkbox" class="custom-checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
-                  Planet F
-                </label>
-              </li>
-              <li class="resolved row">
-                <label class="checkbox col-xs-offset-1 col-xs-4" for="checkbox14">
-                  <input type="checkbox" value="" id="checkbox14" data-toggle="checkbox" class="custom-checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
-                  Planet F
-                </label>
-              </li>
-              <li class="resolved row">
-                <label class="checkbox col-xs-offset-1 col-xs-4" for="checkbox15">
-                  <input type="checkbox" value="" id="checkbox15" data-toggle="checkbox" class="custom-checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
-                  Planet F
-                </label>
+                <li class="child-1 row changed-row" onclick="selectRow(1)">
+                  <label class="checkbox col-xs-offset-1 col-xs-4" for="checkbox1">
+                    <input type="checkbox" value="" id="checkbox1" data-toggle="checkbox" class="custom-checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
+                    Planet A
+                  </label>
+                  <li class="child-2 row changed-row" onclick="selectRow(2)">
+                    <label class="checkbox col-xs-offset-1 col-xs-4" for="checkbox2">
+                      <input type="checkbox" value="" id="checkbox2" data-toggle="checkbox" class="custom-checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
+                      Planet A
+                    </label>
+                  </li>
+                </li>
               </li>
             </ul>
           </div>
@@ -135,127 +83,38 @@
         </div>
         <div class="container col-xs-8" id="right-panel">
           <div>
-            <h3> Changes for Object ExampleObject </h3>
+            <h3 id="current-title"> Changes for Object ExampleObject </h3>
                 </div>
                 <div id="info-table-wrapper">
                     <table id="info-table">
-                        <tr>
-                            <th>Property</th>
-                            <th>Current</th>
-                            <th>Nasa</th>
-                            <th>Exoplanet</th>
-                            <th>Result</th>
-                        </tr>
-                        <tr>
-                          <td>Total</td>
-                          <td>Smith</td>
-                          <td>50</td>
-                          <td>50</td>
-                          <td>
-                            <div class="form-group">
-                                <input type="text" value="" placeholder="Inactive" class="form-control">
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Total</td>
-                          <td>Smith</td>
-                          <td>50</td>
-                          <td>50</td>
-                          <td>
-                            <div class="form-group">
-                                <input type="text" value="" placeholder="Inactive" class="form-control">
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Total</td>
-                          <td>Smith</td>
-                          <td>50</td>
-                          <td>50</td>
-                          <td>
-                            <div class="form-group">
-                                <input type="text" value="" placeholder="Inactive" class="form-control">
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Total</td>
-                          <td>Smith</td>
-                          <td>50</td>
-                          <td>50</td>
-                          <td>
-                            <div class="form-group">
-                                <input type="text" value="" placeholder="Inactive" class="form-control">
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Total</td>
-                          <td>Smith</td>
-                          <td>50</td>
-                          <td>50</td>
-                          <td>
-                            <div class="form-group">
-                                <input type="text" value="" placeholder="Inactive" class="form-control">
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Total</td>
-                          <td>Smith</td>
-                          <td>50</td>
-                          <td>50</td>
-                          <td>
-                            <div class="form-group">
-                                <input type="text" value="" placeholder="Inactive" class="form-control">
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Total</td>
-                          <td>Smith</td>
-                          <td>50</td>
-                          <td>50</td>
-                          <td>
-                            <div class="form-group">
-                                <input type="text" value="" placeholder="Inactive" class="form-control">
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Total</td>
-                          <td>Smith</td>
-                          <td>50</td>
-                          <td>50</td>
-                          <td>
-                            <div class="form-group">
-                                <input type="text" value="" placeholder="Inactive" class="form-control">
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Total</td>
-                          <td>Smith</td>
-                          <td>50</td>
-                          <td>50</td>
-                          <td>
-                            <div class="form-group">
-                                <input type="text" value="" placeholder="Inactive" class="form-control">
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Total</td>
-                          <td>Smith</td>
-                          <td>50</td>
-                          <td>50</td>
-                          <td>
-                            <div class="form-group">
-                                <input type="text" value="" placeholder="Inactive" class="form-control">
-                            </div>
-                          </td>
-                        </tr>
+                      <tr>
+                        <th>Property</th>
+                        <th>Current</th>
+                        <th>Nasa</th>
+                        <th>Exoplanet</th>
+                        <th>Result</th>
+                      </tr>
+                      <tr>
+                        <td>N/A</td>
+                        <td>N/A</td>
+                        <td>N/A</td>
+                        <td>N/A</td>
+                        <td><div class="form-group"><input type="text" id="info1" value="N/A" placeholder="Wanted Value" class="form-control"></div></td>
+                      </tr>
+                      <tr>
+                        <td>N/A</td>
+                        <td>N/A</td>
+                        <td>N/A</td>
+                        <td>N/A</td>
+                        <td><div class="form-group"><input type="text" id="info2" value="N/A" placeholder="Wanted Value" class="form-control"></div></td>
+                      </tr>
+                      <tr>
+                        <td>N/A</td>
+                        <td>N/A</td>
+                        <td>N/A</td>
+                        <td>N/A</td>
+                        <td><div class="form-group"><input type="text" id="info3" value="N/A" placeholder="Wanted Value" class="form-control"></div></td>
+                      </tr>
                     </table>
                 </div>
             </div>

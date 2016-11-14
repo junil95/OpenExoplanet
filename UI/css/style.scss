@@ -24,7 +24,7 @@ body{
   }
 }
 
-#title{
+#top-panel{
   position: relative;
   margin-top: 25px;
 }
@@ -61,11 +61,26 @@ body{
           margin-right: 10px;
         }
 
-          .changed-row{
+        .child-1{
+          position: relative;
+          left: 25px;
+        }
 
-            .name{
-              text-align: left;
-            }
+        .child-2{
+          position: relative;
+          left: 50px;
+        }
+
+        .child-3{
+          position: relative;
+          left: 75px;
+        }
+
+          .selected{
+            border-style: solid;
+            border-radius: 10px;
+            border-color: blue;
+            border-width: 3px;
           }
 
           .added{
@@ -104,7 +119,6 @@ body{
 
       table{
         overflow:auto;
-        height: 500px;
         width:90%;
 
         th, td {

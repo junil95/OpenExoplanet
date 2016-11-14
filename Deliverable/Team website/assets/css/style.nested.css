@@ -15,6 +15,9 @@ h1, h2, h3, p, li {
   line-height: 1.715em;
   font-weight: 500; }
 
+img {
+  max-width: 800px; }
+
 svg {
   stroke: white;
   fill: red; }

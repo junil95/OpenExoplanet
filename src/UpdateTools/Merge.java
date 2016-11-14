@@ -222,6 +222,13 @@ public class Merge {
                 }
                 break; //break the star loop once the correct star's values have been updated
             }
+            //Writing result file (Overwrites old file)
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+            DOMSource source = new DOMSource(sysdoc);
+            StreamResult result = new StreamResult(new File(PullingTools.oecData + system.getName() + ".xml"));
+            transformer.transform(source, result);
 
         } catch (Exception e){
 

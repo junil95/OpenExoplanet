@@ -343,7 +343,7 @@ public static void newPlanet(Systems system, String xmlPlanet) {
       Systems s = SystemBuilder.buildSystemWithCSVRow(Arrays.asList(allData.get(1)), ReadCSV.EU);
       //merge star
       s.setName("11 Com");
-      s.getChild().setName("11 Comm");
+      s.getChild().setName("jjjj");
       newStar(s, generateXML.xmlStar(s));
       //merge planet
 //      s.getChild().setName("11 Com");

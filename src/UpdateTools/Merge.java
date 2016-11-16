@@ -342,13 +342,13 @@ public static void newPlanet(Systems system, String xmlPlanet) {
       List<String[]> allData = r.readAll();
       Systems s = SystemBuilder.buildSystemWithCSVRow(Arrays.asList(allData.get(1)), ReadCSV.EU);
       //merge star
-      s.setName("11 Com");
-      s.getChild().setName("jjjj");
-      newStar(s, generateXML.xmlStar(s));
+//      s.setName("16 Cygni");
+//      s.getChild().setName("Leo");
+//      newStar(s, generateXML.xmlStar(s));
       //merge planet
-//      s.getChild().setName("11 Com");
-//      s.getChild().getChild().setName("11 Com c");
-//      newPlanet(s, generateXML.xmlPlanet(s));
+      s.getChild().setName("11 Com");
+      s.getChild().getChild().setName("Ace");
+      newPlanet(s, generateXML.xmlPlanet(s));
     } catch (Exception e) {
       e.printStackTrace();
     }

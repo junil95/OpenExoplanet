@@ -24,7 +24,7 @@ pl_mass_error_max,mass_error_max,pl_massjerr1
 pl_mass_other,mass_sini,pl_msinij
 pl_mass_other_error_min,mass_sini_error_min,pl_msinijerr2
 pl_mass_other_error_max,mass_sini_error_max,pl_msinijerr1
-pl_radius_error_min,radius_error_min,pl_radjerr2
+pl_radius_error_minpl_radius_error_min,radius_error_min,pl_radjerr2
 pl_radius_error_max,radius_error_max,pl_radjerr1
 pl_radius,radius,pl_radj
 pl_temperature_min,,pl_eqterr2
@@ -38,8 +38,8 @@ st_age,star_age,st_age
 st_age_error_min,star_age_error_min,st_ageerr2
 st_age_error_max,star_age_error_max,st_ageerr1
 st_radius,star_radius,st_rad
-st_radius_min,star_radius_error_min,st_raderr2
-st_radius_max,star_radius_error_max,st_raderr1
+st_radius_error_min,star_radius_error_min,st_raderr2
+st_radius_error_max,star_radius_error_max,st_raderr1
 st_mass,star_mass,st_mass
 st_mass_error_min,star_mass_error_min,st_masserr2
 st_mass_error_max,star_mass_error_max,st_masserr1

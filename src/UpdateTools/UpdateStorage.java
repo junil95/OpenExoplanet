@@ -20,21 +20,63 @@ public class UpdateStorage {
 
     //created HashSets and array lists to store various system objects
     public Set<Systems> updates;
+    /**
+     * Store new stars
+     */
     public Set<Systems> stars;
+    /**
+     * Store new systems
+     */
     public Set<Systems> systems;
+    /**
+     * Store new planets
+     */
     public Set<Systems> planets;
-    public ArrayList<Systems> oldAttributes;
-    public ArrayList<Systems> newAttributes;
+    
+    /**
+     * Stores attribute changes in star. Index 0 is before, index 1 is after, index 2 is data
+     * in OEC
+     */
+    public ArrayList<ArrayList<Systems>> starUpdates;
+    
+    /**
+     * Stores attribute changes in system. Index 0 is before, index 1 is after, index 2 is data
+     * in OEC
+     */
+    public ArrayList<ArrayList<Systems>> systemUpdates;
+    
+    /**
+     * Stores attribute changes in planet. Index 0 is before, index 1 is after, index 2 is data
+     * in OEC
+     */
+    public ArrayList<ArrayList<Systems>> planetUpdates;
 
     public UpdateStorage() {
         updates = new HashSet<>();
         stars = new HashSet<>();
         systems = new HashSet<>();
         planets = new HashSet<>();
-        oldAttributes = new ArrayList<>();
-        newAttributes = new ArrayList<>();
+        systemUpdates = new ArrayList<>();
+        starUpdates = new ArrayList<>();
+        planetUpdates = new ArrayList<>();
+    }
+    
+    /**
+     * Reinitialize all storage, so it can be reused for the next iteration
+     */
+    public void clearAll() {
+        updates = new HashSet<>();
+        stars = new HashSet<>();
+        systems = new HashSet<>();
+        planets = new HashSet<>();
+        systemUpdates = new ArrayList<>();
+        starUpdates = new ArrayList<>();
+        planetUpdates = new ArrayList<>();
     }
 
+    //TODO: Tell tirth to store everything as tuple instead, so basically append arraylists of size 2
+    //to the big arraylist everytime. The arraylist of size 2 would contain the corresponding eu and
+    //nasa data. This will break tests so will have to fix them
     /*
     Method to find store and find conflicts in a given set of planets. After classifying repeated planets, the method
     will check its respective source (ie. nasa or eu) and will place them in an arrayList of arrayList

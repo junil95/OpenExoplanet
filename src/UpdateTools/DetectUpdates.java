@@ -92,27 +92,22 @@ public class DetectUpdates {
     
     HashMap<String, HashMap<String, String>> beforeUpdate = new HashMap<>();
     HashMap<String, HashMap<String, String>> afterUpdate = new HashMap<>();
-    boolean isSame;
     for (String key : newCopy.keySet()) {
       if (oldCopy.containsKey(key)) {
-        isSame = true;
-        //check if the significant columns are the same in the catalogue
+        //check if the significant columns are the same in the catalogue. Also, we never want to
+        //detect updates where in the new copy something is changed from a value to null
         for (String col : oldCopy.get(key).keySet()) {
           if (!(DifferenceDetector.onlyAlphaNumeric(oldCopy.get(key).get(col)).equals(
-                  DifferenceDetector.onlyAlphaNumeric(newCopy.get(key).get(col))))) {
-            //System.out.println(col);
-            //System.out.println(oldCopy.get(key).get(col));
-            //System.out.println(newCopy.get(key).get(col));
-            isSame = false;
+                  DifferenceDetector.onlyAlphaNumeric(newCopy.get(key).get(col))))&&
+                  !newCopy.get(key).get(col).equals("")) {
+//            System.out.println(col);
+//            System.out.println(oldCopy.get(key).get(col));
+//            System.out.println(newCopy.get(key).get(col));
+            //store the data if there was a change in there
+            beforeUpdate.put(key, oldCopy.get(key));
+            afterUpdate.put(key, newCopy.get(key));
             break;
           }
-        }
-        if (!isSame) {
-          //If there was a change in the data, store the changes
-//          System.out.println(newCopy.get(key));
-//          System.out.println(oldCopy.get(key));
-          beforeUpdate.put(key, oldCopy.get(key));
-          afterUpdate.put(key, newCopy.get(key));
         }
         //Remove if key was found in new Copy. This will make the oldcopy.containskey faster
         oldCopy.remove(key);
@@ -174,12 +169,24 @@ public class DetectUpdates {
     return us;
   }
   
+  /**
+   * This will just add the after updates now, so just a singleton. Code for adding before updates
+   * is still there if we decide to add that section. It would be very difficult to display all
+   * the data in the UI so leaving it out for now.
+   * @param labelType
+   * @param updateList
+   * @param beforeUpdate
+   * @param afterUpdate
+   * @param planet
+   * @param database
+   * @param labelTypeString
+   */
   private static void sortByUpdateTuple(Set<String> labelType, ArrayList<ArrayList<Systems>> updateList,
                                         HashMap<String, HashMap<String, String>> beforeUpdate,
                                         HashMap<String, HashMap<String, String>> afterUpdate, String planet, String database, String labelTypeString) {
     boolean exist;
     HashMap<String, String> mapForBuilder;
-    HashMap<String, String> mapForBuilderBefore;
+    //HashMap<String, String> mapForBuilderBefore;
     // used to store new and old attribute pairs
     ArrayList<Systems> tuples;
     Systems s;
@@ -209,24 +216,24 @@ public class DetectUpdates {
         //Only insert the system labels and the star and planet name, although the star and planet
         //names are really worthless in this case
         mapForBuilder = new HashMap<>();
-        mapForBuilderBefore = new HashMap<>();
+        //mapForBuilderBefore = new HashMap<>();
         tuples = new ArrayList<>();
         mapForBuilder.put("pl_name", afterUpdate.get(planet).get("pl_name"));
-        mapForBuilderBefore.put("pl_name", beforeUpdate.get(planet).get("pl_name"));
+        //mapForBuilderBefore.put("pl_name", beforeUpdate.get(planet).get("pl_name"));
         mapForBuilder.put("st_name", afterUpdate.get(planet).get("st_name"));
-        mapForBuilderBefore.put("st_name", beforeUpdate.get(planet).get("st_name"));
+        //mapForBuilderBefore.put("st_name", beforeUpdate.get(planet).get("st_name"));
         mapForBuilder.put("sy_name", afterUpdate.get(planet).get("sy_name"));
-        mapForBuilderBefore.put("sy_name", beforeUpdate.get(planet).get("sy_name"));
+        //mapForBuilderBefore.put("sy_name", beforeUpdate.get(planet).get("sy_name"));
         //The rest of the required labels should just be in systemlabels
         for (String label : labelType) {
           mapForBuilder.put(label, afterUpdate.get(planet).get(label));
-          mapForBuilderBefore.put(label, beforeUpdate.get(planet).get(label));
+          //mapForBuilderBefore.put(label, beforeUpdate.get(planet).get(label));
         }
         //once the maps are constructed, build the system object with them
         try {
+//          s = SystemBuilder.buildSystemWithHashMap(mapForBuilderBefore, database);
+//          tuples.add(s);
           s = SystemBuilder.buildSystemWithHashMap(mapForBuilder, database);
-          tuples.add(s);
-          s = SystemBuilder.buildSystemWithHashMap(mapForBuilderBefore, database);
           tuples.add(s);
           //Add the tuple to the System updates list
           updateList.add(tuples);
@@ -254,8 +261,9 @@ public class DetectUpdates {
       //Scroll through all planet columns
       for (String col : beforeUpdate.get(planet).keySet()) {
         //Check if the values associated with the columns are the same
-        if (!(DifferenceDetector.onlyAlphaNumeric(beforeUpdate.get(planet).get(col)).
-                equals(DifferenceDetector.onlyAlphaNumeric(afterUpdate.get(planet).get(col)))) || col.contains("_name")) {
+        if (col.contains("_name") || (!DifferenceDetector.onlyAlphaNumeric(beforeUpdate.get(planet).get(col)).
+                equals(DifferenceDetector.onlyAlphaNumeric(afterUpdate.get(planet).get(col))) &&
+                !afterUpdate.get(planet).get(col).equals(""))) {
           // Add them if the values are not the same or if the key is some sort of name. We will need this key later for the
           // system object
           tmpAfter.put(col, afterUpdate.get(planet).get(col));
@@ -278,28 +286,28 @@ public class DetectUpdates {
       //UpdateTools.PullingTools.createLatestCatalogueCopy();
       ReadCSV.mapIndexes();
       UpdateStorage us = new UpdateStorage();
-      us = detectUpdates(ReadCSV.mapPlanetToData(PullingTools.localExoplanetEuOld, ReadCSV.EU),
-              ReadCSV.mapPlanetToData(PullingTools.localExoplanetEu, ReadCSV.EU), us, ReadCSV.EU);
+      us = detectUpdates(ReadCSV.mapPlanetToData(PullingTools.localNasaArchiveOld, ReadCSV.NASA),
+              ReadCSV.mapPlanetToData(PullingTools.localNasaArchive, ReadCSV.NASA), us, ReadCSV.NASA);
       
       System.out.println("Planets\n");
       for (ArrayList<Systems> as : us.planetUpdates) {
         System.out.println(as.get(0).getChild().getChild().getName());
         System.out.println(as.get(0).getChild().getChild().getProperties());
-        System.out.println(as.get(1).getChild().getChild().getProperties());
+        //System.out.println(as.get(1).getChild().getChild().getProperties());
       }
   
       System.out.println("Stars\n");
       for (ArrayList<Systems> as : us.starUpdates) {
         System.out.println(as.get(0).getChild().getName());
         System.out.println(as.get(0).getChild().getProperties());
-        System.out.println(as.get(1).getChild().getProperties());
+        //System.out.println(as.get(1).getChild().getProperties());
       }
   
       System.out.println("Systems\n");
       for (ArrayList<Systems> as : us.systemUpdates) {
         System.out.println(as.get(0).getName());
         System.out.println(as.get(0).getProperties());
-        System.out.println(as.get(1).getProperties());
+        //System.out.println(as.get(1).getProperties());
       }
       
     } catch (IOException e) {

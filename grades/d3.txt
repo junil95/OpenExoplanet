@@ -1,0 +1,101 @@
+Team 23
+SegFault
+
+
+CSCC01 Deliverable 3 Marking Guide
+-----------------------------------
+
+Project Management:  __________ (35/40%)
+
+  Release plan: 4/5
+    * What are the main goals of each release? What can the app do at each
+      stage? -1
+    * Good set of stories.
+    - each release corresponds to end of Sprint
+    - project fully laid out:
+      for each release date, list of user stories to implement
+    - project velocity specified and used
+    - highest priority user stories first modulo dependencies
+    - reasonable goals for each release
+
+  Product Backlog: 4/5
+    * 1&2, 3&4 repeated? What does merge refer to in 5? (xml merge? git merge?
+      pull request?) -1
+    * Stories are good otherwise.
+    - user stories follow the correct format.
+    - user stories, together, reflect all the user requirements (from
+      all personas).
+    - user stories correspond to actual requirements (no "invented"
+      features).
+    - user stories contain enough information for devs to estimate how
+      long it would take to implement it.
+    - each user story addresses one specific requirement (no "world
+      peace" stories).
+
+  Sprint Backlog(s): 5/5
+    * Good
+    - user stories taken from the Product Backlog
+    - estimated costs
+    - estimated values
+
+  Sprint Plan(s): 4/5
+    * Cost of some tasks are on the story-level. Split, or make new stories. -1
+    * Good otherwise.
+    - user stories divided into tasks when appropriate.
+    - each Sprint Plan contains all the necessary information:
+        who is working on which task on which day
+    - sum of costs of user stories in the sprint = project velocity
+    - good planning decisions
+
+  Use of Task Board: 4/5
+     * Some cards are cut out, make sure to show all of them! -1
+     * Good otherwise.
+    - correct format of task boards
+    - snapshots in the begginning and end of each Sprint are provided
+
+  Use of Burndown Charts: 5/5
+    * Good
+    * Charts are currently decreased by sp, not by tasks. Consider updating only
+      when tasks are done!
+    - snapshots in the begginning and end of each Sprint are provided
+    - correctness of burndown charts
+
+  Use of Repo: 4/5
+    * Should place all files related to app inside one folder. -1
+    * External libraries shouldn't be uploaded onto git!
+      * Take a look at gradle.
+    (good use of branches not required here, but is required for next deliverable)
+
+  Use of communication tools: 5/5
+
+    - evidence of using communication tools of their choice effectively
+
+
+Design and Implementation:  __________ (24/30%)
+
+   System Design: 4/5
+     * No mention of data structure passed on arrows. -1
+     - good modular design
+     - general and easy to extend
+     - it is clear how the current implementation is going to be
+        extended into an application that satisfies the client's needs
+
+   Implementation: 8/10
+     * No instructions on how to run. -2
+     * Good: Scraping works.
+     - 0 marks if it doesn't run
+     - at least one feature is either fully implemented of nearly implemented
+     - quality and maturity of code
+
+
+Report: __________ (20/20%)
+  * Good
+  - well-presented, is easy to read and to navigate
+  - spelling and grammar
+  - looks professional
+  - quality of the README file
+
+
+Interview: ________ (8/10%)
+  * Unclear on what arrows ment on system diagram. -1
+  * No specifics for changes to product backlog. -1

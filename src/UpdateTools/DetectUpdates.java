@@ -86,9 +86,16 @@ public class DetectUpdates {
 //
   
   //TODO Can improve by comparing numbers differently
-  public static UpdateStorage detectUpdates(
+  
+  /**
+   * Detects updates and stores in the update set of the update storage class
+   * @param oldCopy
+   * @param newCopy
+   * @param database
+   */
+  public static void detectUpdates(
           HashMap<String, HashMap<String, String>> oldCopy, HashMap<String,
-          HashMap<String, String>> newCopy, UpdateStorage us, String database) {
+          HashMap<String, String>> newCopy, String database) {
     
     HashMap<String, HashMap<String, String>> beforeUpdate = new HashMap<>();
     HashMap<String, HashMap<String, String>> afterUpdate = new HashMap<>();
@@ -100,9 +107,6 @@ public class DetectUpdates {
           if (!(DifferenceDetector.onlyAlphaNumeric(oldCopy.get(key).get(col)).equals(
                   DifferenceDetector.onlyAlphaNumeric(newCopy.get(key).get(col))))&&
                   !newCopy.get(key).get(col).equals("")) {
-//            System.out.println(col);
-//            System.out.println(oldCopy.get(key).get(col));
-//            System.out.println(newCopy.get(key).get(col));
             //store the data if there was a change in there
             beforeUpdate.put(key, oldCopy.get(key));
             afterUpdate.put(key, newCopy.get(key));
@@ -116,7 +120,7 @@ public class DetectUpdates {
         Systems s;
         try {
           s = SystemBuilder.buildSystemWithHashMap(newCopy.get(key), database);
-          us.updates.add(s);
+          UpdateStorage.updates.add(s);
         } catch (SystemBuilder.MissingCelestialObjectNameException e) {
           e.printStackTrace();
         }
@@ -126,19 +130,16 @@ public class DetectUpdates {
     ArrayList<HashMap<String, HashMap<String, String>>> detectedUpdates = getSpecificColumnUpdates(
             beforeUpdate, afterUpdate);
     //Overwrite the updates with the specific differences found in get specific column updates
-    us = sortByUpdate(detectedUpdates, us, database);
-    return us;
+    sortByUpdate(detectedUpdates, database);
     
   }
   
-  public static UpdateStorage sortByUpdate(ArrayList<HashMap<String, HashMap<String, String>>> detectedUpdates,
-                                           UpdateStorage us, String database) {
+  public static void sortByUpdate(ArrayList<HashMap<String, HashMap<String, String>>> detectedUpdates,
+                                           String database) {
     HashMap<String, HashMap<String, String>> beforeUpdate;
     HashMap<String, HashMap<String, String>> afterUpdate;
     beforeUpdate = detectedUpdates.get(0);
     afterUpdate = detectedUpdates.get(1);
-//    System.out.println(beforeUpdate.size());
-//    System.out.println(afterUpdate.size());
     Set<String> systemLabels;
     Set<String> planetLabels;
     Set<String> starLabels;
@@ -159,14 +160,10 @@ public class DetectUpdates {
           planetLabels.add(property);
         }
       }
-//      System.out.println(systemLabels);
-//      System.out.println(starLabels);
-//      System.out.println(planetLabels);
-      sortByUpdateTuple(systemLabels, us.systemUpdates, beforeUpdate, afterUpdate, planet, database, "sy_name");
-      sortByUpdateTuple(starLabels, us.starUpdates, beforeUpdate, afterUpdate, planet, database, "st_name");
-      sortByUpdateTuple(planetLabels, us.planetUpdates, beforeUpdate, afterUpdate, planet, database, "pl_name");
+      sortByUpdateTuple(systemLabels, UpdateStorage.systemUpdates, beforeUpdate, afterUpdate, planet, database, "sy_name");
+      sortByUpdateTuple(starLabels, UpdateStorage.starUpdates, beforeUpdate, afterUpdate, planet, database, "st_name");
+      sortByUpdateTuple(planetLabels, UpdateStorage.planetUpdates, beforeUpdate, afterUpdate, planet, database, "pl_name");
     }
-    return us;
   }
   
   /**
@@ -183,7 +180,8 @@ public class DetectUpdates {
    */
   private static void sortByUpdateTuple(Set<String> labelType, ArrayList<ArrayList<Systems>> updateList,
                                         HashMap<String, HashMap<String, String>> beforeUpdate,
-                                        HashMap<String, HashMap<String, String>> afterUpdate, String planet, String database, String labelTypeString) {
+                                        HashMap<String, HashMap<String, String>> afterUpdate,
+                                        String planet, String database, String labelTypeString) {
     boolean exist;
     HashMap<String, String> mapForBuilder;
     //HashMap<String, String> mapForBuilderBefore;
@@ -285,26 +283,26 @@ public class DetectUpdates {
     try {
       //UpdateTools.PullingTools.createLatestCatalogueCopy();
       ReadCSV.mapIndexes();
-      UpdateStorage us = new UpdateStorage();
-      us = detectUpdates(ReadCSV.mapPlanetToData(PullingTools.localNasaArchiveOld, ReadCSV.NASA),
-              ReadCSV.mapPlanetToData(PullingTools.localNasaArchive, ReadCSV.NASA), us, ReadCSV.NASA);
+      detectUpdates(ReadCSV.mapPlanetToData(PullingTools.localNasaArchiveOld, ReadCSV.NASA),
+              ReadCSV.mapPlanetToData(PullingTools.localNasaArchive, ReadCSV.NASA), ReadCSV.NASA);
+      UpdateClassifier.classify();
       
       System.out.println("Planets\n");
-      for (ArrayList<Systems> as : us.planetUpdates) {
+      for (ArrayList<Systems> as : UpdateStorage.planetUpdates) {
         System.out.println(as.get(0).getChild().getChild().getName());
         System.out.println(as.get(0).getChild().getChild().getProperties());
         //System.out.println(as.get(1).getChild().getChild().getProperties());
       }
   
       System.out.println("Stars\n");
-      for (ArrayList<Systems> as : us.starUpdates) {
+      for (ArrayList<Systems> as : UpdateStorage.starUpdates) {
         System.out.println(as.get(0).getChild().getName());
         System.out.println(as.get(0).getChild().getProperties());
         //System.out.println(as.get(1).getChild().getProperties());
       }
   
       System.out.println("Systems\n");
-      for (ArrayList<Systems> as : us.systemUpdates) {
+      for (ArrayList<Systems> as : UpdateStorage.systemUpdates) {
         System.out.println(as.get(0).getName());
         System.out.println(as.get(0).getProperties());
         //System.out.println(as.get(1).getProperties());

@@ -23,6 +23,7 @@ import com.opencsv.CSVReader;
 import ModelStarSystems.SystemBuilder;
 import ModelStarSystems.Systems;
 
+import static UpdateTools.DifferenceDetector.getNewPlanetIDs;
 import static UpdateTools.ReadCSV.EU;
 import static UpdateTools.ReadCSV.NASA;
 import static UpdateTools.ReadCSV.getIndexMappings;
@@ -123,7 +124,7 @@ public class DifferenceDetector {
 //	    return newPlanets;
 //	}
   
-  public static UpdateStorage getNewPlanetIDs(String databasePath, String database, UpdateStorage us) throws IOException {
+  public static void getNewPlanetIDs(String databasePath, String database) throws IOException {
     HashMap<String, HashMap<String, String>> planetDataOther = mapPlanetToData(databasePath, database);
     //will get only alphanumeric planet names
     Set<String> oecPlanetNames = getPlanetNamesOEC();
@@ -161,13 +162,12 @@ public class DifferenceDetector {
       try {
         if (isNew) {
           sys = SystemBuilder.buildSystemWithHashMap(planetDataOther.get(planet), database);
-          us.updates.add(sys);
+          UpdateStorage.updates.add(sys);
         }
       } catch (SystemBuilder.MissingCelestialObjectNameException e) {
         e.printStackTrace();
       }
     }
-    return us;
   }
   
   public static Set<String> getPlanetNamesOEC() {
@@ -197,9 +197,8 @@ public class DifferenceDetector {
   public static void main(String[] args) {
     try {
       ReadCSV.mapIndexes();
-      UpdateStorage us = new UpdateStorage();
-      us = getNewPlanetIDs(PullingTools.localNasaArchive, NASA, us);
-      for (Systems s : us.updates) {
+      getNewPlanetIDs(PullingTools.localNasaArchive, NASA);
+      for (Systems s : UpdateStorage.updates) {
         System.out.println(s.getChild().getChild().getName());
       }
     } catch (IOException e) {

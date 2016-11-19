@@ -105,11 +105,10 @@ public class DifferenceDetectorTest {
     //Now detect new planets
     //Gets columns dynamically so need to map indexes
     ReadCSV.mapIndexes();
-    UpdateStorage us = new UpdateStorage();
-    DifferenceDetector.getNewPlanetIDs(tmpFilePath, ReadCSV.EU, us);
+    DifferenceDetector.getNewPlanetIDs(tmpFilePath, ReadCSV.EU);
     boolean found = false;
     //Check if the fake planet was detected as a new planet
-    for (Systems s : us.updates) {
+    for (Systems s : UpdateStorage.updates) {
       if (DifferenceDetector.onlyAlphaNumeric(s.getChild().getChild().getName()).
               equals(fakePlanetNameSigChar)) {
         found = true;
@@ -155,11 +154,10 @@ public class DifferenceDetectorTest {
     //Now detect new planets
     //Gets columns dynamically so need to map indexes
     ReadCSV.mapIndexes();
-    UpdateStorage us = new UpdateStorage();
-    DifferenceDetector.getNewPlanetIDs(tmpFilePath, ReadCSV.NASA, us);
+    DifferenceDetector.getNewPlanetIDs(tmpFilePath, ReadCSV.NASA);
     boolean found = false;
     //Check if the fake planet was detected as a new planet
-    for (Systems s : us.updates) {
+    for (Systems s : UpdateStorage.updates) {
       if (DifferenceDetector.onlyAlphaNumeric(s.getChild().getChild().getName()).
               equals(fakePlanetNameSigChar)) {
         found = true;

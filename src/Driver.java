@@ -56,6 +56,49 @@ public class Driver {
     return convertToMap(UpdateStorage.systems);
   }
   
+  /**
+   * The JSON string is in the format List<List<Hashmap<String,String>>. In this case, the inner
+   * list is a tuple of dictionaries. The dictionary at index 0 contains new planet in EU catalogue
+   * and the dictionary at index 1 contains the same new planet in the NASA catalogue which is
+   * causing the conflict.
+   *
+   * @return
+   */
+  public static String getNewPlanetConflicts() {
+    return convertToMap(UpdateStorage.newPlanetConflicts);
+  }
+  
+  /**
+   * The JSON string is in the format List<List<Hashmap<String,String>>. In this case, the inner
+   * list is a tuple of dictionaries. The dictionary at index 0 contains new system in EU catalogue
+   * and the dictionary at index 1 contains the same new system in the NASA catalogue which is
+   * causing the conflict.
+   *
+   * @return
+   */
+  public static String getNewSystemConflicts() {
+    return convertToMap(UpdateStorage.newSystemConflicts);
+  }
+  
+  
+  /**
+   * The JSON string is in the format List<List<Hashmap<String,String>>. In this case, the inner
+   * list is a tuple of dictionaries. The dictionary at index 0 contains new star in EU catalogue
+   * and the dictionary at index 1 contains the same new Star in the NASA catalogue which is
+   * causing the conflict.
+   *
+   * @return
+   */
+  public static String getNewStarConflicts() {
+    return convertToMap(UpdateStorage.newStarConflicts);
+  }
+  
+  
+  /**
+   * Converts the List<List<Systems>> to JSON Strings
+   * @param allData
+   * @return
+   */
   private static String convertToMap(ArrayList<ArrayList<Systems>> allData) {
     ArrayList<ArrayList<HashMap<String, String>>> convertToMap = new ArrayList<>();
     HashMap<String, String> map;
@@ -72,6 +115,7 @@ public class Driver {
         map.put("src", s.getSource());
         //Need to recreate the label identifiers
         for (String label : s.getProperties().keySet()) {
+          //checking the null condition b/c gson removes keys with null values
           if (s.getProperties().get(label) == null)
             map.put("sy_" + label, "");
           else
@@ -105,7 +149,7 @@ public class Driver {
       detectUpdates(ReadCSV.mapPlanetToData(PullingTools.localExoplanetEuOld, ReadCSV.EU),
               ReadCSV.mapPlanetToData(PullingTools.localExoplanetEu, ReadCSV.EU), ReadCSV.EU);
       DifferenceDetector.getNewPlanetIDs(PullingTools.localExoplanetEuOld, ReadCSV.EU);
-      UpdateClassifier.classify();
+      UpdateClassifier.classifyUpdates();
 
 //      System.out.println("Planets\n");
 //      for (ArrayList<Systems> as : UpdateStorage.planetUpdates) {
@@ -127,6 +171,27 @@ public class Driver {
 //        System.out.println(as.get(0).getProperties());
 //        //System.out.println(as.get(1).getProperties());
 //      }
+//
+      System.out.println("Planets\n");
+      for (ArrayList<Systems> as : UpdateStorage.planets) {
+        System.out.println(as.get(0).getChild().getChild().getName());
+        //System.out.println(as.get(0).getChild().getChild().getProperties());
+        //System.out.println(as.get(1).getChild().getChild().getProperties());
+      }
+
+      System.out.println("Stars\n");
+      for (ArrayList<Systems> as : UpdateStorage.stars) {
+        System.out.println(as.get(0).getChild().getName());
+        //System.out.println(as.get(0).getChild().getProperties());
+        //System.out.println(as.get(1).getChild().getProperties());
+      }
+
+      System.out.println("Systems\n");
+      for (ArrayList<Systems> as : UpdateStorage.systems) {
+        System.out.println(as.get(0).getName());
+        //System.out.println(as.get(0).getProperties());
+        //System.out.println(as.get(1).getProperties());
+      }
       
       System.out.println(getNewPlanets());
       System.out.println(getNewStars());

@@ -64,7 +64,7 @@ public class DifferenceDetectorTest {
    */
   @Test
   public void testRetrievingPlanetNamesOec(){
-    Set<String> planetNames = DifferenceDetector.getPlanetNamesOEC();
+    Set<String> planetNames = DifferenceDetector.getNamesOEC();
     //Some of the real and alternate planet names that should exist in oec
     Set<String> existingPlanetNames = new HashSet<>();
     existingPlanetNames.add("11comb");

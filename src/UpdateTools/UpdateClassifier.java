@@ -14,6 +14,8 @@ import javax.xml.xpath.XPathExpressionException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -66,6 +68,40 @@ public class UpdateClassifier {
     //clear updates set so we know we already completed classifying these systems
     UpdateStorage.updates.clear();
   }
+  
+  //TODO, case where there are changes in attributes but, the system, star or planet doesn't even
+  //exist in OEC
+  /**
+   * Classify the updates into new planets, stars or systems in the Update storage using the
+   * updates list
+   */
+  public static void classifyUpdates() {
+    ArrayList temp;
+    Set<String> names = DifferenceDetector.getNamesOEC();
+    for (Systems s : UpdateStorage.updates) {
+      //If the system doesn't exist, then the update is a new system
+      if (!names.contains(DifferenceDetector.onlyAlphaNumeric(s.getName()))) {
+        temp = new ArrayList();
+        temp.add(s);
+        UpdateStorage.systems.add(temp);
+        //otherwise check if it is a new star
+      } else if (!names.contains(DifferenceDetector.onlyAlphaNumeric(s.getChild().getName()))) {
+        temp = new ArrayList();
+        temp.add(s);
+        UpdateStorage.stars.add(temp);
+        //otherwise check if it is a new planet. Need to do this because the planet might already
+        //exist as well, in which case it is not a new update
+      } else if (!names.contains(DifferenceDetector.onlyAlphaNumeric(s.getChild().getChild().getName()))){
+        temp = new ArrayList();
+        temp.add(s);
+        UpdateStorage.planets.add(temp);
+      }
+    }
+    //clear updates set so we know we already completed classifying these systems
+    UpdateStorage.updates.clear();
+  }
+  
+  
   
   
   public static void main(String[] args) throws SAXException, XPathExpressionException {

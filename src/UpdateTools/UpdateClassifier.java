@@ -7,8 +7,14 @@ package UpdateTools;
 
 import ModelStarSystems.*;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
 import java.io.IOException;
@@ -18,6 +24,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static UpdateTools.DifferenceDetector.onlyAlphaNumeric;
 
 
 /**
@@ -70,28 +78,33 @@ public class UpdateClassifier {
   }
   
   //TODO, case where there are changes in attributes but, the system, star or planet doesn't even
-  //exist in OEC
+  //exist in OEC. Also need to do assignOECsyName when junil works with system attributes
   /**
    * Classify the updates into new planets, stars or systems in the Update storage using the
-   * updates list
+   * updates list. Note this will also change the name of the system object to the primary
+   * name found in OEC
    */
   public static void classifyUpdates() {
     ArrayList temp;
     Set<String> names = DifferenceDetector.getNamesOEC();
     for (Systems s : UpdateStorage.updates) {
       //If the system doesn't exist, then the update is a new system
-      if (!names.contains(DifferenceDetector.onlyAlphaNumeric(s.getName()))) {
+      if (!names.contains(onlyAlphaNumeric(s.getName()))) {
         temp = new ArrayList();
         temp.add(s);
         UpdateStorage.systems.add(temp);
         //otherwise check if it is a new star
-      } else if (!names.contains(DifferenceDetector.onlyAlphaNumeric(s.getChild().getName()))) {
+      } else if (!names.contains(onlyAlphaNumeric(s.getChild().getName()))){
+        //need to assign primary system name found in OEC so we can find the individual xml file
+        s = assignOecSyName(s);
         temp = new ArrayList();
         temp.add(s);
         UpdateStorage.stars.add(temp);
         //otherwise check if it is a new planet. Need to do this because the planet might already
         //exist as well, in which case it is not a new update
-      } else if (!names.contains(DifferenceDetector.onlyAlphaNumeric(s.getChild().getChild().getName()))){
+      } else if (!names.contains(onlyAlphaNumeric(s.getChild().getChild().getName()))){
+        //need to assign primary system name found in OEC
+        s = assignOecSyName(s);
         temp = new ArrayList();
         temp.add(s);
         UpdateStorage.planets.add(temp);
@@ -99,6 +112,44 @@ public class UpdateClassifier {
     }
     //clear updates set so we know we already completed classifying these systems
     UpdateStorage.updates.clear();
+  }
+  
+  /**
+   * If the system has an alternate name in the other catalogues, this will assign the main name
+   * that oec uses. This will only work if the system isn't brand new
+   * @param s
+   * @return
+   */
+  public static Systems assignOecSyName(Systems s) {
+    //Get a list of planet names
+    try {
+      DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+      DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+      Document doc = dBuilder.parse(PullingTools.localOecFile);
+      doc.getDocumentElement().normalize();
+      NodeList tagNl = doc.getElementsByTagName("system");
+      NodeList nameNl;
+      Element element;
+      String mainName="";
+      for (int i = 0; i < tagNl.getLength(); i++) {
+        element = (Element) tagNl.item(i);
+        nameNl = element.getElementsByTagName("name");
+        for (int j = 0; j < nameNl.getLength(); j++) {
+          if (j == 0) {
+            mainName = nameNl.item(j).getTextContent();
+          }
+          if (onlyAlphaNumeric(nameNl.item(j).getTextContent()).
+                  equals(onlyAlphaNumeric(s.getName()))){
+            //Found the system, now assign the main name to the system object
+            s.setName(mainName);
+            return s;
+          }
+        }
+      }
+    } catch (SAXException | IOException | ParserConfigurationException e) {
+      e.printStackTrace();
+    }
+    return s;
   }
   
   

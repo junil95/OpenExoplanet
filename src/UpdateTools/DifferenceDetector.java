@@ -55,7 +55,8 @@ public class DifferenceDetector {
   }
   
   /**
-   * Finds planets from provided database that are not in OEC
+   * Finds planets from provided database that are not in OEC. This will add the new updates to
+   * the updates list in the UpdateStorage
    * @param databasePath
    * @param database
    * @throws IOException
@@ -106,43 +107,6 @@ public class DifferenceDetector {
     }
   }
   
-  /**
-   * If the system has an alternate name in the other catalogues, this will assign the main name
-   * that oec uses. This will only work if the system isn't brand new
-   * @param s
-   * @return
-   */
-  private static Systems assignOecSyName(Systems s) {
-    //Get a list of planet names
-    try {
-      DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-      DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-      Document doc = dBuilder.parse(PullingTools.localOecFile);
-      doc.getDocumentElement().normalize();
-      NodeList tagNl = doc.getElementsByTagName("system");
-      NodeList nameNl;
-      Element element;
-      String mainName="";
-      for (int i = 0; i < tagNl.getLength(); i++) {
-        element = (Element) tagNl.item(i);
-        nameNl = element.getElementsByTagName("name");
-        for (int j = 0; j < nameNl.getLength(); j++) {
-          if (j == 0) {
-            mainName = nameNl.item(j).getTextContent();
-          }
-          if (onlyAlphaNumeric(nameNl.item(j).getTextContent()).
-                  equals(onlyAlphaNumeric(s.getName()))){
-            //Found the system, now assign the main name to the system object
-            s.setName(mainName);
-            return s;
-          }
-        }
-      }
-    } catch (SAXException | IOException | ParserConfigurationException e) {
-      e.printStackTrace();
-    }
-    return s;
-  }
   
   /**
    * Get a set of all system, star and planet names in oec
@@ -187,7 +151,7 @@ public class DifferenceDetector {
     build.put("st_name", "alright");
     build.put("sy_name", "HD 107383");
     try {
-      Systems s = assignOecSyName(SystemBuilder.buildSystemWithHashMap(build, ReadCSV.EU));
+      Systems s = UpdateClassifier.assignOecSyName(SystemBuilder.buildSystemWithHashMap(build, ReadCSV.EU));
       System.out.println(s.getName());
     } catch (SystemBuilder.MissingCelestialObjectNameException e) {
       e.printStackTrace();

@@ -2,7 +2,6 @@ package com.team23;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.opencsv.CSVReader;
 import com.team23.ModelStarSystems.SystemBuilder;
 
 import net.lingala.zip4j.exception.ZipException;
@@ -16,11 +15,8 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 
 import com.team23.ModelStarSystems.Systems;
 import com.team23.UpdateTools.DifferenceDetector;
@@ -30,12 +26,10 @@ import com.team23.UpdateTools.ReadCSV;
 import com.team23.UpdateTools.UpdateClassifier;
 import com.team23.UpdateTools.UpdateStorage;
 import com.team23.UpdateTools.generateXML;
-import static com.team23.UpdateTools.DetectUpdates.detectUpdates;
 import static com.team23.UpdateTools.PullingTools.pullExoplanetEu;
 import static com.team23.UpdateTools.PullingTools.pullNasaArchive;
 import static com.team23.UpdateTools.PullingTools.pullOecOneFile;
 import static com.team23.UpdateTools.PullingTools.pullOecSeperateFiles;
-import static com.team23.UpdateTools.UpdateStorage.findNewPlanetConflicts;
 
 /**
  * Created by dhrumil on 06/11/16.

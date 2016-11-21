@@ -3,9 +3,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.team23</groupId>
-  <artifactId>oec-app</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>jar</packaging>
+  <artifactId>pacific-shelf-92985</artifactId>
+  <packaging>war</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>myapp Maven Webapp</name>
+  <url>http://maven.apache.org</url>
 
   <name>oec-app</name>
   <url>http://maven.apache.org</url>
@@ -15,6 +17,7 @@
   </properties>
   
   <build>
+  	<finalName>pacific-shelf-92985</finalName>
 	  <plugins>
 	    <plugin>
 	      <groupId>org.apache.maven.plugins</groupId>

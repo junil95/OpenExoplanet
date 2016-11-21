@@ -88,6 +88,6 @@ public abstract class CelestialObjects {
   }
   
   public HashMap<String, String> getProperties() {
-    return new HashMap<String, String>(properties);
+    return new HashMap<>(properties);
   }
 }

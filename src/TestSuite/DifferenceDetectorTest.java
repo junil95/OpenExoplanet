@@ -64,7 +64,7 @@ public class DifferenceDetectorTest {
    */
   @Test
   public void testRetrievingPlanetNamesOec(){
-    Set<String> planetNames = DifferenceDetector.getPlanetNamesOEC();
+    Set<String> planetNames = DifferenceDetector.getNamesOEC();
     //Some of the real and alternate planet names that should exist in oec
     Set<String> existingPlanetNames = new HashSet<>();
     existingPlanetNames.add("11comb");
@@ -90,7 +90,7 @@ public class DifferenceDetectorTest {
     String tmpFilePath = "tmp.csv";
     File tmp = new File(tmpFilePath);
     String fakePlanetNameSigChar = "mariol";
-    String fakePlanet = "\nMario & L,19.4,1.5,1.5,19.4,1.5,1.5,,,,326.03,0.32,0.32,1.29,0.05,0.05," +
+    String fakePlanet = "Mario & L,19.4,1.5,1.5,19.4,1.5,1.5,,,,326.03,0.32,0.32,1.29,0.05,0.05," +
             "0.231,0.005,0.005,,,,0.011664,2008,2015-08-21,94.8,1.5,1.5,2452899.6,1.6,1.6,,,,,,," +
             ",,,,,,,,,,,,296.7,5.6,5.6,,,,,,,,Published in a refereed paper,Radial Velocity," +
             ",,,,11 Com,185.1791667,17.7927778,4.74,,,,,110.6,10.5,10.5,-0.35,0.09,0.09,2.7,0.3," +
@@ -105,11 +105,10 @@ public class DifferenceDetectorTest {
     //Now detect new planets
     //Gets columns dynamically so need to map indexes
     ReadCSV.mapIndexes();
-    UpdateStorage us = new UpdateStorage();
-    DifferenceDetector.getNewPlanetIDs(tmpFilePath, ReadCSV.EU, us);
+    DifferenceDetector.getNewPlanetIDs(tmpFilePath, ReadCSV.EU);
     boolean found = false;
     //Check if the fake planet was detected as a new planet
-    for (Systems s : us.updates) {
+    for (Systems s : UpdateStorage.updates) {
       if (DifferenceDetector.onlyAlphaNumeric(s.getChild().getChild().getName()).
               equals(fakePlanetNameSigChar)) {
         found = true;
@@ -155,11 +154,10 @@ public class DifferenceDetectorTest {
     //Now detect new planets
     //Gets columns dynamically so need to map indexes
     ReadCSV.mapIndexes();
-    UpdateStorage us = new UpdateStorage();
-    DifferenceDetector.getNewPlanetIDs(tmpFilePath, ReadCSV.NASA, us);
+    DifferenceDetector.getNewPlanetIDs(tmpFilePath, ReadCSV.NASA);
     boolean found = false;
     //Check if the fake planet was detected as a new planet
-    for (Systems s : us.updates) {
+    for (Systems s : UpdateStorage.updates) {
       if (DifferenceDetector.onlyAlphaNumeric(s.getChild().getChild().getName()).
               equals(fakePlanetNameSigChar)) {
         found = true;

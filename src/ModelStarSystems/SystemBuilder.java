@@ -52,7 +52,6 @@ public class SystemBuilder {
     Star star;
     Planet planet;
     for (String key : sProperties.keySet()) {
-      
         if (key.startsWith("pl_")) {
           if (key.equals("pl_name"))
             planetName = sProperties.get(key);

@@ -188,7 +188,7 @@ public class ReadCSV {
     for (int i = 1; i < allData.size(); i++) {
       colWithVal = new HashMap<>();
       for (String col : sigColWithIndex.keySet()) {
-        //dont need to consider columns that are not in the database or the pl_name column
+        //dont need to consider columns that are not in the database column
         if (sigColWithIndex.get(col) != -1) {
           colWithVal.put(col, allData.get(i)[sigColWithIndex.get(col)]);
         }

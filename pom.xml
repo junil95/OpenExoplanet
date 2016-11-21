@@ -14,6 +14,13 @@
   
   <build>
   	<finalName>pacific-shelf-92985</finalName>
+		<plugin>            
+		  <groupId>org.apache.maven.plugins</groupId>
+		  <artifactId>maven-war-plugin</artifactId>
+		  <configuration>
+		    <webXml>src\main\webapp\WEB-INF\web.xml</webXml>        
+		  </configuration>
+		</plugin>
 	  <plugins>
 		  <plugin>
 	        <groupId>org.apache.maven.plugins</groupId>

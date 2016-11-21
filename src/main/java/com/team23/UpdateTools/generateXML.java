@@ -1,4 +1,4 @@
-package UpdateTools;
+package com.team23.UpdateTools;
 
 
 import java.io.FileReader;
@@ -25,8 +25,8 @@ import com.team23.ModelStarSystems.SystemBuilder;
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 
-import ModelStarSystems.*;
-import UpdateTools.ReadCSV.MissingColumnNameException;
+import com.team23.ModelStarSystems.*;
+import com.team23.UpdateTools.ReadCSV.MissingColumnNameException;
 
 /**
  * @author Rishi A class used to generate XML strings for planets, stars or systems.

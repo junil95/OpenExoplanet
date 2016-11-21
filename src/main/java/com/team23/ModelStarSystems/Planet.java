@@ -1,8 +1,7 @@
 package com.team23.ModelStarSystems;
 
 import java.util.HashMap;
-
-import UpdateTools.ReadCSV;
+import com.team23.UpdateTools.ReadCSV;
 
 /**
  * Created by dhrumil on 23/10/16.

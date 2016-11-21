@@ -1,4 +1,4 @@
-package UpdateTools;
+package com.team23.UpdateTools;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -8,8 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.team23.ModelStarSystems.SystemBuilder;
-
-import ModelStarSystems.Systems;
+import com.team23.ModelStarSystems.Systems;
 
 /**
  * Created by dhrumil on 11/10/16.

@@ -1,3 +1,5 @@
+package com.team23;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.opencsv.CSVReader;
@@ -20,20 +22,20 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-import ModelStarSystems.Systems;
-import UpdateTools.DifferenceDetector;
-import UpdateTools.Merge;
-import UpdateTools.PullingTools;
-import UpdateTools.ReadCSV;
-import UpdateTools.UpdateClassifier;
-import UpdateTools.UpdateStorage;
-import UpdateTools.generateXML;
-import static UpdateTools.DetectUpdates.detectUpdates;
-import static UpdateTools.PullingTools.pullExoplanetEu;
-import static UpdateTools.PullingTools.pullNasaArchive;
-import static UpdateTools.PullingTools.pullOecOneFile;
-import static UpdateTools.PullingTools.pullOecSeperateFiles;
-import static UpdateTools.UpdateStorage.findNewPlanetConflicts;
+import com.team23.ModelStarSystems.Systems;
+import com.team23.UpdateTools.DifferenceDetector;
+import com.team23.UpdateTools.Merge;
+import com.team23.UpdateTools.PullingTools;
+import com.team23.UpdateTools.ReadCSV;
+import com.team23.UpdateTools.UpdateClassifier;
+import com.team23.UpdateTools.UpdateStorage;
+import com.team23.UpdateTools.generateXML;
+import static com.team23.UpdateTools.DetectUpdates.detectUpdates;
+import static com.team23.UpdateTools.PullingTools.pullExoplanetEu;
+import static com.team23.UpdateTools.PullingTools.pullNasaArchive;
+import static com.team23.UpdateTools.PullingTools.pullOecOneFile;
+import static com.team23.UpdateTools.PullingTools.pullOecSeperateFiles;
+import static com.team23.UpdateTools.UpdateStorage.findNewPlanetConflicts;
 
 /**
  * Created by dhrumil on 06/11/16.

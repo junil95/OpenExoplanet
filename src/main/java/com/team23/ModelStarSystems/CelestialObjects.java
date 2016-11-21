@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import UpdateTools.ReadCSV;
-
 //TODO store converted units
 /**
  * Created by dhrumil on 06/11/16.

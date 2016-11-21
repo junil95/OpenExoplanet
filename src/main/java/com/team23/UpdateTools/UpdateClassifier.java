@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package UpdateTools;
+package com.team23.UpdateTools;
 
-import ModelStarSystems.*;
+import com.team23.ModelStarSystems.*;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -25,7 +25,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static UpdateTools.DifferenceDetector.onlyAlphaNumeric;
+import static com.team23.UpdateTools.DifferenceDetector.onlyAlphaNumeric;
 
 
 /**

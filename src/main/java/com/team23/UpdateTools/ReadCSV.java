@@ -1,4 +1,4 @@
-package UpdateTools;
+package com.team23.UpdateTools;
 
 import com.opencsv.CSVReader;
 import com.team23.ModelStarSystems.SystemBuilder;
@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import ModelStarSystems.Systems;
+import com.team23.ModelStarSystems.Systems;
 
 /**
  * Remember most of the methods in the class require mapIndexes() to be called once in the beginning

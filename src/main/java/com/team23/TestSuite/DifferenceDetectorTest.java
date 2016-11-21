@@ -1,4 +1,4 @@
-package TestSuite;
+package com.team23.TestSuite;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
@@ -13,11 +13,11 @@ import java.io.Writer;
 import java.util.HashSet;
 import java.util.Set;
 
-import ModelStarSystems.Systems;
-import UpdateTools.DifferenceDetector;
-import UpdateTools.PullingTools;
-import UpdateTools.ReadCSV;
-import UpdateTools.UpdateStorage;
+import com.team23.ModelStarSystems.Systems;
+import com.team23.UpdateTools.DifferenceDetector;
+import com.team23.UpdateTools.PullingTools;
+import com.team23.UpdateTools.ReadCSV;
+import com.team23.UpdateTools.UpdateStorage;
 
 import static junit.framework.Assert.*;
 

@@ -4,7 +4,6 @@ import com.team23.ModelStarSystems.Systems;
 import com.team23.UpdateTools.PullingTools;
 import com.team23.UpdateTools.ReadCSV;
 import com.team23.UpdateTools.generateXML;
-
 import com.opencsv.CSVReader;
 import com.team23.ModelStarSystems.SystemBuilder;
 
@@ -26,7 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.team23.UpdateTools.Merge.newSystem;
-import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by Rishi on 2016-11-13.

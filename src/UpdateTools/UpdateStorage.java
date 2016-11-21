@@ -137,8 +137,7 @@ public class UpdateStorage {
           name1 = searchIn.get(i).get(0).getChild().getChild().getName();
           name2 = searchIn.get(j).get(0).getChild().getChild().getName();
         }
-        if (name1.equals(name2)) {
-          System.out.println("In here");
+        if (DifferenceDetector.onlyAlphaNumeric(name1).equals(DifferenceDetector.onlyAlphaNumeric(name2))) {
           //These will need to be deleted from the searchIn list in the end
           deleteItems.add(searchIn.get(i));
           deleteItems.add(searchIn.get(j));
@@ -162,21 +161,152 @@ public class UpdateStorage {
   }
   
   public static void findNewPlanetConflicts() {
-    findConflictsCommon(planets, newPlanetConflicts, Planet.class);
+    ArrayList<Systems> tuple;
+    //will store indexes in the list that have already been
+    Set<Integer> exclude = new HashSet<>();
+    String name1 = "";
+    String name2 = "";
+    for (int i = 0; i < planets.size(); i++) {
+      //in the previous iterations if j is already identified as having a conflict, dont need
+      //to check it again
+      if (!exclude.contains(i)) {
+        for (int j = i + 1; j < planets.size(); j++) {
+          if (!exclude.contains(j)) {
+            
+            
+            //found duplicate
+            // bad to do it this way, but more important stuff to finish
+            name1 = planets.get(i).get(0).getChild().getChild().getName();
+            name2 = planets.get(j).get(0).getChild().getChild().getName();
+            if (DifferenceDetector.onlyAlphaNumeric(name1).equals(DifferenceDetector.onlyAlphaNumeric(name2))) {
+              //These will need to be deleted from the searchIn list in the end
+              exclude.add(i);
+              exclude.add(j);
+              tuple = new ArrayList<>();
+              //find the source of both duplicates and place them into their respective array lists
+              if (planets.get(i).get(0).getSource().equals(NASA)) {
+                //add eu first and Nasa second
+                tuple.add(planets.get(j).get(0));
+                tuple.add(planets.get(i).get(0));
+              } else {
+                tuple.add(planets.get(i).get(0));
+                tuple.add(planets.get(j).get(0));
+              }
+              newPlanetConflicts.add(tuple);
+              break;
+            }
+          }
+        }
+      }
+    }
+    //remove from starting from the end of the list, so dont get index out of bounds
+    ArrayList<Integer> decreasing = new ArrayList<>(exclude);
+    Collections.sort(decreasing, Collections.reverseOrder());
+    //Need to remove items with conflicts from the main list
+    for (int i : decreasing) {
+      planets.remove(i);
+    }
   }
   
   public static void findNewStarConflicts() {
-    findConflictsCommon(stars, newStarConflicts, Star.class);
+    //don't really have to do this since there will never be new planets, the system names and star
+    //names are the same in EU and NASA. But there will still have to find conflicts for the
+    //attributes. Leaving this here in case, we need to add something here
   }
   
   public static void findNewSystemConflicts() {
-    findConflictsCommon(systems, newSystemConflicts, Systems.class);
+    ArrayList<Systems> tuple;
+    //will store indexes in the list where conflicts have alreayd been found
+    Set<Integer> exclude = new HashSet<>();
+    //Will need to look at the the planets as well because tL can be multiple new systems found
+    //with new planets in them
+    String namepl = "";
+    String namepl2 = "";
+    String namesy = "";
+    String namesy2 = "";
+    int i, j;
+    for (i = 0; i < systems.size(); i++) {
+      if (!exclude.contains(i)) {
+        for (j = i + 1; j < systems.size(); j++) {
+          if (!exclude.contains(j)) {
+            //found duplicate
+            // bad to do it this way, but more important stuff to finish
+            namesy = systems.get(i).get(0).getName();
+            namesy2 = systems.get(j).get(0).getName();
+            namepl = systems.get(i).get(0).getChild().getChild().getName();
+            namepl2 = systems.get(j).get(0).getChild().getChild().getName();
+            if (DifferenceDetector.onlyAlphaNumeric(namesy).equals(DifferenceDetector.onlyAlphaNumeric(namesy2))) {
+              //exactly the same system if the planet names are the same as well
+              if (DifferenceDetector.onlyAlphaNumeric(namepl).equals(DifferenceDetector.onlyAlphaNumeric(namepl2))) {
+                //These will need to be deleted from the searchIn list in the end
+                exclude.add(i);
+                exclude.add(j);
+                //find the source of both duplicates and place them into their respective array lists
+                tuple = new ArrayList<>();
+                if (systems.get(i).get(0).getSource().equals(NASA)) {
+                  //add eu first and Nasa second
+                  tuple.add(systems.get(j).get(0));
+                  tuple.add(systems.get(i).get(0));
+                } else {
+                  tuple.add(systems.get(i).get(0));
+                  tuple.add(systems.get(j).get(0));
+                }
+                newSystemConflicts.add(tuple);
+              } else {
+                //same system but different planet, add this planet in the new planets list
+                //make sure to detect the conflicts of planets after detecting the conflicts of systems
+                //also make sure to merge the systems first
+                tuple = new ArrayList<>();//this wont really be a tuple, just a singleton
+                tuple.add(systems.get(j).get(0));
+                //need to delete this from the systems list after
+                exclude.add(j);
+                //once we create the system at i, the object at index j will really be a new planet
+                planets.add(tuple);
+              }
+              //Do another iteration and compare just the planet names, I discovered that sometimes the
+              //system names are different but planets are still the same, if this is the case,
+              //there is a conflict. It is also better to do this after, because we need to add some of the
+              //new systems as new planets for the case where there are multiple same new systems but
+              //just with different planets
+            } else if (DifferenceDetector.onlyAlphaNumeric(namepl).equals(DifferenceDetector.onlyAlphaNumeric(namepl2))) {
+              //These will need to be deleted from the searchIn list in the end
+              exclude.add(i);
+              exclude.add(j);
+              //find the source of both duplicates and place them into their respective array lists
+              tuple = new ArrayList<>();
+              if (systems.get(i).get(0).getSource().equals(NASA)) {
+                //add eu first and Nasa second
+                tuple.add(systems.get(j).get(0));
+                tuple.add(systems.get(i).get(0));
+              } else {
+                tuple.add(systems.get(i).get(0));
+                tuple.add(systems.get(j).get(0));
+              }
+              newSystemConflicts.add(tuple);
+            }
+          }
+        }
+      }
+    }
+    
+    //remove from starting from the end of the list, so dont get index out of bounds
+    ArrayList<Integer> decreasing = new ArrayList<>(exclude);
+    Collections.sort(decreasing, Collections.reverseOrder());
+    //Need to remove items with conflicts from the main list
+    //Need to remove items with conflicts from the main list
+    for (
+            int index : decreasing)
+    
+    {
+      systems.remove(index);
+    }
+    
   }
   
   
   //TODO: Tell tirth to store everything as tuple instead, so basically append arraylists of size 2
-  //to the big arraylist everytime. The arraylist of size 2 would contain the corresponding eu and
-  //nasa data. This will break tests so will have to fix them
+//to the big arraylist everytime. The arraylist of size 2 would contain the corresponding eu and
+//nasa data. This will break tests so will have to fix them
     /*
     Method to find store and find conflicts in a given set of planets. After classifying repeated planets, the method
     will check its respective source (ie. nasa or eu) and will place them in an arrayList of arrayList
@@ -214,6 +344,7 @@ public class UpdateStorage {
         }
       }
     }
+    
     planetConflicts.add(nasaPlanets);
     planetConflicts.add(euPlanets);
     
@@ -343,7 +474,7 @@ public class UpdateStorage {
       System.out.println(UpdateStorage.newPlanetConflicts.size());
       for (int i = 0; i < UpdateStorage.newPlanetConflicts.size(); i++) {
         System.out.print(UpdateStorage.newPlanetConflicts.get(i).get(0).getChild().getChild().getName() + "   ");
-
+        
       }
       //System.out.println(u.findPlanetConflicts());
       

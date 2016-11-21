@@ -16,6 +16,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -109,14 +110,17 @@ public class Driver {
       //Need to do this to find the important columns in the other databases
       ReadCSV.mapIndexes();
       //Get the new planets from NASA and EU
+      UpdateStorage.clearAll();
       DifferenceDetector.getNewPlanetIDs(PullingTools.localExoplanetEu, ReadCSV.EU);
       DifferenceDetector.getNewPlanetIDs(PullingTools.localNasaArchive, ReadCSV.NASA);
       //Determine if they are really new planets by looking at OEC
       UpdateClassifier.classifyUpdates();
       //Find conflicts in the classified updates
-      UpdateStorage.findPlanetConflicts();
-      UpdateStorage.findNewStarConflicts();
+      //Order matters when finding conflicts, do the systems first, since there can be more than
+      //two system conflicts.
       UpdateStorage.findNewSystemConflicts();
+      UpdateStorage.findNewStarConflicts();
+      UpdateStorage.findNewPlanetConflicts();
     } catch (ReadCSV.MissingColumnNameException | IOException e) {
       e.printStackTrace();
     }
@@ -127,15 +131,19 @@ public class Driver {
   
   /**
    * Once setPlanets, setStars, setSystems and all of the other sets are called with information
-   * from the user, call this to execute the merge
+   * from the user, call this to execute the merge. This will merge all of the data from the
+   * different lists
    */
   public static void executeMerge() {
     //Need to go through all of the lists and merge them one by one
+    //Always merge from top to bottom because some of the new planets require the system to new
+    //system to exist
+    //merge the new things
     for (ArrayList<Systems> as : UpdateStorage.systems) {
-      Merge.newSystem(as.get(0), generateXML.xmlPlanet(as.get(0)));
+      Merge.newSystem(as.get(0), generateXML.xmlSystem(as.get(0)));
     }
     for (ArrayList<Systems> as : UpdateStorage.stars) {
-      Merge.newStar(as.get(0), generateXML.xmlPlanet(as.get(0)));
+      Merge.newStar(as.get(0), generateXML.xmlStar(as.get(0)));
     }
     for (ArrayList<Systems> as : UpdateStorage.planets) {
       Merge.newPlanet(as.get(0), generateXML.xmlPlanet(as.get(0)));
@@ -247,14 +255,16 @@ public class Driver {
     return convertToMap(UpdateStorage.newStarConflicts);
   }
   
+  //TODO: Can probably remove these three since after the conflicts are resolved, the data
+  //can be passed in just the 3 regular lists
   /**
    * Populate star conflicts based on user selection
    * The JSON string should be in the format List<List<Hashmap<String,String>>. In this case, the inner
    * list is a singleton containing a dictionary of the changes that the user made. The inner list isn't
    * required but it is being used to keep the format consistent
    */
-  public static String setNewStarConflicts() {
-    return convertToMap(UpdateStorage.newStarConflicts);
+  public static void setNewStarConflicts(String json) {
+    createObjectFromJson(json, UpdateStorage.newStarConflicts);
   }
   
   /**
@@ -263,8 +273,8 @@ public class Driver {
    * list is a singleton containing a dictionary of the changes that the user made. The inner list isn't
    * required but it is being used to keep the format consistent
    */
-  public static String setNewSystemConflicts() {
-    return convertToMap(UpdateStorage.newSystemConflicts);
+  public static void setNewSystemConflicts(String json) {
+    createObjectFromJson(json, UpdateStorage.newSystemConflicts);
   }
   
   /**
@@ -273,8 +283,8 @@ public class Driver {
    * list is a singleton containing a dictionary of the changes that the user made. The inner list isn't
    * required but it is being used to keep the format consistent
    */
-  public static String setNewPlanetConflicts() {
-    return convertToMap(UpdateStorage.newPlanetConflicts);
+  public static void setNewPlanetConflicts(String json) {
+    createObjectFromJson(json, UpdateStorage.newPlanetConflicts);
   }
   
   /**
@@ -404,33 +414,33 @@ public class Driver {
 //      System.out.println(getNewStars());
 //      System.out.println(getNewSystems());
       
-      CSVReader r1 = new CSVReader(new FileReader(PullingTools.localExoplanetEu));
-      List<String[]> allData1 = r1.readAll();
-      Systems s1 = SystemBuilder.buildSystemWithCSVRow(Arrays.asList(allData1.get(678)), ReadCSV.EU);
-      //System.out.println(Arrays.asList((allData1.get(678))));
-      
-      CSVReader r2 = new CSVReader(new FileReader(PullingTools.localNasaArchive));
-      List<String[]> allData2 = r2.readAll();
-      Systems s2 = SystemBuilder.buildSystemWithCSVRow(Arrays.asList(allData2.get(1)), ReadCSV.NASA);
-      //System.out.println();
-      //System.out.println(Arrays.asList((allData2.get(1))));
-      s2.getChild().getChild().setName(s1.getChild().getChild().getName());
-      Systems s3 = SystemBuilder.buildSystemWithCSVRow(Arrays.asList(allData2.get(3)), ReadCSV.NASA);
-      ArrayList<Systems> as = new ArrayList<>();
-      as.add(s1);
-      UpdateStorage.planets.add(as);
-      as = new ArrayList<>();
-      as.add(s2);
-      UpdateStorage.planets.add(as);
-      as = new ArrayList<>();
-      as.add(s3);
-      UpdateStorage.planets.add(as);
-      
-      System.out.print("Planets Added: ");
-      findNewPlanetConflicts();
-      for (ArrayList<Systems> each : UpdateStorage.planets) {
-        System.out.print(each.get(0).getChild().getChild().getName() + "   ");
-      }
+//      CSVReader r1 = new CSVReader(new FileReader(PullingTools.localExoplanetEu));
+//      List<String[]> allData1 = r1.readAll();
+//      Systems s1 = SystemBuilder.buildSystemWithCSVRow(Arrays.asList(allData1.get(678)), ReadCSV.EU);
+//      //System.out.println(Arrays.asList((allData1.get(678))));
+//
+//      CSVReader r2 = new CSVReader(new FileReader(PullingTools.localNasaArchive));
+//      List<String[]> allData2 = r2.readAll();
+//      Systems s2 = SystemBuilder.buildSystemWithCSVRow(Arrays.asList(allData2.get(1)), ReadCSV.NASA);
+//      //System.out.println();
+//      //System.out.println(Arrays.asList((allData2.get(1))));
+//      s2.getChild().getChild().setName(s1.getChild().getChild().getName());
+//      Systems s3 = SystemBuilder.buildSystemWithCSVRow(Arrays.asList(allData2.get(3)), ReadCSV.NASA);
+//      ArrayList<Systems> as = new ArrayList<>();
+//      as.add(s1);
+//      UpdateStorage.planets.add(as);
+//      as = new ArrayList<>();
+//      as.add(s2);
+//      UpdateStorage.planets.add(as);
+//      as = new ArrayList<>();
+//      as.add(s3);
+//      UpdateStorage.planets.add(as);
+//
+//      System.out.print("Planets Added: ");
+//      findNewPlanetConflicts();
+//      for (ArrayList<Systems> each : UpdateStorage.planets) {
+//        System.out.print(each.get(0).getChild().getChild().getName() + "   ");
+//      }
 
 //      System.out.print("Planet Conflicts: ");
 //      System.out.println(UpdateStorage.newPlanetConflicts.size());
@@ -445,6 +455,55 @@ public class Driver {
 //      System.out.println(isInitialMergeDone());
 //      String json = getNewPlanetConflicts();
 //      createObjectFromJson(json);
+      ArrayList<String> sorted = new ArrayList<>();
+      detectInitialUpdates();
+      System.out.println();
+      System.out.println("planets");
+      System.out.println();
+      for (ArrayList<Systems> as : UpdateStorage.planets) {
+        sorted.add(as.get(0).getChild().getChild().getName());
+      }
+      Collections.sort(sorted);
+      for (String str : sorted) {
+        System.out.println(str);
+      }
+  
+      System.out.println();
+      System.out.println("planet conflicts ");
+      System.out.println();
+      sorted = new ArrayList<>();
+      for (ArrayList<Systems> as : UpdateStorage.newPlanetConflicts) {
+        sorted.add(as.get(0).getChild().getChild().getName());
+      }
+      Collections.sort(sorted);
+      for (String str : sorted) {
+        System.out.println(str);
+      }
+     
+      System.out.println();
+      System.out.println("systems");
+      System.out.println();
+      sorted = new ArrayList<>();
+      for (ArrayList<Systems> as : UpdateStorage.systems) {
+        sorted.add(as.get(0).getName());
+      }
+      Collections.sort(sorted);
+      for (String str : sorted) {
+        System.out.println(str);
+      }
+      sorted = new ArrayList<>();
+      System.out.println();
+      System.out.println("systems conflicts");
+      System.out.println();
+      for (ArrayList<Systems> as : UpdateStorage.newSystemConflicts) {
+        sorted.add(as.get(0).getName());
+      }
+      Collections.sort(sorted);
+      for (String str : sorted) {
+        System.out.println(str);
+      }
+      executeMerge();
+      
     } catch (IOException e) {
       e.printStackTrace();
     } catch (ReadCSV.MissingColumnNameException e) {

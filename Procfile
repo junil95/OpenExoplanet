@@ -1,1 +1,1 @@
-web:    java $JAVA_OPTS -jar target/dependency/jetty-runner.jar --port 7070
+web:    java -jar target/helloworld.jar

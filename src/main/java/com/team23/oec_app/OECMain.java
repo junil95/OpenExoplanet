@@ -17,17 +17,16 @@ import org.eclipse.jetty.servlet.ServletHolder;
 
 public class OECMain extends HttpServlet
 {
-	@Override
-	public void init(){
-		
-	}
+	protected boolean init;
 	
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
     	
-        resp.getWriter().print(readFile("index.html", StandardCharsets.UTF_8));
-        resp.getWriter().close();
+    	if(init == false){
+    		resp.getWriter().print(readFile("index.html", StandardCharsets.UTF_8));
+        	resp.getWriter().close();
+    	}
     }
     
     static String readFile(String path, Charset encoding) 

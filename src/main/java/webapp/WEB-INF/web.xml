@@ -5,9 +5,9 @@
 <web-app>
   <display-name>OEC Organizer</display-name>
   <welcome-file-list>
-   <welcome-file>/WEB-INF/index.html</welcome-file>
+   <welcome-file>/WEB-INF/test.html</welcome-file>
   </welcome-file-list>
   <error-page>
-      <location>/WEB-INF/index.html</location>
+      <location>/WEB-INF/test.html</location>
   </error-page>
 </web-app>

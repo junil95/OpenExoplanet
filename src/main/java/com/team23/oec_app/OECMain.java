@@ -18,12 +18,13 @@ public class OECMain extends HttpServlet
             throws ServletException, IOException {
         //resp.getWriter().print("Hello from Java!\n");
         
-        System.out.println("Getting a Request");
+        //System.out.println("Getting a Request");
         
         //resp.getWriter().close();
     }
 
-    public static void main(String[] args) throws Exception{    	
+    public static void main(String[] args) throws Exception{
+    	/*
         Server server = new Server(Integer.valueOf(System.getenv("PORT")));
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
@@ -31,6 +32,7 @@ public class OECMain extends HttpServlet
         context.addServlet(new ServletHolder(new OECMain()),"/*");
         server.start();
         server.join(); 
+        */
     }
 }
  

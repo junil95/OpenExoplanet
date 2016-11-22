@@ -126,6 +126,46 @@ public class Driver {
     }
   }
   
+  //TODO:need to find data from oec for individual attributes in the attribute lists. Also need
+  //to find conflicts in the attributes
+  
+  /**
+   * Run this when user clicks on update button. Don't run this when doing detectInitialUpdates
+   */
+  public static void updateDetection() {
+    try {
+      //Need to do this to find the important columns in the other databases
+      ReadCSV.mapIndexes();
+      //Get the new planets from NASA and EU
+      UpdateStorage.clearAll();
+      //need to create latest catalogue copy
+      //UpdateTools.PullingTools.createLatestCatalogueCopy();
+      //find updates between different versions of the nasa database
+      detectUpdates(ReadCSV.mapPlanetToData(PullingTools.localNasaArchiveOld, ReadCSV.NASA),
+              ReadCSV.mapPlanetToData(PullingTools.localNasaArchive, ReadCSV.NASA), ReadCSV.NASA);
+      detectUpdates(ReadCSV.mapPlanetToData(PullingTools.localExoplanetEuOld, ReadCSV.EU),
+              ReadCSV.mapPlanetToData(PullingTools.localExoplanetEu, ReadCSV.EU), ReadCSV.EU);
+      //Classify new additions into planets, stars and systems.
+      UpdateClassifier.classifyUpdates();
+      
+      //find data from oec for individual attributes here
+      
+      
+      //Find conflicts in the classified updates
+      //Order matters when finding conflicts, do the systems first, since there can be more than
+      //two system conflicts.
+      UpdateStorage.findNewSystemConflicts();
+      UpdateStorage.findNewStarConflicts();
+      UpdateStorage.findNewPlanetConflicts();
+      
+      //Find conflicts in the attribute lists here
+      
+      
+    } catch (ReadCSV.MissingColumnNameException | IOException e) {
+      e.printStackTrace();
+    }
+  }
+  
   //TODO: store the file names that updated in the merge somewhere. Also need to add the merge
   //part for the other stuff, once Rishi is done
   
@@ -148,6 +188,8 @@ public class Driver {
     for (ArrayList<Systems> as : UpdateStorage.planets) {
       Merge.newPlanet(as.get(0), generateXML.xmlPlanet(as.get(0)));
     }
+    
+    //still need to add things for the conflicts and attributes here
   }
   
   /**
@@ -257,31 +299,32 @@ public class Driver {
   
   //TODO: Can probably remove these three since after the conflicts are resolved, the data
   //can be passed in just the 3 regular lists
+  
   /**
-   * Populate star conflicts based on user selection
-   * The JSON string should be in the format List<List<Hashmap<String,String>>. In this case, the inner
-   * list is a singleton containing a dictionary of the changes that the user made. The inner list isn't
-   * required but it is being used to keep the format consistent
+   * Populate star conflicts based on user selection The JSON string should be in the format
+   * List<List<Hashmap<String,String>>. In this case, the inner list is a singleton containing a
+   * dictionary of the changes that the user made. The inner list isn't required but it is being
+   * used to keep the format consistent
    */
   public static void setNewStarConflicts(String json) {
     createObjectFromJson(json, UpdateStorage.newStarConflicts);
   }
   
   /**
-   * Populate system conflicts based on user selection
-   * The JSON string should be in the format List<List<Hashmap<String,String>>. In this case, the inner
-   * list is a singleton containing a dictionary of the changes that the user made. The inner list isn't
-   * required but it is being used to keep the format consistent
+   * Populate system conflicts based on user selection The JSON string should be in the format
+   * List<List<Hashmap<String,String>>. In this case, the inner list is a singleton containing a
+   * dictionary of the changes that the user made. The inner list isn't required but it is being
+   * used to keep the format consistent
    */
   public static void setNewSystemConflicts(String json) {
     createObjectFromJson(json, UpdateStorage.newSystemConflicts);
   }
   
   /**
-   * Populate planet conflicts based on user selection
-   * The JSON string should be in the format List<List<Hashmap<String,String>>. In this case, the inner
-   * list is a singleton containing a dictionary of the changes that the user made. The inner list isn't
-   * required but it is being used to keep the format consistent
+   * Populate planet conflicts based on user selection The JSON string should be in the format
+   * List<List<Hashmap<String,String>>. In this case, the inner list is a singleton containing a
+   * dictionary of the changes that the user made. The inner list isn't required but it is being
+   * used to keep the format consistent
    */
   public static void setNewPlanetConflicts(String json) {
     createObjectFromJson(json, UpdateStorage.newPlanetConflicts);
@@ -413,7 +456,7 @@ public class Driver {
 //      System.out.println(getNewPlanets());
 //      System.out.println(getNewStars());
 //      System.out.println(getNewSystems());
-      
+
 //      CSVReader r1 = new CSVReader(new FileReader(PullingTools.localExoplanetEu));
 //      List<String[]> allData1 = r1.readAll();
 //      Systems s1 = SystemBuilder.buildSystemWithCSVRow(Arrays.asList(allData1.get(678)), ReadCSV.EU);
@@ -456,7 +499,7 @@ public class Driver {
 //      String json = getNewPlanetConflicts();
 //      createObjectFromJson(json);
       ArrayList<String> sorted = new ArrayList<>();
-      detectInitialUpdates();
+      updateDetection();
       System.out.println();
       System.out.println("planets");
       System.out.println();
@@ -467,7 +510,7 @@ public class Driver {
       for (String str : sorted) {
         System.out.println(str);
       }
-  
+      
       System.out.println();
       System.out.println("planet conflicts ");
       System.out.println();
@@ -479,7 +522,7 @@ public class Driver {
       for (String str : sorted) {
         System.out.println(str);
       }
-     
+      
       System.out.println();
       System.out.println("systems");
       System.out.println();
@@ -502,7 +545,7 @@ public class Driver {
       for (String str : sorted) {
         System.out.println(str);
       }
-      executeMerge();
+      //executeMerge();
       
     } catch (IOException e) {
       e.printStackTrace();

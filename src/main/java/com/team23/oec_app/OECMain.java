@@ -16,14 +16,14 @@ public class OECMain extends HttpServlet
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        //resp.getWriter().print("Hello from Java!\n");
+        resp.getWriter().print("Hello from Java!\n");
         
-        //System.out.println("Getting a Request");
+        System.out.println("Getting a Request");
         
-        //resp.getWriter().close();
+        resp.getWriter().close();
     }
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception{    	
         Server server = new Server(Integer.valueOf(System.getenv("PORT")));
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");

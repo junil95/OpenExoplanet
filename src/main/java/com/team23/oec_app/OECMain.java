@@ -29,9 +29,13 @@ public class OECMain extends HttpServlet
     	}
     	else if(req.getRequestURI().contains("css")){
     		resp.setContentType("text/css");
+    		resp.getWriter().print(readFile(req.getRequestURI(), StandardCharsets.UTF_8));
+        	resp.getWriter().close();
     	}
     	else if(req.getRequestURI().contains("js")){
     		resp.setContentType("text/javascript");
+    		resp.getWriter().print(readFile(req.getRequestURI(), StandardCharsets.UTF_8));
+    		resp.getWriter().close();
     	}
     }
     

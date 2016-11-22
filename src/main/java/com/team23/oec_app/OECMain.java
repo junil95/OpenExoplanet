@@ -23,11 +23,15 @@ public class OECMain extends HttpServlet
             throws ServletException, IOException {
     	
     	if(req.getRequestURI().equals("/")){
+    		resp.setContentType("text/html");
     		resp.getWriter().print(readFile("index.html", StandardCharsets.UTF_8));
         	resp.getWriter().close();
     	}
-    	else{
-    		super.doGet(req, resp);
+    	else if(req.getRequestURI().contains("css")){
+    		resp.setContentType("text/css");
+    	}
+    	else if(req.getRequestURI().contains("js")){
+    		resp.setContentType("text/javascript");
     	}
     }
     

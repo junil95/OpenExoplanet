@@ -1,6 +1,10 @@
 package com.team23.oec_app;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -13,15 +17,26 @@ import org.eclipse.jetty.servlet.ServletHolder;
 
 public class OECMain extends HttpServlet
 {
+	@Override
+	public void init(){
+		
+	}
+	
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        resp.getWriter().print("Hello from Java!\n");
-        
-        System.out.println("Getting a Request");
-        
+    	
+    	resp.setContentType("text/html");
+        resp.getWriter().print(readFile("../../../webapp/WEB-INF/index.html", StandardCharsets.UTF_8));
         resp.getWriter().close();
     }
+    
+    static String readFile(String path, Charset encoding) 
+    		  throws IOException 
+    		{
+    		  byte[] encoded = Files.readAllBytes(Paths.get(path));
+    		  return new String(encoded, encoding);
+    		}
 
     public static void main(String[] args) throws Exception{    	
         Server server = new Server(Integer.valueOf(System.getenv("PORT")));

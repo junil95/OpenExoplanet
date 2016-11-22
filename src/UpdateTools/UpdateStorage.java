@@ -10,7 +10,15 @@ import ModelStarSystems.Star;
 import ModelStarSystems.SystemBuilder;
 import ModelStarSystems.Systems;
 
+import TestSuite.DifferenceDetectorTest;
 import com.opencsv.CSVReader;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 import static UpdateTools.ReadCSV.NASA;
 import static UpdateTools.ReadCSV.mapIndexes;
@@ -437,7 +445,256 @@ public class UpdateStorage {
     
     return systemConflicts;
   }
-  
+
+  /*
+  Method adds data from OEC for each system in systemUpdates
+   */
+  public static void addSysOECData(ArrayList<ArrayList<Systems>> sysUpdates){
+      HashMap<String,String> OECData = new HashMap<>();
+      HashMap<String,String> props = new HashMap<>();
+      for(int i=0;i<sysUpdates.size();i++){
+          ArrayList curr = new ArrayList();
+          curr = sysUpdates.get(i);
+          Systems curs = (Systems) curr.get(0);
+          OECData.put("sy_name", curs.getName());
+          OECData.put("pl_name",curs.getChild().getName());
+          OECData.put("st_name",curs.getChild().getChild().getName());
+          //System.out.println("JUNIL"+OECData);
+          //System.out.println("JUNIL properties"+ curs.getProperties());
+          props = curs.getProperties();
+          for(String key : props.keySet()) {
+            if (props.get(key) != null) {
+              String property = key.replace("_", "");
+              //System.out.println("propname : " +property);
+
+              //GET OEC DATA FOR SPECIFIED SYSTEM FOR NOT NULL PROPERTIES
+              DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+              boolean sysFound = false;
+              Element elm = null;
+              Node sys = null;
+              try {
+                DocumentBuilder builder;
+                builder = factory.newDocumentBuilder();
+                Document doc = builder.parse(PullingTools.localOecFile);
+                doc.getDocumentElement().normalize();
+
+                NodeList systemlist = doc.getElementsByTagName("system");
+                for (int j = 0; j < systemlist.getLength(); j++) {
+                  elm = (Element) systemlist.item(j);
+                  sys = systemlist.item(j);
+                  NodeList names = elm.getElementsByTagName("name");
+
+                  for (int k = 0; k < names.getLength(); k++) {
+                    Node name = names.item(k);
+                    String sys_name = name.getTextContent();
+                    if (DifferenceDetector.onlyAlphaNumeric(curs.getName()).equals(DifferenceDetector.onlyAlphaNumeric(sys_name))) {
+                      sysFound = true;
+                      break;
+                    }
+                  }
+                  if (sysFound) {
+                    break;
+                  }
+                }
+                if (sysFound) {
+                  NodeList oecPropList = elm.getElementsByTagName(property);
+                  Node oecProp = oecPropList.item(0);
+                  String prop = oecProp.getTextContent();
+                  //System.out.println("OEC "+DifferenceDetector.onlyAlphaNumeric(prop));
+                  //System.out.println("LIST "+ DifferenceDetector.onlyAlphaNumeric(props.get(key)));
+                  if (!(DifferenceDetector.onlyAlphaNumeric(prop).equals(DifferenceDetector.onlyAlphaNumeric(props.get(key))))) {
+                    OECData.put("sy_" + key, prop);
+                  }else{
+                    props.put(key,null);
+                  }
+                }
+                //System.out.println(OECData);
+              } catch (Exception e) {
+                e.printStackTrace();
+              }
+            }
+          }
+            try {
+              if(OECData.isEmpty()){
+                sysUpdates.remove(i);
+              }else{
+                sysUpdates.get(i).add(SystemBuilder.buildSystemWithHashMap(OECData,"OEC"));
+                System.out.println(OECData);
+                System.out.println(props);
+              }
+            } catch (SystemBuilder.MissingCelestialObjectNameException e) {
+              e.printStackTrace();
+            }
+      }
+  }
+
+  /*
+Method adds data from OEC for each planet in planetUpdates
+ */
+  public static void addPlanetOECData(ArrayList<ArrayList<Systems>> planetUpdates){
+    HashMap<String,String> OECData = new HashMap<>();
+    HashMap<String,String> props = new HashMap<>();
+    for(int i=0;i<planetUpdates.size();i++){
+      ArrayList curr = new ArrayList();
+      curr = planetUpdates.get(i);
+      Systems curs = (Systems) curr.get(0);
+      OECData.put("sy_name", curs.getName());
+      OECData.put("pl_name",curs.getChild().getName());
+      OECData.put("st_name",curs.getChild().getChild().getName());
+      props = curs.getProperties();
+      for(String key : props.keySet()) {
+        if (props.get(key) != null) {
+          String property = key.replace("_", "");
+          //GET OEC DATA FOR SPECIFIED SYSTEM FOR NOT NULL PROPERTIES
+          DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+          boolean plnFound = false;
+          Element elm = null;
+          Node pln = null;
+          try {
+            DocumentBuilder builder;
+            builder = factory.newDocumentBuilder();
+            Document doc = builder.parse(PullingTools.localOecFile);
+            doc.getDocumentElement().normalize();
+
+            NodeList systemlist = doc.getElementsByTagName("planet");
+            for (int j = 0; j < systemlist.getLength(); j++) {
+              elm = (Element) systemlist.item(j);
+              pln = systemlist.item(j);
+              NodeList names = elm.getElementsByTagName("name");
+
+              for (int k = 0; k < names.getLength(); k++) {
+                Node name = names.item(k);
+                String pln_name = name.getTextContent();
+                if (DifferenceDetector.onlyAlphaNumeric(curs.getName()).equals(DifferenceDetector.onlyAlphaNumeric(pln_name))) {
+                  plnFound = true;
+                  break;
+                }
+              }
+              if (plnFound) {
+                break;
+              }
+            }
+            if (plnFound) {
+              NodeList oecPropList = elm.getElementsByTagName(property);
+              Node oecProp = oecPropList.item(0);
+              String prop = oecProp.getTextContent();
+              //System.out.println("OEC "+DifferenceDetector.onlyAlphaNumeric(prop));
+              //System.out.println("LIST "+ DifferenceDetector.onlyAlphaNumeric(props.get(key)));
+              if (!(DifferenceDetector.onlyAlphaNumeric(prop).equals(DifferenceDetector.onlyAlphaNumeric(props.get(key))))) {
+                OECData.put("pl_" + key, prop);
+              }else{
+                props.put(key,null);
+              }
+            }
+            //System.out.println(OECData);
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
+        }
+      }
+      try {
+        if(OECData.isEmpty()){
+          planetUpdates.remove(i);
+        }else{
+          planetUpdates.get(i).add(SystemBuilder.buildSystemWithHashMap(OECData,"OEC"));
+          System.out.println(OECData);
+          System.out.println(props);
+        }
+      } catch (SystemBuilder.MissingCelestialObjectNameException e) {
+        e.printStackTrace();
+      }
+    }
+  }
+  /*
+Method adds data from OEC for each star in starUpdates
+ */
+  public static void addStarOECData(ArrayList<ArrayList<Systems>> starUpdates){
+    HashMap<String,String> OECData = new HashMap<>();
+    HashMap<String,String> props = new HashMap<>();
+    for(int i=0;i<starUpdates.size();i++){
+      ArrayList curr = new ArrayList();
+      curr = starUpdates.get(i);
+      Systems curs = (Systems) curr.get(0);
+      OECData.put("sy_name", curs.getName());
+      OECData.put("pl_name",curs.getChild().getName());
+      OECData.put("st_name",curs.getChild().getChild().getName());
+      //System.out.println("JUNIL"+OECData);
+      //System.out.println("JUNIL properties"+ curs.getProperties());
+      props = curs.getProperties();
+      for(String key : props.keySet()) {
+        if (props.get(key) != null) {
+          String property = key.replace("_", "");
+          //System.out.println("propname : " +property);
+
+          //GET OEC DATA FOR SPECIFIED SYSTEM FOR NOT NULL PROPERTIES
+          DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+          boolean starFound = false;
+          Element elm = null;
+          Node star = null;
+          try {
+            DocumentBuilder builder;
+            builder = factory.newDocumentBuilder();
+            Document doc = builder.parse(PullingTools.localOecFile);
+            doc.getDocumentElement().normalize();
+
+            NodeList systemlist = doc.getElementsByTagName("star");
+            for (int j = 0; j < systemlist.getLength(); j++) {
+              elm = (Element) systemlist.item(j);
+              star = systemlist.item(j);
+              NodeList names = elm.getElementsByTagName("name");
+
+              for (int k = 0; k < names.getLength(); k++) {
+                Node name = names.item(k);
+                String star_name = name.getTextContent();
+                if (DifferenceDetector.onlyAlphaNumeric(curs.getName()).equals(DifferenceDetector.onlyAlphaNumeric(star_name))) {
+                  starFound = true;
+                  break;
+                }
+              }
+              if (starFound) {
+                break;
+              }
+            }
+            if (starFound) {
+              //NodeList oecPropList = elm.getElementsByTagName(property);
+              //Node oecProp = oecPropList.item(0);
+              //String prop = oecProp.getTextContent();
+              NodeList children = star.getChildNodes();
+              String prop = "";
+              for(int p=0;p<children.getLength();p++){
+                if(children.item(p).getNodeName().equalsIgnoreCase(property)){
+                  prop = children.item(p).getTextContent();
+                }
+              }
+              //System.out.println("OEC "+DifferenceDetector.onlyAlphaNumeric(prop));
+              //System.out.println("LIST "+ DifferenceDetector.onlyAlphaNumeric(props.get(key)));
+              if (!(DifferenceDetector.onlyAlphaNumeric(prop).equals(DifferenceDetector.onlyAlphaNumeric(props.get(key))))) {
+                //if(!prop.equals("")){
+                  OECData.put("st_" + key, prop);
+                //}
+              }else{
+                props.put(key,null);
+              }
+            }
+            //System.out.println(OECData);
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
+        }
+      }
+      try {
+        if(OECData.isEmpty()){
+          starUpdates.remove(i);
+        }else{
+          starUpdates.get(i).add(SystemBuilder.buildSystemWithHashMap(OECData,"OEC"));
+          System.out.println(OECData);
+          System.out.println(props);
+        }
+      } catch (SystemBuilder.MissingCelestialObjectNameException e) {
+        e.printStackTrace();
+      }
+    }
+  }
   public static void main(String[] args) {
     try {
       mapIndexes();
@@ -473,13 +730,21 @@ public class UpdateStorage {
       System.out.print("Planet Conflicts: ");
       System.out.println(UpdateStorage.newPlanetConflicts.size());
       for (int i = 0; i < UpdateStorage.newPlanetConflicts.size(); i++) {
-        System.out.print(UpdateStorage.newPlanetConflicts.get(i).get(0).getChild().getChild().getName() + "   ");
+        System.out.println(UpdateStorage.newPlanetConflicts.get(i).get(0).getChild().getChild().getName() + "   ");
         
       }
       //System.out.println(u.findPlanetConflicts());
       
       
       //Systems s = SystemBuilder.buildSystemWithHashMap(test, "eu");
+      //TESTING JUNIL'S METHODS 
+      //ArrayList<ArrayList<Systems>> sysUps = new ArrayList<>();
+      //ArrayList<Systems> sarray = new ArrayList<>();
+      //sarray.add(s1);
+      //sysUps.add(sarray);
+        //addSysOECData(sysUps);
+        //addPlanetOECData(sysUps);
+        //addStarOECData(sysUps);
       
     } catch (IOException e) {
       e.printStackTrace();

@@ -33,6 +33,8 @@ function selectRow(systemObjNum){
     systemObjs[rowNum].info[i][4] = $("#info" + i).val();
   }
 
+      	  this.properties.replace(property.substring(3), properties.get(property));
+
   // Changes the selected row class
   $('.selected').removeClass('selected');
   $('#checkbox' + systemObjNum).parent().parent().addClass('selected');
@@ -66,6 +68,15 @@ function generateRowHTML(infoArray, num){
   '</td>' +
   '</tr>';
   return result;
+}
+
+function update(){
+    $("button").click(function(){
+      $.get("https://pacific-shelf-92985.herokuapp.com/", function( data ) {
+        alert( "Loading is done" );
+        console.log("Anything happening>?");
+      });
+  });
 }
 
 function commitChanges(){

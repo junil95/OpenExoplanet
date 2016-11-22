@@ -17,6 +17,10 @@ public class OECMain extends HttpServlet
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         resp.getWriter().print("Hello from Java!\n");
+        
+        System.out.println("Getting a Request");
+        
+        resp.getWriter().close();
     }
 
     public static void main(String[] args) throws Exception{

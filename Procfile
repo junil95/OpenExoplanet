@@ -1,1 +1,1 @@
-web:    java -cp target/classes:target/dependency/* --port 7070
+web:    java -cp target/classes:target/dependency/* -port 7070

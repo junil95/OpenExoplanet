@@ -21,9 +21,13 @@ public class OECMain extends HttpServlet
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+    	
     	if(req.getRequestURI().equals("/")){
     		resp.getWriter().print(readFile("index.html", StandardCharsets.UTF_8));
         	resp.getWriter().close();
+    	}
+    	else{
+    		super.doGet(req, resp);
     	}
     }
     

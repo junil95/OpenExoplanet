@@ -8,7 +8,7 @@ public class OECMain
 {
     public static void main( String[] args ) throws Exception
     {
-        Server server = new Server(7070);
+        Server server = new Server(8080);
         ServletContextHandler handler = new ServletContextHandler(server, "/app");
         handler.addServlet(OECServlet.class, "/");
         server.start();

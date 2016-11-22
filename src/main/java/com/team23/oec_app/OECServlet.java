@@ -11,6 +11,11 @@ import org.eclipse.jetty.http.HttpStatus;
 
 public class OECServlet extends HttpServlet{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 		throws ServletException, IOException{

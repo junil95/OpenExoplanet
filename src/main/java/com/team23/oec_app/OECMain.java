@@ -29,7 +29,7 @@ public class OECMain extends HttpServlet
     	resp.setContentType("text/html");
     	System.out.println("Working Directory = " +
                 System.getProperty("user.dir"));
-        resp.getWriter().print(readFile("test.html", StandardCharsets.UTF_8));
+        resp.getWriter().print(readFile("index.html", StandardCharsets.UTF_8));
         resp.getWriter().close();
     }
     

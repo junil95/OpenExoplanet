@@ -27,6 +27,8 @@ public class OECMain extends HttpServlet
             throws ServletException, IOException {
     	
     	resp.setContentType("text/html");
+    	System.out.println("Working Directory = " +
+                System.getProperty("user.dir"));
         resp.getWriter().print(readFile("test.html", StandardCharsets.UTF_8));
         resp.getWriter().close();
     }

@@ -27,7 +27,7 @@ public class OECMain extends HttpServlet
             throws ServletException, IOException {
     	
     	resp.setContentType("text/html");
-        resp.getWriter().print(readFile("../../webapp/WEB-INF/index.html", StandardCharsets.UTF_8));
+        resp.getWriter().print(readFile("test.html", StandardCharsets.UTF_8));
         resp.getWriter().close();
     }
     

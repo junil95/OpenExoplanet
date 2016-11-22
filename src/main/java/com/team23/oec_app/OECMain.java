@@ -26,7 +26,7 @@ public class OECMain extends HttpServlet
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
     	
-        //resp.getWriter().print(readFile("index.html", StandardCharsets.UTF_8));
+        resp.getWriter().print(readFile("index.html", StandardCharsets.UTF_8));
         resp.getWriter().close();
     }
     

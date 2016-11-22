@@ -2,7 +2,6 @@ package UpdateTools;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.*;
 
 import ModelStarSystems.Planet;
@@ -10,7 +9,6 @@ import ModelStarSystems.Star;
 import ModelStarSystems.SystemBuilder;
 import ModelStarSystems.Systems;
 
-import TestSuite.DifferenceDetectorTest;
 import com.opencsv.CSVReader;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -22,7 +20,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import static UpdateTools.ReadCSV.NASA;
 import static UpdateTools.ReadCSV.mapIndexes;
-import static UpdateTools.ReadCSV.mapPlanetToData;
 
 /**
  * Created by Tirth Shah on 2016-11-14.
@@ -449,7 +446,7 @@ public class UpdateStorage {
   /*
   Method adds data from OEC for each system in systemUpdates
    */
-  public static void addSysOECData(ArrayList<ArrayList<Systems>> sysUpdates){
+  public static ArrayList<ArrayList<Systems>> addSysOECData(ArrayList<ArrayList<Systems>> sysUpdates){
       HashMap<String,String> OECData = new HashMap<>();
       HashMap<String,String> props = new HashMap<>();
       for(int i=0;i<sysUpdates.size();i++){
@@ -515,7 +512,7 @@ public class UpdateStorage {
             }
           }
             try {
-              if(OECData.isEmpty()){
+              if(OECData.size() == 3){
                 sysUpdates.remove(i);
               }else{
                 sysUpdates.get(i).add(SystemBuilder.buildSystemWithHashMap(OECData,"OEC"));
@@ -526,12 +523,13 @@ public class UpdateStorage {
               e.printStackTrace();
             }
       }
+      return sysUpdates;
   }
 
   /*
 Method adds data from OEC for each planet in planetUpdates
  */
-  public static void addPlanetOECData(ArrayList<ArrayList<Systems>> planetUpdates){
+  public static ArrayList<ArrayList<Systems>> addPlanetOECData(ArrayList<ArrayList<Systems>> planetUpdates){
     HashMap<String,String> OECData = new HashMap<>();
     HashMap<String,String> props = new HashMap<>();
     for(int i=0;i<planetUpdates.size();i++){
@@ -593,7 +591,7 @@ Method adds data from OEC for each planet in planetUpdates
         }
       }
       try {
-        if(OECData.isEmpty()){
+        if(OECData.size() == 3){
           planetUpdates.remove(i);
         }else{
           planetUpdates.get(i).add(SystemBuilder.buildSystemWithHashMap(OECData,"OEC"));
@@ -604,11 +602,12 @@ Method adds data from OEC for each planet in planetUpdates
         e.printStackTrace();
       }
     }
+    return planetUpdates;
   }
   /*
 Method adds data from OEC for each star in starUpdates
  */
-  public static void addStarOECData(ArrayList<ArrayList<Systems>> starUpdates){
+  public static ArrayList<ArrayList<Systems>> addStarOECData(ArrayList<ArrayList<Systems>> starUpdates){
     HashMap<String,String> OECData = new HashMap<>();
     HashMap<String,String> props = new HashMap<>();
     for(int i=0;i<starUpdates.size();i++){
@@ -683,7 +682,7 @@ Method adds data from OEC for each star in starUpdates
         }
       }
       try {
-        if(OECData.isEmpty()){
+        if(OECData.size() == 3){
           starUpdates.remove(i);
         }else{
           starUpdates.get(i).add(SystemBuilder.buildSystemWithHashMap(OECData,"OEC"));
@@ -694,6 +693,7 @@ Method adds data from OEC for each star in starUpdates
         e.printStackTrace();
       }
     }
+    return starUpdates;
   }
   public static void main(String[] args) {
     try {
@@ -737,12 +737,13 @@ Method adds data from OEC for each star in starUpdates
       
       
       //Systems s = SystemBuilder.buildSystemWithHashMap(test, "eu");
-      //TESTING JUNIL'S METHODS 
+      //TESTING JUNIL'S METHODS
       //ArrayList<ArrayList<Systems>> sysUps = new ArrayList<>();
       //ArrayList<Systems> sarray = new ArrayList<>();
       //sarray.add(s1);
       //sysUps.add(sarray);
-        //addSysOECData(sysUps);
+      //ArrayList<ArrayList<Systems>> update = addSysOECData(sysUps);
+      //System.out.println(update.toString());
         //addPlanetOECData(sysUps);
         //addStarOECData(sysUps);
       

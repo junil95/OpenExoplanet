@@ -17,13 +17,14 @@ import org.eclipse.jetty.servlet.ServletHolder;
 
 public class OECMain extends HttpServlet
 {
-	protected boolean init;
-	
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+
+    	System.out.println(req.getRequestURI());
     	
-    	if(init == false){
+    	if(true){
     		resp.getWriter().print(readFile("index.html", StandardCharsets.UTF_8));
         	resp.getWriter().close();
     	}

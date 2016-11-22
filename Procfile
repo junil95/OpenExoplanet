@@ -1,1 +1,1 @@
-web:    java -cp target/classes:target/dependency/* OECMain
+web:    java -cp target/classes:target/dependency/* com/team23/oec_app/OECMain

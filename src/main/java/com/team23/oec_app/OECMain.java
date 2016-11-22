@@ -24,7 +24,6 @@ public class OECMain extends HttpServlet
     }
 
     public static void main(String[] args) throws Exception{
-    	/*
         Server server = new Server(Integer.valueOf(System.getenv("PORT")));
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
@@ -32,7 +31,6 @@ public class OECMain extends HttpServlet
         context.addServlet(new ServletHolder(new OECMain()),"/*");
         server.start();
         server.join(); 
-        */
     }
 }
  

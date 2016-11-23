@@ -43,18 +43,18 @@ public class OECMain extends HttpServlet
         		Driver.initialSetupOrResetLocalCopies();
         	}
     	}
-    	else if(req.getRequestURI().contains("css")){
+    	else if(req.getRequestURI().contains(".css")){
     		resp.setContentType("text/css");
 
     		resp.getWriter().print(readFile(req.getRequestURI().substring(1), StandardCharsets.UTF_8));
         	resp.getWriter().close();
     	}
-    	else if(req.getRequestURI().contains("js")){
+    	else if(req.getRequestURI().contains(".js")){
     		resp.setContentType("text/javascript");
     		resp.getWriter().print(readFile(req.getRequestURI().substring(1), StandardCharsets.UTF_8));
     		resp.getWriter().close();
     	}
-    	else if(req.getRequestURI().contains("woff")){
+    	else if(req.getRequestURI().contains(".woff")){
     		resp.getWriter().print(readFile(req.getRequestURI().substring(1), StandardCharsets.UTF_8));
     		resp.getWriter().close();
     	}

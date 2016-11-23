@@ -81,7 +81,7 @@ public class OECMain extends HttpServlet
     		// Writing back data
     		Gson gson = new Gson();	
     		
-    		System.out.println(Driver.getNewSystems() + "HI");	
+    		//System.out.println(Driver.getNewSystems() + "HI");	
     		resp.getWriter().print(Driver.getNewSystems());
     		resp.getWriter().close();
     	}

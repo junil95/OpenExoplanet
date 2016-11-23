@@ -7,6 +7,7 @@ import org.junit.Test;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import ModelStarSystems.SystemBuilder;
@@ -40,7 +41,6 @@ public class SystemBuilderTest {
   /**
    * Test building system using NASA database csv row
    */
-  @Test
   public void testBuildingSystemCsvRowNASA() throws IOException, ReadCSV.MissingColumnNameException {
     //Create index mappings
     ReadCSV.mapIndexes();
@@ -66,5 +66,16 @@ public class SystemBuilderTest {
     assertEquals(s.getName(), "11 Com");
     assertEquals(s.getChild().getName(), "11 Com");
     assertEquals(s.getChild().getChild().getName(), "11 Com b");
+    
+    //also try to build system manually
+    HashMap<String, String> buildMap = new HashMap<>();
+  
+    buildMap.put("sy_right_ascension", "00 44 39");
+    buildMap.put("sy_declination", "-65 38 58");
+    buildMap.put("st_name", "HD 4308 b");
+    buildMap.put("sy_name", "HD 4308");
+    buildMap.put("pl_name", "HD 4308");
+    s = SystemBuilder.buildSystemWithHashMap(buildMap, "OEC");
+    assertEquals(s.getProperties().get("declination"),"-65 38 58");
   }
 }

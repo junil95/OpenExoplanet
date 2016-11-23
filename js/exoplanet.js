@@ -71,9 +71,8 @@ function generateRowHTML(infoArray, num){
 }
 
 function update(){
-    $.get("https://pacific-shelf-92985.herokuapp.com/", function( data ) {
-      alert( "Loading is done" );
-      console.log("Anything happening>?");
+    $.get("https://pacific-shelf-92985.herokuapp.com/update", function( data ) {
+      alert(data);
     });
 }
 

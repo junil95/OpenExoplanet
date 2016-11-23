@@ -46,8 +46,19 @@ public class OECMain extends HttpServlet
     		resp.getWriter().print(readFile(req.getRequestURI().substring(1), StandardCharsets.UTF_8));
     		resp.getWriter().close();
     	}
-    	else {
-    		resp.getWriter().print("Some random java text!");
+    	else if (req.getRequestURI().equals("/update")){
+    		
+    		
+    		
+    		
+    		
+    		resp.getWriter().close();
+    	}
+    }
+    
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+    	if (req.getRequestURI().equals("/commit")){
     		resp.getWriter().close();
     	}
     }

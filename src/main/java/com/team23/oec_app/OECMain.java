@@ -33,8 +33,6 @@ public class OECMain extends HttpServlet
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
     	
-    	System.out.println(req.getRequestURI());
-    	
     	if(req.getRequestURI().equals("/")){
     		resp.setContentType("text/html");
     		resp.getWriter().print(readFile("index.html", StandardCharsets.UTF_8));
@@ -43,9 +41,7 @@ public class OECMain extends HttpServlet
         	// Doing the initial merge and setting up local repos
         	if(!Driver.isInitialMergeDone()){
         		Driver.initialSetupOrResetLocalCopies();
-        	}
-        	
-        	
+        	}	
     	}
     	else if(req.getRequestURI().contains(".css")){
     		resp.setContentType("text/css");
@@ -85,8 +81,8 @@ public class OECMain extends HttpServlet
     		// Writing back data
     		Gson gson = new Gson();	
     		
-    		System.out.println(gson.toJson(list) + "HI");	
-    		resp.getWriter().print(gson.toJson(list));
+    		System.out.println(Driver.getNewSystems() + "HI");	
+    		resp.getWriter().print(Driver.getNewSystems());
     		resp.getWriter().close();
     	}
     }

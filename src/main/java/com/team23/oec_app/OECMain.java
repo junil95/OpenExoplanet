@@ -33,6 +33,8 @@ public class OECMain extends HttpServlet
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
     	
+    	System.out.println(req.getRequestURI());
+    	
     	if(req.getRequestURI().equals("/")){
     		resp.setContentType("text/html");
     		resp.getWriter().print(readFile("index.html", StandardCharsets.UTF_8));
@@ -42,6 +44,8 @@ public class OECMain extends HttpServlet
         	if(!Driver.isInitialMergeDone()){
         		Driver.initialSetupOrResetLocalCopies();
         	}
+        	
+        	
     	}
     	else if(req.getRequestURI().contains(".css")){
     		resp.setContentType("text/css");

@@ -15,6 +15,8 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
+import com.team23.Driver;
+
 public class OECMain extends HttpServlet
 {
 
@@ -48,10 +50,14 @@ public class OECMain extends HttpServlet
     	}
     	else if (req.getRequestURI().equals("/update")){
     		
+    		// Shows the update
+    		if(!Driver.isInitialMergeDone()){
+    			Driver.initialSetupOrResetLocalCopies();
+    			Driver.detectInitialUpdates();
+    		}
     		
-    		
-    		
-    		
+    		System.out.println(Driver.getNewSystems());
+    		resp.getWriter().print(Driver.getNewSystems());
     		resp.getWriter().close();
     	}
     }

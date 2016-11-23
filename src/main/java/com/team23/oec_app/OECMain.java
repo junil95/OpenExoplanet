@@ -58,10 +58,6 @@ public class OECMain extends HttpServlet
     		resp.getWriter().print(readFile(req.getRequestURI().substring(1), StandardCharsets.UTF_8));
     		resp.getWriter().close();
     	}
-    	else if(req.getRequestURI().contains("/")){
-    		resp.getWriter().print(readFile(req.getRequestURI().substring(1), StandardCharsets.UTF_8));
-    		resp.getWriter().close();
-    	}
     	else if (req.getRequestURI().equals("/update")){
     		// Calling from Driver to get all the new updated celestial objects
         	if(!Driver.isInitialMergeDone()){

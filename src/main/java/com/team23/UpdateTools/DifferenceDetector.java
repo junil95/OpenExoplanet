@@ -1,4 +1,4 @@
-package UpdateTools;
+package com.team23.UpdateTools;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -23,13 +23,13 @@ import org.xml.sax.SAXException;
 import com.opencsv.CSVReader;
 import com.team23.ModelStarSystems.SystemBuilder;
 
-import ModelStarSystems.Systems;
-import static UpdateTools.DifferenceDetector.getNewPlanetIDs;
-import static UpdateTools.ReadCSV.EU;
-import static UpdateTools.ReadCSV.NASA;
-import static UpdateTools.ReadCSV.getIndexMappings;
-import static UpdateTools.ReadCSV.mapPlanetToData;
-import static UpdateTools.ReadCSV.onlyAlphanumericList;
+import com.team23.ModelStarSystems.Systems;
+import static com.team23.UpdateTools.DifferenceDetector.getNewPlanetIDs;
+import static com.team23.UpdateTools.ReadCSV.EU;
+import static com.team23.UpdateTools.ReadCSV.NASA;
+import static com.team23.UpdateTools.ReadCSV.getIndexMappings;
+import static com.team23.UpdateTools.ReadCSV.mapPlanetToData;
+import static com.team23.UpdateTools.ReadCSV.onlyAlphanumericList;
 
 
 /**

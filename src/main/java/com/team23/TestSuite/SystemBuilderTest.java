@@ -1,4 +1,4 @@
-package TestSuite;
+package com.team23.TestSuite;
 
 import com.opencsv.CSVReader;
 import com.team23.ModelStarSystems.SystemBuilder;
@@ -10,9 +10,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import ModelStarSystems.Systems;
-import UpdateTools.PullingTools;
-import UpdateTools.ReadCSV;
+import com.team23.ModelStarSystems.Systems;
+import com.team23.UpdateTools.PullingTools;
+import com.team23.UpdateTools.ReadCSV;
 import static org.junit.Assert.*;
 
 /**

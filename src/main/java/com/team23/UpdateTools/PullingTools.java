@@ -1,4 +1,4 @@
-package UpdateTools;
+package com.team23.UpdateTools;
 
 import org.apache.commons.io.FileUtils;
 import java.io.File;

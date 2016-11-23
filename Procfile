@@ -1,1 +1,1 @@
-web:    java $JAVA_OPTS -jar target/dependency/jetty-runner.jar --port 7070 target/*.war
+web:    java -cp target/classes:target/dependency/* com/team23/oec_app/OECMain

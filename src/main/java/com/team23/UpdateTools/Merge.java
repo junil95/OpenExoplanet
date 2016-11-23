@@ -1,6 +1,6 @@
-package UpdateTools;
+package com.team23.UpdateTools;
 
-import ModelStarSystems.*;
+import com.team23.ModelStarSystems.*;
 
 import com.opencsv.CSVReader;
 import com.team23.ModelStarSystems.SystemBuilder;
@@ -27,7 +27,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import static UpdateTools.DifferenceDetector.onlyAlphaNumeric;
+import static com.team23.UpdateTools.DifferenceDetector.onlyAlphaNumeric;
 
 /**
  * @author Rishi A class used to create new systems, but also merge new stars, new planets or new

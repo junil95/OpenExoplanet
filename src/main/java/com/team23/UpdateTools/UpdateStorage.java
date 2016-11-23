@@ -1,20 +1,18 @@
-package UpdateTools;
+package com.team23.UpdateTools;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.*;
 
-import ModelStarSystems.Planet;
-import ModelStarSystems.Star;
-import ModelStarSystems.Systems;
+import com.team23.ModelStarSystems.Planet;
+import com.team23.ModelStarSystems.Star;
+import com.team23.ModelStarSystems.Systems;
 
 import com.opencsv.CSVReader;
 import com.team23.ModelStarSystems.SystemBuilder;
 
-import static UpdateTools.ReadCSV.NASA;
-import static UpdateTools.ReadCSV.mapIndexes;
-import static UpdateTools.ReadCSV.mapPlanetToData;
+import static com.team23.UpdateTools.ReadCSV.NASA;
+import static com.team23.UpdateTools.ReadCSV.mapIndexes;
 
 /**
  * Created by Tirth Shah on 2016-11-14.

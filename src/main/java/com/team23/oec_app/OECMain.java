@@ -84,9 +84,9 @@ public class OECMain extends HttpServlet
     		
     		// Writing back data
     		Gson gson = new Gson();	
-    		resp.getWriter().print(gson.toJson(list));
     		
-    		resp.getWriter().print(readFile(req.getRequestURI().substring(1), StandardCharsets.UTF_8));
+    		System.out.println(gson.toJson(list) + "HI");	
+    		resp.getWriter().print(gson.toJson(list));
     		resp.getWriter().close();
     	}
     }

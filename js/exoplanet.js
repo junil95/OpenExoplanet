@@ -72,7 +72,7 @@ function generateRowHTML(infoArray, num){
 
 function update(){
     $.get("https://pacific-shelf-92985.herokuapp.com/update", function( data ) {
-      alert(data);
+      console.log(data);
     });
 }
 

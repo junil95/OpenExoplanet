@@ -82,7 +82,7 @@ public class OECMain extends HttpServlet
     		Gson gson = new Gson();	
     		
     		//System.out.println(Driver.getNewSystems() + "HI");	
-    		resp.getWriter().print(Driver.getNewSystems());
+    		resp.getWriter().print(Driver.getNewSystemConflicts());
     		resp.getWriter().close();
     	}
     }

@@ -39,13 +39,7 @@ public class OECMain extends HttpServlet
     		resp.setContentType("text/html");
     		resp.getWriter().print(readFile("index.html", StandardCharsets.UTF_8));
         	resp.getWriter().close();
-        	
-        	// Doing the initial merge and setting up local repos
-        	if(!Driver.isInitialMergeDone()){
-        		Driver.initialSetupOrResetLocalCopies();
-        	}
-        	
-        	
+
     	}
     	else if(req.getRequestURI().contains(".css")){
     		resp.setContentType("text/css");
@@ -64,13 +58,15 @@ public class OECMain extends HttpServlet
     	}
     	else if (req.getRequestURI().equals("/update")){
     		// Calling from Driver to get all the new updated celestial objects
+        	// Doing the initial merge and setting up local repos
         	if(!Driver.isInitialMergeDone()){
         		Driver.initialSetupOrResetLocalCopies();
-        	}
-        	
-        	// Feteching initial updates
-    		Driver.detectInitialUpdates();
-    		
+        		
+            	// Feteching initial updates
+        		Driver.detectInitialUpdates(); 
+        	}	
+
+    		/*
     		ArrayList<String> list = new ArrayList<String>();
     		
     		list.add(Driver.getNewSystems());
@@ -82,11 +78,10 @@ public class OECMain extends HttpServlet
     		list.add(Driver.getNewStars());
     		list.add(Driver.getNewStarConflicts());
     		
-    		// Writing back data
-    		Gson gson = new Gson();	
+    		*/
     		
-    		System.out.println(gson.toJson(list) + "HI");	
-    		resp.getWriter().print(gson.toJson(list));
+    		System.out.println(Driver.getNewSystems() );	
+    		resp.getWriter().print(Driver.getNewSystemConflicts());
     		resp.getWriter().close();
     	}
     }

@@ -10,6 +10,7 @@ import ModelStarSystems.SystemBuilder;
 import ModelStarSystems.Systems;
 
 import com.opencsv.CSVReader;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -299,459 +300,66 @@ public class UpdateStorage {
     Collections.sort(decreasing, Collections.reverseOrder());
     //Need to remove items with conflicts from the main list
     //Need to remove items with conflicts from the main list
-    for (
-            int index : decreasing)
-    
-    {
+    for (int index : decreasing)   {
       systems.remove(index);
     }
-    
   }
   
-  
-  //TODO: Tell tirth to store everything as tuple instead, so basically append arraylists of size 2
-//to the big arraylist everytime. The arraylist of size 2 would contain the corresponding eu and
-//nasa data. This will break tests so will have to fix them
-    /*
-    Method to find store and find conflicts in a given set of planets. After classifying repeated planets, the method
-    will check its respective source (ie. nasa or eu) and will place them in an arrayList of arrayList
-    with the two different source lists.
-     */
-  public static ArrayList<ArrayList<Systems>> findPlanetConflicts() {
-    ArrayList<Systems> nasaPlanets = new ArrayList<Systems>();
-    ArrayList<Systems> euPlanets = new ArrayList<Systems>();
-    ArrayList<ArrayList<Systems>> planetConflicts = new ArrayList<ArrayList<
-            Systems>>();
-    
-    //convert set to arrayList so its easy to traverse and will also help find the number of objects there
-    //are in the set
-    ArrayList<Systems> planetList = new ArrayList(planets);
-    
-    //nested for loop to traverse through each element in the list
-    //compare each element with the remaining elements in the list and find duplicates
-    //will take O(n) since length of list decreases by 1 every iteration
-    for (int i = 0; i < planetList.size(); i++) {
-      for (int j = i + 1; j < planetList.size(); j++) {
-        //found duplicate
-        //each elemement is of type Systems, so need to get the child of child (ie.planet of the system) to
-        //compare
-        if (planetList.get(i).getChild().getChild().getName().equals(planetList.get(j).getChild().getChild().
-                getName())) {
-          //find the source of both duplicates and place them into their respective array lists
-          if (planetList.get(i).getSource().equals(NASA)) {
-            nasaPlanets.add(planetList.get(i));
-            euPlanets.add(planetList.get(j));
-          } else {
-            euPlanets.add(planetList.get(i));
-            nasaPlanets.add(planetList.get(j));
-          }
-          
-        }
-      }
-    }
-    
-    planetConflicts.add(nasaPlanets);
-    planetConflicts.add(euPlanets);
-    
-    return planetConflicts;
-  }
-  
-  
-  /*
-  Method to find store and find conflicts in a given set of stars. After classifying repeated stars, the method
-  will check its respective source (ie. nasa or eu) and will place them in an arrayList of arrayList
-  with the two different source lists.
-   */
-  public static ArrayList<ArrayList<Systems>> findStarConflicts() {
-    ArrayList<Systems> nasaStars = new ArrayList<Systems>();
-    ArrayList<Systems> euStars = new ArrayList<Systems>();
-    ArrayList<ArrayList<Systems>> starConflicts = new ArrayList<ArrayList<
-            Systems>>();
-    
-    //convert set to arrayList so its easy to traverse and will also help find the number of objects there
-    //are in the set
-    ArrayList<Systems> starList = new ArrayList(stars);
-    
-    //nested for loop to traverse through each element in the list
-    //compare each element with the remaining elements in the list and find duplicates
-    //will take O(n) since length of list decreases by 1 every iteration
-    for (int i = 0; i < starList.size(); i++) {
-      for (int j = i + 1; j < starList.size(); j++) {
-        //found duplicate
-        //each element is of type Systems, so need to get the child(ie.star of the system) to
-        //compare
-        if (starList.get(i).getChild().getName().equals(starList.get(j).getChild().
-                getName())) {
-          //find the source of both duplicates and place them into their respective array lists
-          if (starList.get(i).getSource().equals(NASA)) {
-            nasaStars.add(starList.get(i));
-            euStars.add(starList.get(j));
-          } else {
-            euStars.add(starList.get(i));
-            nasaStars.add(starList.get(j));
-          }
-          
-        }
-      }
-    }
-    starConflicts.add(nasaStars);
-    starConflicts.add(euStars);
-    
-    return starConflicts;
-  }
-  
-  /*
- Method to find store and find conflicts in a given set of systems. After classifying repeated systems, the method
- will check its respective source (ie. nasa or eu) and will place them in an arrayList of arrayList
- with the two different source lists.
-  */
-  public static ArrayList<ArrayList<Systems>> findSystemConflicts() {
-    ArrayList<Systems> nasaSystems = new ArrayList<Systems>();
-    ArrayList<Systems> euSystems = new ArrayList<Systems>();
-    ArrayList<ArrayList<Systems>> systemConflicts = new ArrayList<ArrayList<
-            Systems>>();
-    
-    //convert set to arrayList so its easy to traverse and will also help find the number of objects there
-    //are in the set
-    ArrayList<Systems> starList = new ArrayList(stars);
-    
-    //nested for loop to traverse through each element in the list
-    //compare each element with the remaining elements in the list and find duplicates
-    //will take O(n) since length of list decreases by 1 every iteration
-    for (int i = 0; i < starList.size(); i++) {
-      for (int j = i + 1; j < starList.size(); j++) {
-        //found duplicate
-        //each element is of type Systems
-        //use __equals__ to compare
-        if (starList.get(i).getName().equals(starList.get(j).
-                getName())) {
-          //find the source of both duplicates and place them into their respective array lists
-          if (starList.get(i).getSource().equals(NASA)) {
-            nasaSystems.add(starList.get(i));
-            euSystems.add(starList.get(j));
-          } else {
-            euSystems.add(starList.get(i));
-            nasaSystems.add(starList.get(j));
-          }
-          
-        }
-      }
-    }
-    systemConflicts.add(nasaSystems);
-    systemConflicts.add(euSystems);
-    
-    return systemConflicts;
-  }
-
-  /*
-  Method adds data from OEC for each system in systemUpdates
-   */
-  public static ArrayList<ArrayList<Systems>> addSysOECData(ArrayList<ArrayList<Systems>> sysUpdates){
-      HashMap<String,String> OECData = new HashMap<>();
-      HashMap<String,String> props = new HashMap<>();
-      for(int i=0;i<sysUpdates.size();i++){
-          ArrayList curr = new ArrayList();
-          curr = sysUpdates.get(i);
-          Systems curs = (Systems) curr.get(0);
-          OECData.put("sy_name", curs.getName());
-          OECData.put("pl_name",curs.getChild().getName());
-          OECData.put("st_name",curs.getChild().getChild().getName());
-          //System.out.println("JUNIL"+OECData);
-          //System.out.println("JUNIL properties"+ curs.getProperties());
-          props = curs.getProperties();
-          for(String key : props.keySet()) {
-            if (props.get(key) != null) {
-              String property = key.replace("_", "");
-              //System.out.println("propname : " +property);
-
-              //GET OEC DATA FOR SPECIFIED SYSTEM FOR NOT NULL PROPERTIES
-              DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-              boolean sysFound = false;
-              Element elm = null;
-              Node sys = null;
-              try {
-                DocumentBuilder builder;
-                builder = factory.newDocumentBuilder();
-                Document doc = builder.parse(PullingTools.localOecFile);
-                doc.getDocumentElement().normalize();
-
-                NodeList systemlist = doc.getElementsByTagName("system");
-                for (int j = 0; j < systemlist.getLength(); j++) {
-                  elm = (Element) systemlist.item(j);
-                  sys = systemlist.item(j);
-                  NodeList names = elm.getElementsByTagName("name");
-
-                  for (int k = 0; k < names.getLength(); k++) {
-                    Node name = names.item(k);
-                    String sys_name = name.getTextContent();
-                    if (DifferenceDetector.onlyAlphaNumeric(curs.getName()).equals(DifferenceDetector.onlyAlphaNumeric(sys_name))) {
-                      sysFound = true;
-                      break;
-                    }
-                  }
-                  if (sysFound) {
-                    break;
-                  }
-                }
-                if (sysFound) {
-                  NodeList oecPropList = elm.getElementsByTagName(property);
-                  Node oecProp = oecPropList.item(0);
-                  String prop = oecProp.getTextContent();
-                  //System.out.println("OEC "+DifferenceDetector.onlyAlphaNumeric(prop));
-                  //System.out.println("LIST "+ DifferenceDetector.onlyAlphaNumeric(props.get(key)));
-                  if (!(DifferenceDetector.onlyAlphaNumeric(prop).equals(DifferenceDetector.onlyAlphaNumeric(props.get(key))))) {
-                    OECData.put("sy_" + key, prop);
-                  }else{
-                    props.put(key,null);
-                  }
-                }
-                //System.out.println(OECData);
-              } catch (Exception e) {
-                e.printStackTrace();
-              }
-            }
-          }
-            try {
-              if(OECData.size() == 3){
-                sysUpdates.remove(i);
-              }else{
-                sysUpdates.get(i).add(SystemBuilder.buildSystemWithHashMap(OECData,"OEC"));
-                System.out.println(OECData);
-                System.out.println(props);
-              }
-            } catch (SystemBuilder.MissingCelestialObjectNameException e) {
-              e.printStackTrace();
-            }
-      }
-      return sysUpdates;
-  }
-
-  /*
-Method adds data from OEC for each planet in planetUpdates
- */
-  public static ArrayList<ArrayList<Systems>> addPlanetOECData(ArrayList<ArrayList<Systems>> planetUpdates){
-    HashMap<String,String> OECData = new HashMap<>();
-    HashMap<String,String> props = new HashMap<>();
-    for(int i=0;i<planetUpdates.size();i++){
-      ArrayList curr = new ArrayList();
-      curr = planetUpdates.get(i);
-      Systems curs = (Systems) curr.get(0);
-      OECData.put("sy_name", curs.getName());
-      OECData.put("pl_name",curs.getChild().getName());
-      OECData.put("st_name",curs.getChild().getChild().getName());
-      props = curs.getProperties();
-      for(String key : props.keySet()) {
-        if (props.get(key) != null) {
-          String property = key.replace("_", "");
-          //GET OEC DATA FOR SPECIFIED SYSTEM FOR NOT NULL PROPERTIES
-          DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-          boolean plnFound = false;
-          Element elm = null;
-          Node pln = null;
-          try {
-            DocumentBuilder builder;
-            builder = factory.newDocumentBuilder();
-            Document doc = builder.parse(PullingTools.localOecFile);
-            doc.getDocumentElement().normalize();
-
-            NodeList systemlist = doc.getElementsByTagName("planet");
-            for (int j = 0; j < systemlist.getLength(); j++) {
-              elm = (Element) systemlist.item(j);
-              pln = systemlist.item(j);
-              NodeList names = elm.getElementsByTagName("name");
-
-              for (int k = 0; k < names.getLength(); k++) {
-                Node name = names.item(k);
-                String pln_name = name.getTextContent();
-                if (DifferenceDetector.onlyAlphaNumeric(curs.getName()).equals(DifferenceDetector.onlyAlphaNumeric(pln_name))) {
-                  plnFound = true;
-                  break;
-                }
-              }
-              if (plnFound) {
-                break;
-              }
-            }
-            if (plnFound) {
-              NodeList oecPropList = elm.getElementsByTagName(property);
-              Node oecProp = oecPropList.item(0);
-              String prop = oecProp.getTextContent();
-              //System.out.println("OEC "+DifferenceDetector.onlyAlphaNumeric(prop));
-              //System.out.println("LIST "+ DifferenceDetector.onlyAlphaNumeric(props.get(key)));
-              if (!(DifferenceDetector.onlyAlphaNumeric(prop).equals(DifferenceDetector.onlyAlphaNumeric(props.get(key))))) {
-                OECData.put("pl_" + key, prop);
-              }else{
-                props.put(key,null);
-              }
-            }
-            //System.out.println(OECData);
-          } catch (Exception e) {
-            e.printStackTrace();
-          }
-        }
-      }
-      try {
-        if(OECData.size() == 3){
-          planetUpdates.remove(i);
-        }else{
-          planetUpdates.get(i).add(SystemBuilder.buildSystemWithHashMap(OECData,"OEC"));
-          System.out.println(OECData);
-          System.out.println(props);
-        }
-      } catch (SystemBuilder.MissingCelestialObjectNameException e) {
-        e.printStackTrace();
-      }
-    }
-    return planetUpdates;
-  }
-  /*
-Method adds data from OEC for each star in starUpdates
- */
-  public static ArrayList<ArrayList<Systems>> addStarOECData(ArrayList<ArrayList<Systems>> starUpdates){
-    HashMap<String,String> OECData = new HashMap<>();
-    HashMap<String,String> props = new HashMap<>();
-    for(int i=0;i<starUpdates.size();i++){
-      ArrayList curr = new ArrayList();
-      curr = starUpdates.get(i);
-      Systems curs = (Systems) curr.get(0);
-      OECData.put("sy_name", curs.getName());
-      OECData.put("pl_name",curs.getChild().getName());
-      OECData.put("st_name",curs.getChild().getChild().getName());
-      //System.out.println("JUNIL"+OECData);
-      //System.out.println("JUNIL properties"+ curs.getProperties());
-      props = curs.getProperties();
-      for(String key : props.keySet()) {
-        if (props.get(key) != null) {
-          String property = key.replace("_", "");
-          //System.out.println("propname : " +property);
-
-          //GET OEC DATA FOR SPECIFIED SYSTEM FOR NOT NULL PROPERTIES
-          DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-          boolean starFound = false;
-          Element elm = null;
-          Node star = null;
-          try {
-            DocumentBuilder builder;
-            builder = factory.newDocumentBuilder();
-            Document doc = builder.parse(PullingTools.localOecFile);
-            doc.getDocumentElement().normalize();
-
-            NodeList systemlist = doc.getElementsByTagName("star");
-            for (int j = 0; j < systemlist.getLength(); j++) {
-              elm = (Element) systemlist.item(j);
-              star = systemlist.item(j);
-              NodeList names = elm.getElementsByTagName("name");
-
-              for (int k = 0; k < names.getLength(); k++) {
-                Node name = names.item(k);
-                String star_name = name.getTextContent();
-                if (DifferenceDetector.onlyAlphaNumeric(curs.getName()).equals(DifferenceDetector.onlyAlphaNumeric(star_name))) {
-                  starFound = true;
-                  break;
-                }
-              }
-              if (starFound) {
-                break;
-              }
-            }
-            if (starFound) {
-              //NodeList oecPropList = elm.getElementsByTagName(property);
-              //Node oecProp = oecPropList.item(0);
-              //String prop = oecProp.getTextContent();
-              NodeList children = star.getChildNodes();
-              String prop = "";
-              for(int p=0;p<children.getLength();p++){
-                if(children.item(p).getNodeName().equalsIgnoreCase(property)){
-                  prop = children.item(p).getTextContent();
-                }
-              }
-              //System.out.println("OEC "+DifferenceDetector.onlyAlphaNumeric(prop));
-              //System.out.println("LIST "+ DifferenceDetector.onlyAlphaNumeric(props.get(key)));
-              if (!(DifferenceDetector.onlyAlphaNumeric(prop).equals(DifferenceDetector.onlyAlphaNumeric(props.get(key))))) {
-                //if(!prop.equals("")){
-                  OECData.put("st_" + key, prop);
-                //}
-              }else{
-                props.put(key,null);
-              }
-            }
-            //System.out.println(OECData);
-          } catch (Exception e) {
-            e.printStackTrace();
-          }
-        }
-      }
-      try {
-        if(OECData.size() == 3){
-          starUpdates.remove(i);
-        }else{
-          starUpdates.get(i).add(SystemBuilder.buildSystemWithHashMap(OECData,"OEC"));
-          System.out.println(OECData);
-          System.out.println(props);
-        }
-      } catch (SystemBuilder.MissingCelestialObjectNameException e) {
-        e.printStackTrace();
-      }
-    }
-    return starUpdates;
-  }
   public static void main(String[] args) {
     try {
       mapIndexes();
-      CSVReader r1 = new CSVReader(new FileReader(PullingTools.localExoplanetEu));
-      List<String[]> allData1 = r1.readAll();
-      Systems s1 = SystemBuilder.buildSystemWithCSVRow(Arrays.asList(allData1.get(678)), ReadCSV.EU);
-      //System.out.println(Arrays.asList((allData1.get(678))));
+//      CSVReader r1 = new CSVReader(new FileReader(PullingTools.localExoplanetEu));
+//      List<String[]> allData1 = r1.readAll();
+//      Systems s1 = SystemBuilder.buildSystemWithCSVRow(Arrays.asList(allData1.get(678)), ReadCSV.EU);
+//      //System.out.println(Arrays.asList((allData1.get(678))));
+//
+//      CSVReader r2 = new CSVReader(new FileReader(PullingTools.localNasaArchive));
+//      List<String[]> allData2 = r2.readAll();
+//      Systems s2 = SystemBuilder.buildSystemWithCSVRow(Arrays.asList(allData2.get(1)), ReadCSV.NASA);
+//      //System.out.println();
+//      //System.out.println(Arrays.asList((allData2.get(1))));
+//      s2.getChild().getChild().setName(s1.getChild().getChild().getName());
+//      Systems s3 = SystemBuilder.buildSystemWithCSVRow(Arrays.asList(allData2.get(3)), ReadCSV.NASA);
+//      ArrayList<Systems> as = new ArrayList<>();
+//      as.add(s1);
+//      UpdateStorage.planets.add(as);
+//      as = new ArrayList<>();
+//      as.add(s2);
+//      UpdateStorage.planets.add(as);
+//      as = new ArrayList<>();
+//      as.add(s3);
+//      UpdateStorage.planets.add(as);
       
-      CSVReader r2 = new CSVReader(new FileReader(PullingTools.localNasaArchive));
-      List<String[]> allData2 = r2.readAll();
-      Systems s2 = SystemBuilder.buildSystemWithCSVRow(Arrays.asList(allData2.get(1)), ReadCSV.NASA);
-      //System.out.println();
-      //System.out.println(Arrays.asList((allData2.get(1))));
-      s2.getChild().getChild().setName(s1.getChild().getChild().getName());
-      Systems s3 = SystemBuilder.buildSystemWithCSVRow(Arrays.asList(allData2.get(3)), ReadCSV.NASA);
-      ArrayList<Systems> as = new ArrayList<>();
-      as.add(s1);
-      UpdateStorage.planets.add(as);
-      as = new ArrayList<>();
-      as.add(s2);
-      UpdateStorage.planets.add(as);
-      as = new ArrayList<>();
-      as.add(s3);
-      UpdateStorage.planets.add(as);
-      
-      System.out.print("Planets Added: ");
-      findNewPlanetConflicts();
-      for (ArrayList<Systems> each : UpdateStorage.planets) {
-        System.out.print(each.get(0).getChild().getChild().getName() + "   ");
-      }
-      
-      System.out.println();
-      System.out.print("Planet Conflicts: ");
-      System.out.println(UpdateStorage.newPlanetConflicts.size());
-      for (int i = 0; i < UpdateStorage.newPlanetConflicts.size(); i++) {
-        System.out.println(UpdateStorage.newPlanetConflicts.get(i).get(0).getChild().getChild().getName() + "   ");
-        
-      }
-      //System.out.println(u.findPlanetConflicts());
+      //System.out.print("Planets Added: ");
+      //findNewPlanetConflicts();
+//      for (ArrayList<Systems> each : UpdateStorage.planets) {
+//        System.out.print(each.get(0).getChild().getChild().getName() + "   ");
+//      }
+
+//      System.out.println();
+//      System.out.print("Planet Conflicts: ");
+//      System.out.println(UpdateStorage.newPlanetConflicts.size());
+//      for (int i = 0; i < UpdateStorage.newPlanetConflicts.size(); i++) {
+//        System.out.println(UpdateStorage.newPlanetConflicts.get(i).get(0).getChild().getChild().getName() + "   ");
+//
+//      }
+      //System.out.println(us.findPlanetConflicts());
       
       
-      //Systems s = SystemBuilder.buildSystemWithHashMap(test, "eu");
-      //TESTING JUNIL'S METHODS
-      //ArrayList<ArrayList<Systems>> sysUps = new ArrayList<>();
-      //ArrayList<Systems> sarray = new ArrayList<>();
-      //sarray.add(s1);
-      //sysUps.add(sarray);
-      //ArrayList<ArrayList<Systems>> update = addSysOECData(sysUps);
-      //System.out.println(update.toString());
-        //addPlanetOECData(sysUps);
-        //addStarOECData(sysUps);
-      
-    } catch (IOException e) {
+    } catch (
+            IOException e)
+    
+    {
       e.printStackTrace();
-    } catch (ReadCSV.MissingColumnNameException e) {
+    } catch (
+            ReadCSV.MissingColumnNameException e)
+    
+    {
       e.printStackTrace();
-    } catch (ArrayIndexOutOfBoundsException e) {
+    } catch (
+            ArrayIndexOutOfBoundsException e)
+    
+    {
       e.printStackTrace();
     }
     

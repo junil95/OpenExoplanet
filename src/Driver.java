@@ -297,39 +297,6 @@ public class Driver {
     return convertToMap(UpdateStorage.newStarConflicts);
   }
   
-  //TODO: Can probably remove these three since after the conflicts are resolved, the data
-  //can be passed in just the 3 regular lists
-  
-  /**
-   * Populate star conflicts based on user selection The JSON string should be in the format
-   * List<List<Hashmap<String,String>>. In this case, the inner list is a singleton containing a
-   * dictionary of the changes that the user made. The inner list isn't required but it is being
-   * used to keep the format consistent
-   */
-  public static void setNewStarConflicts(String json) {
-    createObjectFromJson(json, UpdateStorage.newStarConflicts);
-  }
-  
-  /**
-   * Populate system conflicts based on user selection The JSON string should be in the format
-   * List<List<Hashmap<String,String>>. In this case, the inner list is a singleton containing a
-   * dictionary of the changes that the user made. The inner list isn't required but it is being
-   * used to keep the format consistent
-   */
-  public static void setNewSystemConflicts(String json) {
-    createObjectFromJson(json, UpdateStorage.newSystemConflicts);
-  }
-  
-  /**
-   * Populate planet conflicts based on user selection The JSON string should be in the format
-   * List<List<Hashmap<String,String>>. In this case, the inner list is a singleton containing a
-   * dictionary of the changes that the user made. The inner list isn't required but it is being
-   * used to keep the format consistent
-   */
-  public static void setNewPlanetConflicts(String json) {
-    createObjectFromJson(json, UpdateStorage.newPlanetConflicts);
-  }
-  
   /**
    * Assumes that format of the input json is List<List<Hashmap<String,String>>. Converts data
    * in terms of systems again
@@ -377,23 +344,18 @@ public class Driver {
         //Need to recreate the label identifiers
         for (String label : s.getProperties().keySet()) {
           //checking the null condition b/c gson removes keys with null values
-          if (s.getProperties().get(label) == null)
-            map.put("sy_" + label, "");
-          else
+          if (s.getProperties().get(label) != null)
             map.put("sy_" + label, s.getProperties().get(label));
         }
         
         for (String label : s.getChild().getProperties().keySet()) {
-          if (s.getChild().getProperties().get(label) == null)
-            map.put("st_" + label, "");
-          else
+          if (s.getChild().getProperties().get(label) != null)
             map.put("st_" + label, s.getChild().getProperties().get(label));
         }
         for (String label : s.getChild().getChild().getProperties().keySet()) {
-          if (s.getChild().getChild().getProperties().get(label) == null) {
-            map.put("pl_" + label, "");
-          } else
+          if (s.getChild().getChild().getProperties().get(label) != null) {
             map.put("pl_" + label, s.getChild().getChild().getProperties().get(label));
+          }
         }
         diffCatalogueData.add(map);
       }
@@ -492,61 +454,77 @@ public class Driver {
 //
 //      }
       
+      
       //System.out.println(getNewPlanetConflicts());
       //System.out.println(getNewPlanets());
       //initialSetupOrResetLocalCopies();
+      
 //      System.out.println(isInitialMergeDone());
 //      String json = getNewPlanetConflicts();
 //      createObjectFromJson(json);
-      ArrayList<String> sorted = new ArrayList<>();
-      updateDetection();
-      System.out.println();
-      System.out.println("planets");
-      System.out.println();
-      for (ArrayList<Systems> as : UpdateStorage.planets) {
-        sorted.add(as.get(0).getChild().getChild().getName());
-      }
-      Collections.sort(sorted);
-      for (String str : sorted) {
-        System.out.println(str);
-      }
+//      ArrayList<String> sorted = new ArrayList<>();
       
-      System.out.println();
-      System.out.println("planet conflicts ");
-      System.out.println();
-      sorted = new ArrayList<>();
-      for (ArrayList<Systems> as : UpdateStorage.newPlanetConflicts) {
-        sorted.add(as.get(0).getChild().getChild().getName());
-      }
-      Collections.sort(sorted);
-      for (String str : sorted) {
-        System.out.println(str);
-      }
+      /////////////////////Test updating
+//      updateDetection();
+//      System.out.println(getNewPlanets());
+//      System.out.println();
+//      System.out.println("planets");
+//      System.out.println();
+//      for (ArrayList<Systems> as : UpdateStorage.planets) {
+//        sorted.add(as.get(0).getChild().getChild().getName());
+//      }
+//      Collections.sort(sorted);
+//      for (String str : sorted) {
+//        System.out.println(str);
+//      }
+//
+//      System.out.println();
+//      System.out.println("planet conflicts ");
+//      System.out.println();
+//      sorted = new ArrayList<>();
+//      for (ArrayList<Systems> as : UpdateStorage.newPlanetConflicts) {
+//        sorted.add(as.get(0).getChild().getChild().getName());
+//      }
+//      Collections.sort(sorted);
+//      for (String str : sorted) {
+//        System.out.println(str);
+//      }
+//
+//      System.out.println();
+//      System.out.println("systems");
+//      System.out.println();
+//      sorted = new ArrayList<>();
+//      for (ArrayList<Systems> as : UpdateStorage.systems) {
+//        sorted.add(as.get(0).getName());
+//      }
+//      Collections.sort(sorted);
+//      for (String str : sorted) {
+//        System.out.println(str);
+//      }
+//      sorted = new ArrayList<>();
+//      System.out.println();
+//      System.out.println("systems conflicts");
+//      System.out.println();
+//      for (ArrayList<Systems> as : UpdateStorage.newSystemConflicts) {
+//        sorted.add(as.get(0).getName());
+//      }
+//      Collections.sort(sorted);
+//      for (String str : sorted) {
+//        System.out.println(str);
+//      }
+//      System.out.println(getNewPlanets());
+//      System.out.println(getNewSystems());
       
-      System.out.println();
-      System.out.println("systems");
-      System.out.println();
-      sorted = new ArrayList<>();
-      for (ArrayList<Systems> as : UpdateStorage.systems) {
-        sorted.add(as.get(0).getName());
-      }
-      Collections.sort(sorted);
-      for (String str : sorted) {
-        System.out.println(str);
-      }
-      sorted = new ArrayList<>();
-      System.out.println();
-      System.out.println("systems conflicts");
-      System.out.println();
-      for (ArrayList<Systems> as : UpdateStorage.newSystemConflicts) {
-        sorted.add(as.get(0).getName());
-      }
-      Collections.sort(sorted);
-      for (String str : sorted) {
-        System.out.println(str);
-      }
       //executeMerge();
       
+      ////////////////Test converting from json to system objects
+      String x = "[[{'pl_name':'hi','st_name':'hello','sy_name':'bye', 'pl_mass':'999'}],[{'pl_name':'hi','st_name':'hello','sy_name':'bye', 'pl_mass':'999'}]]";
+      createObjectFromJson(x, UpdateStorage.planets);
+      for (ArrayList<Systems> each:UpdateStorage.planets) {
+        for (Systems e : each) {
+          System.out.println(e.getChild().getChild().getProperties());
+        }
+      }
     } catch (IOException e) {
       e.printStackTrace();
     } catch (ReadCSV.MissingColumnNameException e) {

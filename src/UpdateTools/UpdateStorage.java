@@ -350,15 +350,13 @@ public class UpdateStorage {
                             sysOEC1 = systemUpdates.get(i).get(1);
                             sysOEC2 = systemUpdates.get(j).get(1);
                             for (String key : sysOEC1.getProperties().keySet()) {
-                                if (!(sysOEC1.getProperties().get(key).equals(sysOEC2.getProperties().get(key)))) {
-                                    //dont do anything if both are null
-                                    //dont do anything if the value of second cataloge is null
-                                    //only update if value of first cataloge is null but second one isnt
-                                    if (sysOEC1.getProperties().get(key) == null && !(sysOEC2.getProperties().get(key) == null)) {
-                                        sysOEC1.getProperties().put(key, sysOEC2.getProperties().get(key));
-                                    }
-                                }
+                                //dont do anything if both are null
+                                //dont do anything if the value of second cataloge is null
+                                //only update if value of first cataloge is null but second one isnt
+                                if (sysOEC1.getProperties().get(key) == null && !(sysOEC2.getProperties().get(key) == null))
+                                    sysOEC1.getProperties().put(key, sysOEC2.getProperties().get(key));
                             }
+
                             //add the updated version of the OEC system into the array
                             triplets.add(sysOEC1);
 
@@ -366,6 +364,76 @@ public class UpdateStorage {
                             syPropConflicts.add(triplets);
                         }
 
+                    }
+                }
+            }
+        }
+        //remove from starting from the end of the list, so dont get index out of bounds
+        ArrayList<Integer> decreasing = new ArrayList<>(exclude);
+        Collections.sort(decreasing, Collections.reverseOrder());
+        for (int i : decreasing)
+            systems.remove(i);
+    }
+
+
+    public static void findStarPropertyConflicts(){
+
+        //stores indexes of conflict arrays
+        Set<Integer> exclude = new HashSet<>();
+        ArrayList<Systems> triplets;
+
+        String namest1 = "";
+        String namest2 = "";
+
+        Systems st1,stOEC1;
+        Systems st2,stOEC2;
+
+        for (int i = 0; i < starUpdates.size(); i++) {
+            if (!exclude.contains(i)) {
+                for (int j = i + 1; j < starUpdates.size(); j++) {
+                    if (!exclude.contains(j)) {
+                        st1 = starUpdates.get(i).get(0);
+                        st2 = starUpdates.get(j).get(0);
+
+                        namest1 = st1.getChild().getName();
+                        namest2 = st2.getChild().getName();
+
+                        triplets = new ArrayList<>();
+                        //check for conflicts
+                        //same name
+                        if (DifferenceDetector.onlyAlphaNumeric(namest1).equals(DifferenceDetector.onlyAlphaNumeric(namest2))) {
+                            //found conflict
+                            //add indexes of respective arrays into the conflict list
+                            exclude.add(i);
+                            exclude.add(j);
+
+                            //find source of respective star
+                            //insert list into respect position
+                            //[eu,nasa,oec]
+                            if (st1.getChild().getSource().equals("NASA")) {
+                                triplets.add(st2);
+                                triplets.add(st1);
+                            } else {
+                                triplets.add(st1);
+                                triplets.add(st2);
+                            }
+
+                            //get OEC values of the 2 catalogues and compare property values
+                            stOEC1 = starUpdates.get(i).get(1);
+                            stOEC2 = starUpdates.get(j).get(1);
+                            for (String key : stOEC1.getChild().getProperties().keySet()) {
+                                //dont do anything if both are null
+                                //dont do anything if the value of second cataloge is null
+                                //only update(ie.merge) if value of first cataloge is null but second one isnt
+                                if (stOEC1.getChild().getProperties().get(key) == null && !(stOEC2.getChild().getProperties().get(key) == null))
+                                    stOEC1.getChild().getProperties().put(key, stOEC2.getChild().getProperties().get(key));
+                            }
+                            //add the updated version of the OEC system into the array
+                            triplets.add(stOEC1);
+
+                            //add the merge system into the syPropConflicts
+                            stPropConflicts.add(triplets);
+                        }
                     }
                 }
             }

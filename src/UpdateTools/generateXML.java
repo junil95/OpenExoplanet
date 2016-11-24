@@ -63,14 +63,12 @@ public class generateXML {
                      Element elem = document.createElement(key.replaceAll("_", ""));
 
                      if (prop.containsKey(key + "_error_min") && prop.containsKey(key + "_error_max")) {
-						 if(prop.get(key+"_error_min")!= null && prop.get(key+"_error_max")!=null) {
-							 Attr attr = document.createAttribute("errorminus");
-							 attr.setValue(prop.get(key + "_error_min"));
-							 elem.setAttributeNode(attr);
-							 Attr attr2 = document.createAttribute("errorplus");
-							 attr2.setValue(prop.get(key + "_error_max"));
-							 elem.setAttributeNode(attr2);
-						 }
+                         Attr attr = document.createAttribute("errorminus");
+                         attr.setValue(prop.get(key + "_error_min"));
+                         elem.setAttributeNode(attr);
+                         Attr attr2 = document.createAttribute("errorplus");
+                         attr2.setValue(prop.get(key + "_error_max"));
+                         elem.setAttributeNode(attr2);
                      }
                      elem.appendChild(document.createTextNode(prop.get(key)));
                      rootElement.appendChild(elem);
@@ -81,8 +79,6 @@ public class generateXML {
 			 TransformerFactory transformerFactory = TransformerFactory.newInstance();
 			 Transformer transformer = transformerFactory.newTransformer();
              transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-			 transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-			 transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "6");
 		     DOMSource source = new DOMSource(document);
 		     StringWriter writer = new StringWriter();
 		     transformer.transform(source, new StreamResult(writer));
@@ -127,14 +123,12 @@ public class generateXML {
                      Element elem = document.createElement(key.replaceAll("_", ""));
 
                      if (prop.containsKey(key + "_error_min") && prop.containsKey(key + "_error_max")) {
-						 if(prop.get(key+"_error_min")!= null && prop.get(key+"_error_max")!=null) {
-							 Attr attr = document.createAttribute("errorminus");
-							 attr.setValue(prop.get(key + "_error_min"));
-							 elem.setAttributeNode(attr);
-							 Attr attr2 = document.createAttribute("errorplus");
-							 attr2.setValue(prop.get(key + "_error_max"));
-							 elem.setAttributeNode(attr2);
-						 }
+                         Attr attr = document.createAttribute("errorminus");
+                         attr.setValue(prop.get(key + "_error_min"));
+                         elem.setAttributeNode(attr);
+                         Attr attr2 = document.createAttribute("errorplus");
+                         attr2.setValue(prop.get(key + "_error_max"));
+                         elem.setAttributeNode(attr2);
                      }
                      elem.appendChild(document.createTextNode(prop.get(key)));
                      rootElement.appendChild(elem);
@@ -157,8 +151,6 @@ public class generateXML {
 			TransformerFactory transformerFactory = TransformerFactory.newInstance();
 			Transformer transformer = transformerFactory.newTransformer();
             transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
 		   	DOMSource source = new DOMSource(document);
 		   	StringWriter writer = new StringWriter();
 		   	transformer.transform(source, new StreamResult(writer));
@@ -202,14 +194,12 @@ public class generateXML {
                      Element elem = document.createElement(key.replaceAll("_", ""));
 
                      if (prop.containsKey(key + "_error_min") && prop.containsKey(key + "_error_max")) {
-						 if(prop.get(key+"_error_min")!= null && prop.get(key+"_error_max")!=null) {
-							 Attr attr = document.createAttribute("errorminus");
-							 attr.setValue(prop.get(key + "_error_min"));
-							 elem.setAttributeNode(attr);
-							 Attr attr2 = document.createAttribute("errorplus");
-							 attr2.setValue(prop.get(key + "_error_max"));
-							 elem.setAttributeNode(attr2);
-						 }
+                         Attr attr = document.createAttribute("errorminus");
+                         attr.setValue(prop.get(key + "_error_min"));
+                         elem.setAttributeNode(attr);
+                         Attr attr2 = document.createAttribute("errorplus");
+                         attr2.setValue(prop.get(key + "_error_max"));
+                         elem.setAttributeNode(attr2);
                      }
                      elem.appendChild(document.createTextNode(prop.get(key)));
                      rootElement.appendChild(elem);
@@ -232,9 +222,10 @@ public class generateXML {
 				 TransformerFactory transformerFactory = TransformerFactory.newInstance();
 				 Transformer transformer = transformerFactory.newTransformer();
                  transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-				 transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-				 transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
 				 DOMSource source = new DOMSource(document);
+                 //StreamResult result = new StreamResult(new File("C:\\file.xml"));
+                 //transformer.transform(source, result);
+
                  StringWriter writer = new StringWriter();
 				 transformer.transform(source, new StreamResult(writer));
 				 String output = writer.getBuffer().toString();
@@ -279,7 +270,7 @@ public class generateXML {
 			List<String[]> allNASAData = q.readAll();
 			Systems s = SystemBuilder.buildSystemWithCSVRow(Arrays.asList(allEUData.get(1)), ReadCSV.EU);
 			Systems n = SystemBuilder.buildSystemWithCSVRow(Arrays.asList(allNASAData.get(1)), ReadCSV.NASA);
-            //System.out.println(xmlPlanet(n));
+            System.out.println(xmlPlanet(n));
 			System.out.println(xmlSystem(s));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

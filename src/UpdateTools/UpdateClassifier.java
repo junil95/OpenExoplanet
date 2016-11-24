@@ -130,7 +130,7 @@ public class UpdateClassifier {
       NodeList tagNl = doc.getElementsByTagName("system");
       NodeList nameNl;
       Element element;
-      String mainName = "";
+      String mainName="";
       for (int i = 0; i < tagNl.getLength(); i++) {
         element = (Element) tagNl.item(i);
         nameNl = element.getElementsByTagName("name");
@@ -139,7 +139,7 @@ public class UpdateClassifier {
             mainName = nameNl.item(j).getTextContent();
           }
           if (onlyAlphaNumeric(nameNl.item(j).getTextContent()).
-                  equals(onlyAlphaNumeric(s.getName()))) {
+                  equals(onlyAlphaNumeric(s.getName()))){
             //Found the system, now assign the main name to the system object
             s.setName(mainName);
             return s;

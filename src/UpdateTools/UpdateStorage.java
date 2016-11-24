@@ -353,7 +353,7 @@ public class UpdateStorage {
                                 //dont do anything if both are null
                                 //dont do anything if the value of second cataloge is null
                                 //only update if value of first cataloge is null but second one isnt
-                                if (sysOEC1.getProperties().get(key) == null && !(sysOEC2.getProperties().get(key) == null))
+                                if ((sysOEC1.getProperties().get(key) == null) && (sysOEC2.getProperties().get(key) != null))
                                     sysOEC1.getProperties().put(key, sysOEC2.getProperties().get(key));
                             }
 
@@ -425,7 +425,7 @@ public class UpdateStorage {
                                 //dont do anything if both are null
                                 //dont do anything if the value of second cataloge is null
                                 //only update(ie.merge) if value of first cataloge is null but second one isnt
-                                if (stOEC1.getChild().getProperties().get(key) == null && !(stOEC2.getChild().getProperties().get(key) == null))
+                                if ((stOEC1.getChild().getProperties().get(key) == null) && (stOEC2.getChild().getProperties().get(key) != null))
                                     stOEC1.getChild().getProperties().put(key, stOEC2.getChild().getProperties().get(key));
                             }
                             //add the updated version of the OEC system into the array
@@ -444,6 +444,77 @@ public class UpdateStorage {
         for (int i : decreasing)
             systems.remove(i);
     }
+
+
+    public static void findPlanetPropertyConflicts(){
+
+        //stores indexes of conflict arrays
+        Set<Integer> exclude = new HashSet<>();
+        ArrayList<Systems> triplets;
+
+        String namepl1 = "";
+        String namepl2 = "";
+
+        Systems pl1,plOEC1;
+        Systems pl2,plOEC2;
+
+        for (int i = 0; i < planetUpdates.size(); i++) {
+            if (!exclude.contains(i)) {
+                for (int j = i + 1; j < planetUpdates.size(); j++) {
+                    if (!exclude.contains(j)) {
+                        pl1 = planetUpdates.get(i).get(0);
+                        pl2 = planetUpdates.get(j).get(0);
+
+                        namepl1 = pl1.getChild().getChild().getName();
+                        namepl2 = pl2.getChild().getChild().getName();
+
+                        triplets = new ArrayList<>();
+                        //check for conflicts
+                        //same name
+                        if (DifferenceDetector.onlyAlphaNumeric(namepl1).equals(DifferenceDetector.onlyAlphaNumeric(namepl2))) {
+                            //found conflict
+                            //add indexes of respective arrays into the conflict list
+                            exclude.add(i);
+                            exclude.add(j);
+
+                            //find source of respective star
+                            //insert list into respect position
+                            //[eu,nasa,oec]
+                            if (pl1.getChild().getChild().getSource().equals("NASA")) {
+                                triplets.add(pl2);
+                                triplets.add(pl1);
+                            } else {
+                                triplets.add(pl1);
+                                triplets.add(pl2);
+                            }
+
+                            //get OEC values of the 2 catalogues and compare property values
+                            plOEC1 = planetUpdates.get(i).get(1);
+                            plOEC2 = planetUpdates.get(j).get(1);
+                            for (String key : plOEC1.getChild().getChild().getProperties().keySet()) {
+                                //dont do anything if both are null
+                                //dont do anything if the value of second cataloge is null
+                                //only update(ie.merge) if value of first cataloge is null but second one isnt
+                                if ((plOEC1.getChild().getChild().getProperties().get(key) == null) && (plOEC2.getChild().getChild().getProperties().get(key) != null))
+                                    plOEC1.getChild().getChild().getProperties().put(key, plOEC2.getChild().getChild().getProperties().get(key));
+                            }
+                            //add the updated version of the OEC system into the array
+                            triplets.add(plOEC1);
+
+                            //add the merge system into the syPropConflicts
+                            plPropConflicts.add(triplets);
+                        }
+                    }
+                }
+            }
+        }
+        //remove from starting from the end of the list, so dont get index out of bounds
+        ArrayList<Integer> decreasing = new ArrayList<>(exclude);
+        Collections.sort(decreasing, Collections.reverseOrder());
+        for (int i : decreasing)
+            systems.remove(i);
+    }
+    
 
     public static void main(String[] args) {
         try {

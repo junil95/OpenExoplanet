@@ -68,7 +68,7 @@ public class OECMain extends HttpServlet
         	updating = true;
     	}
     	else if (req.getRequestURI().equals("/request")){
-    		if(updating = false){
+    		if(updating == false){
     			resp.getWriter().print("Still updating...");
     			resp.getWriter().flush();
     		}else{

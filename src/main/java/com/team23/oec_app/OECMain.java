@@ -57,12 +57,17 @@ public class OECMain extends HttpServlet
     	else if (req.getRequestURI().equals("/update")){
     		// Calling from Driver to get all the new updated celestial objects
         	// Doing the initial merge and setting up local repos
+        	resp.getWriter().println("sending...");
+    		
         	if(!Driver.isInitialMergeDone()){
         		Driver.initialSetupOrResetLocalCopies();
         		
             	// Feteching initial updates
         		Driver.detectInitialUpdates(); 
-        	}	
+        	}
+        	
+    		
+        	resp.getWriter().println("sending...");
 
     		/*
     		ArrayList<String> list = new ArrayList<String>();
@@ -77,7 +82,6 @@ public class OECMain extends HttpServlet
     		list.add(Driver.getNewStarConflicts());
     		
     		*/
-    		
     		System.out.println();	
     		resp.getWriter().print(Driver.getNewSystemConflicts());
     		resp.getWriter().close();

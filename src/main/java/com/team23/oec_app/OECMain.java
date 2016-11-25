@@ -58,6 +58,7 @@ public class OECMain extends HttpServlet
     		// Calling from Driver to get all the new updated celestial objects
         	// Doing the initial merge and setting up local repos
         	resp.getWriter().println("sending...");
+        	resp.getWriter().flush();
     		
         	if(!Driver.isInitialMergeDone()){
         		Driver.initialSetupOrResetLocalCopies();
@@ -68,6 +69,7 @@ public class OECMain extends HttpServlet
         	
     		
         	resp.getWriter().println("sending...");
+        	resp.getWriter().flush();
 
     		/*
     		ArrayList<String> list = new ArrayList<String>();

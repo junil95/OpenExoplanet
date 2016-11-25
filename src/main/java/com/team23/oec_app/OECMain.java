@@ -120,6 +120,9 @@ public class OECMain extends HttpServlet
         	Driver.executeMerge();
     		resp.getWriter().close();
     	}
+    	else{
+    		super.doPost(req, resp);
+    	}
     }
     
     /**

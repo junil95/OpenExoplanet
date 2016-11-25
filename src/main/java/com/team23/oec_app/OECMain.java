@@ -70,10 +70,12 @@ public class OECMain extends HttpServlet
     	else if (req.getRequestURI().equals("/request")){
     		if(updating = false){
     			resp.getWriter().print("Still updating...");
+    			resp.getWriter().flush();
     		}else{
         		resp.getWriter().print(Driver.getNewSystemConflicts());
-        		resp.getWriter().close();
+        		resp.getWriter().flush();
     		}
+    		resp.getWriter().close();
     		// Calling from Driver to get all the new updated celestial objects
         	// Doing the initial merge and setting up local repos
 

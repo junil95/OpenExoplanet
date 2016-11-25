@@ -134,6 +134,8 @@ function generateRowHTML(info0, info1, info2, info3, info4, num){
 
 function update(){
   // Getting the string data from the server
+  $.get("https://pacific-shelf-92985.herokuapp.com/update", function(data) {
+  }
   var data = request;
   // Restting systemObjs
   systemObjs = [];
@@ -143,7 +145,7 @@ function update(){
 }
 
 function request(){
-  $.get("https://pacific-shelf-92985.herokuapp.com/update", function(data) {
+  $.get("https://pacific-shelf-92985.herokuapp.com/request", function(data) {
     if(data === "Still updating..."){
         setTimeout(function(){
           request();

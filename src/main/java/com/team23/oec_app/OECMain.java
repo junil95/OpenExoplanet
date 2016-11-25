@@ -60,6 +60,9 @@ public class OECMain extends HttpServlet
     		resp.getWriter().print(readFile(req.getRequestURI().substring(1), StandardCharsets.UTF_8));
     		resp.getWriter().close();
     	}
+    	else if (req.getRequestURI().contains(".ttf")){
+    		super.doGet(req, resp);
+    	}
     	else if (req.getRequestURI().equals("/update")){
     		updating = false;
     		counter += 1;

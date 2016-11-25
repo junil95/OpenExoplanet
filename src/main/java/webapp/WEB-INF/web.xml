@@ -4,7 +4,4 @@
 
 <web-app>
   <display-name>OEC Organizer</display-name>
-  <session-config>
-    <session-timeout>1800</session-timeout>
-  </session-config>
 </web-app>

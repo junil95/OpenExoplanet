@@ -122,7 +122,6 @@ public class OECMain extends HttpServlet
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
         server.setHandler(context);
-        context.getSessionHandler().getSessionManager().setMaxInactiveInterval(30000000);
         context.addServlet(new ServletHolder(new OECMain()),"/*");
         
         server.start();

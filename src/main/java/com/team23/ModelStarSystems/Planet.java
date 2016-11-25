@@ -1,6 +1,7 @@
 package com.team23.ModelStarSystems;
 
 import java.util.HashMap;
+
 import com.team23.UpdateTools.ReadCSV;
 
 /**
@@ -17,4 +18,6 @@ public class Planet extends CelestialObjects {
     setName(name);
     setProperties(ReadCSV.getPlanetLabels(), "pl_", properties);
   }
+  
+  
 }

@@ -21,7 +21,6 @@ import javax.xml.xpath.XPathFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-import static com.team23.UpdateTools.SystemFinder.getSystem;
 
 /**
  *
@@ -143,7 +142,7 @@ public class SystemFinder {
             //Star s1 = new Star("kasfi",update2,p1,ReadCSV.EU);
             HashMap<String, String> update3 = new HashMap<>();
             Systems sys = new Systems("16 cYgni", update3, s1, ReadCSV.EU);
-            System.out.println(getSystem(s1));
+            System.out.println(UpdateTools.SystemFinder.getSystem(s1));
             //System.out.println(UpdateTools.SystemFinder.systemCheck(sys));
         } catch (SystemFinder.MissingCelestialObjectException e) {
             e.printStackTrace();

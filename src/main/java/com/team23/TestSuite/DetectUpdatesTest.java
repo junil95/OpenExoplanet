@@ -1,5 +1,9 @@
 package com.team23.TestSuite;
 
+import org.apache.commons.io.FileUtils;
+import org.junit.Assert;
+import org.junit.Test;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -14,6 +18,7 @@ import com.team23.UpdateTools.ReadCSV;
 import com.team23.UpdateTools.UpdateStorage;
 
 import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Created by dhrumil on 13/11/16.

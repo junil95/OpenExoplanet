@@ -21,15 +21,17 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import com.opencsv.CSVReader;
-import com.team23.ModelStarSystems.SystemBuilder;
 
+import com.team23.ModelStarSystems.SystemBuilder;
 import com.team23.ModelStarSystems.Systems;
+
 import static com.team23.UpdateTools.DifferenceDetector.getNewPlanetIDs;
 import static com.team23.UpdateTools.ReadCSV.EU;
 import static com.team23.UpdateTools.ReadCSV.NASA;
 import static com.team23.UpdateTools.ReadCSV.getIndexMappings;
 import static com.team23.UpdateTools.ReadCSV.mapPlanetToData;
 import static com.team23.UpdateTools.ReadCSV.onlyAlphanumericList;
+import static com.team23.UpdateTools.UpdateStorage.updates;
 
 
 /**
@@ -150,7 +152,8 @@ public class DifferenceDetector {
     build.put("st_name", "alright");
     build.put("sy_name", "HD 107383");
     try {
-      Systems s = UpdateClassifier.assignOecSyName(SystemBuilder.buildSystemWithHashMap(build, ReadCSV.EU));
+      Systems s = SystemBuilder.buildSystemWithHashMap(build, ReadCSV.EU);
+      UpdateClassifier.assignOecSyName(s, "system");
       System.out.println(s.getName());
     } catch (SystemBuilder.MissingCelestialObjectNameException e) {
       e.printStackTrace();

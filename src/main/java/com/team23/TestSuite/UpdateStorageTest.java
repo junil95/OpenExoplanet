@@ -1,13 +1,11 @@
 package com.team23.TestSuite;
 
+import com.team23.ModelStarSystems.SystemBuilder;
 import com.team23.ModelStarSystems.Systems;
 import com.team23.UpdateTools.PullingTools;
 import com.team23.UpdateTools.ReadCSV;
 import com.team23.UpdateTools.UpdateStorage;
-
 import com.opencsv.CSVReader;
-import com.team23.ModelStarSystems.SystemBuilder;
-
 import org.junit.Before;
 import org.junit.Test;
 

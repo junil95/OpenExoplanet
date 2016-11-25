@@ -1,12 +1,11 @@
 package com.team23.TestSuite;
 
+import com.team23.ModelStarSystems.SystemBuilder;
 import com.team23.ModelStarSystems.Systems;
 import com.team23.UpdateTools.PullingTools;
 import com.team23.UpdateTools.ReadCSV;
 import com.team23.UpdateTools.generateXML;
 import com.opencsv.CSVReader;
-import com.team23.ModelStarSystems.SystemBuilder;
-
 import org.junit.Test;
 import org.w3c.dom.Document;
 
@@ -17,7 +16,6 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
 import java.io.File;
 import java.io.FileReader;
 import java.io.StringWriter;
@@ -25,7 +23,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.team23.UpdateTools.Merge.newSystem;
-import static org.junit.Assert.assertEquals;
+import static junit.framework.TestCase.assertEquals;
 
 /**
  * Created by Rishi on 2016-11-13.

@@ -674,7 +674,6 @@ public class Driver {
 //        System.out.println(str);
 //      }
 
->>>>>>> master
       System.out.println();
       System.out.println("System Attribute changes");
       System.out.println();
@@ -683,11 +682,7 @@ public class Driver {
         System.out.println(as.get(0).getProperties());
         System.out.println(as.get(1).getProperties());
       }
-<<<<<<< HEAD
-  
-=======
 
->>>>>>> master
       System.out.println();
       System.out.println("Star Attribute changes");
       System.out.println();
@@ -696,11 +691,7 @@ public class Driver {
         System.out.println(as.get(0).getChild().getProperties());
         System.out.println(as.get(1).getChild().getProperties());
       }
-<<<<<<< HEAD
-     
-=======
 
->>>>>>> master
       System.out.println();
       System.out.println("Planet Attribute changes");
       System.out.println();
@@ -739,12 +730,6 @@ public class Driver {
         System.out.println(as.get(1).getChild().getChild().getProperties());
         System.out.println(as.get(2).getChild().getChild().getProperties());
       }
-<<<<<<< HEAD
-=======
-  
-  
-  
->>>>>>> master
       executeMerge();
       
       ////////////////Test converting from json to system objects

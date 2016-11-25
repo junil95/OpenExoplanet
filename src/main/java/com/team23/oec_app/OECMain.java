@@ -115,11 +115,15 @@ public class OECMain extends HttpServlet
         Server server = new Server(Integer.valueOf(System.getenv("PORT")));
         
         ServerConnector http = new ServerConnector(server);
-        http.setHost("localhost");
         http.setPort(8080);
         http.setIdleTimeout(3000000);
-        
         server.addConnector(http);
+        
+        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
+        context.setContextPath("/");
+        context.getSessionHandler().getSessionManager().setMaxInactiveInterval(30000);
+        server.setHandler(context);
+        context.addServlet(new ServletHolder(new OECMain()),"/*");
         
         server.start();
         server.join(); 

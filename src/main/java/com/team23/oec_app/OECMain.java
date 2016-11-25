@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.webapp.WebAppContext;
@@ -76,7 +77,7 @@ public class OECMain extends HttpServlet
     		list.add(Driver.getNewStarConflicts());
     		
     		*/
-    		System.out.println(Driver.getNewPlanetConflicts());	
+    		//System.out.println(Driver.getNewPlanetConflicts());	
     		resp.getWriter().print(Driver.getNewSystemConflicts());
     		resp.getWriter().close();
     	}
@@ -112,6 +113,11 @@ public class OECMain extends HttpServlet
 
     public static void main(String[] args) throws Exception{    	
         Server server = new Server(Integer.valueOf(System.getenv("PORT")));
+        
+        ServerConnector http = new ServerConnector(server);
+        http.setHost("localhost");
+        http.setPort(8080);
+        http.setIdleTimeout(3000000);
         
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");

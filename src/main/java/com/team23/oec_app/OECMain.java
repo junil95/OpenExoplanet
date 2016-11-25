@@ -27,6 +27,8 @@ import com.team23.UpdateTools.generateXML;
 
 public class OECMain extends HttpServlet
 {
+	
+	private boolean updating = false;
 
 	/**
 	 * Default method used to handle all GET requests given to the server.
@@ -57,13 +59,24 @@ public class OECMain extends HttpServlet
     		resp.getWriter().close();
     	}
     	else if (req.getRequestURI().equals("/update")){
-    		// Calling from Driver to get all the new updated celestial objects
-        	// Doing the initial merge and setting up local repos
+    		updating = false;
         	if(!Driver.isInitialMergeDone()){
         		Driver.initialSetupOrResetLocalCopies();
             	// Feteching initial updates
         		Driver.detectInitialUpdates(); 
         	}
+        	updating = true;
+    	}
+    	else if (req.getRequestURI().equals("/request")){
+    		if(updating = false){
+    			resp.getWriter().print("Still updating...");
+    		}else{
+        		resp.getWriter().print(Driver.getNewSystemConflicts());
+        		resp.getWriter().close();
+    		}
+    		// Calling from Driver to get all the new updated celestial objects
+        	// Doing the initial merge and setting up local repos
+
     		/*
     		ArrayList<String> list = new ArrayList<String>();
     		
@@ -78,8 +91,6 @@ public class OECMain extends HttpServlet
     		
     		*/
     		//System.out.println(Driver.getNewPlanetConflicts());	
-    		resp.getWriter().print(Driver.getNewSystemConflicts());
-    		resp.getWriter().close();
     	}
     }
     

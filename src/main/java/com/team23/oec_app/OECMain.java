@@ -55,14 +55,6 @@ public class OECMain extends HttpServlet
     		resp.getWriter().print(readFile(req.getRequestURI().substring(1), StandardCharsets.UTF_8));
     		resp.getWriter().close();
     	}
-    	else if(req.getRequestURI().contains(".woff")){
-    		resp.setContentType("application/font-woff");
-    		resp.getWriter().print(readFile(req.getRequestURI().substring(1), StandardCharsets.UTF_8));
-    		resp.getWriter().close();
-    	}
-    	else if (req.getRequestURI().contains(".ttf")){
-    		super.doGet(req, resp);
-    	}
     	else if (req.getRequestURI().equals("/update")){
     		updating = false;
     		counter += 1;
@@ -84,7 +76,19 @@ public class OECMain extends HttpServlet
     			resp.getWriter().flush();
     		}
     		else {
+    			resp.getWriter().print("[");
         		resp.getWriter().print(Driver.getNewSystemConflicts());
+        		resp.getWriter().print(",");
+        		resp.getWriter().print(Driver.getNewStarConflicts());
+        		resp.getWriter().print(",");
+        		resp.getWriter().print(Driver.getNewPlanetConflicts());
+        		resp.getWriter().print(",");
+        		resp.getWriter().print(Driver.getNewPlanets());
+        		resp.getWriter().print(",");
+        		resp.getWriter().print(Driver.getNewStars());
+        		resp.getWriter().print(",");
+        		resp.getWriter().print(Driver.getNewSystems());
+        		resp.getWriter().print("]");
         		resp.getWriter().flush();
     		}
     		resp.getWriter().close();

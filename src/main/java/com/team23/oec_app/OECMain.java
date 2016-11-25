@@ -121,11 +121,6 @@ public class OECMain extends HttpServlet
         
         server.addConnector(http);
         
-        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        context.setContextPath("/");
-        server.setHandler(context);
-        context.addServlet(new ServletHolder(new OECMain()),"/*");
-        
         server.start();
         server.join(); 
     }

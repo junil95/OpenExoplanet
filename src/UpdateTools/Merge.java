@@ -215,8 +215,8 @@ public class Merge {
           NodeList sysElemList = syselem.getElementsByTagName(key);
           if (sysElemList.getLength() < 1) {
             Node imported = sysdoc.importNode(generateXML.xmlValue(key, system.getProperties().get(key)), true);
-            //TODO: rightascension tag may not exist, will crash, better to insert after name
-            syselem.insertBefore(imported, syselem.getElementsByTagName("rightascension").item(0));
+            syselem.insertBefore(imported, syselem.getElementsByTagName("name").item(0).getNextSibling());
+            //inserted after name instead of before "rightascension"
           } else {
             sysElemList.item(0).setTextContent(system.getProperties().get(key));
           }
@@ -271,7 +271,7 @@ public class Merge {
               if (starKeyList.getLength() < 1) {
                 //if the attribute does not exist, add it in a new node
                 Node imported = sysdoc.importNode(generateXML.xmlValue(key, starProps.get(key)), true);
-                star.insertBefore(imported, star.getElementsByTagName("spectraltype").item(0));
+                star.insertBefore(imported, star.getElementsByTagName("name").item(0).getNextSibling());
               }
               else{
                 //if it does exist change the text content to the new value

@@ -699,8 +699,21 @@ public class Driver {
       }
   
   
-  
-      executeMerge();
+     executeMerge();
+      
+//      //Flow
+//      //When the user clicks the update button check this
+//      if (!isInitialMergeDone()){
+//        //need to create local repos and config setting because initial merge is not done
+//        initialSetupOrResetLocalCopies();
+//        //Now do the initial update
+//        detectInitialUpdates();
+//
+//      }else{
+//        //Initial merge has already been done
+//
+//      }
+        
       
       ////////////////Test converting from json to system objects
 //      String x = "[[{'pl_name':'hi','st_name':'hello','sy_name':'bye', 'pl_mass':'999'}],[{'pl_name':'hi','st_name':'hello','sy_name':'bye', 'pl_mass':'999'}]]";

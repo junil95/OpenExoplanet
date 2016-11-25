@@ -31,6 +31,7 @@ import static UpdateTools.ReadCSV.NASA;
 import static UpdateTools.ReadCSV.getIndexMappings;
 import static UpdateTools.ReadCSV.mapPlanetToData;
 import static UpdateTools.ReadCSV.onlyAlphanumericList;
+import static UpdateTools.UpdateStorage.updates;
 
 
 /**
@@ -151,7 +152,8 @@ public class DifferenceDetector {
     build.put("st_name", "alright");
     build.put("sy_name", "HD 107383");
     try {
-      Systems s = UpdateClassifier.assignOecSyName(SystemBuilder.buildSystemWithHashMap(build, ReadCSV.EU));
+      Systems s = SystemBuilder.buildSystemWithHashMap(build, ReadCSV.EU);
+      UpdateClassifier.assignOecSyName(s, "system");
       System.out.println(s.getName());
     } catch (SystemBuilder.MissingCelestialObjectNameException e) {
       e.printStackTrace();

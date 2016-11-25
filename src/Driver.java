@@ -36,6 +36,12 @@ import static UpdateTools.PullingTools.pullNasaArchive;
 import static UpdateTools.PullingTools.pullOecOneFile;
 import static UpdateTools.PullingTools.pullOecSeperateFiles;
 import static UpdateTools.UpdateStorage.findNewPlanetConflicts;
+import static UpdateTools.UpdateStorage.plPropConflicts;
+import static UpdateTools.UpdateStorage.planetUpdates;
+import static UpdateTools.UpdateStorage.stPropConflicts;
+import static UpdateTools.UpdateStorage.starUpdates;
+import static UpdateTools.UpdateStorage.systemUpdates;
+import static UpdateTools.UpdateStorage.updates;
 
 /**
  * Created by dhrumil on 06/11/16.
@@ -114,6 +120,7 @@ public class Driver {
       DifferenceDetector.getNewPlanetIDs(PullingTools.localExoplanetEu, ReadCSV.EU);
       DifferenceDetector.getNewPlanetIDs(PullingTools.localNasaArchive, ReadCSV.NASA);
       //Determine if they are really new planets by looking at OEC
+      
       UpdateClassifier.classifyUpdates();
       //Find conflicts in the classified updates
       //Order matters when finding conflicts, do the systems first, since there can be more than
@@ -126,6 +133,58 @@ public class Driver {
     }
   }
   
+<<<<<<< HEAD
+=======
+  //to find conflicts in the attributes
+  
+  /**
+   * Run this when user clicks on update button. Don't run this when doing detectInitialUpdates
+   */
+  public static void updateDetection() {
+    try {
+      //Need to do this to find the important columns in the other databases
+      ReadCSV.mapIndexes();
+      //Get the new planets from NASA and EU
+      UpdateStorage.clearAll();
+      //need to create latest catalogue copy
+      
+      /* Uncomment after
+      UpdateTools.PullingTools.createLatestCatalogueCopy();
+      */
+      
+      //find updates between different versions of the nasa database
+      detectUpdates(ReadCSV.mapPlanetToData(PullingTools.localNasaArchiveOld, ReadCSV.NASA),
+              ReadCSV.mapPlanetToData(PullingTools.localNasaArchive, ReadCSV.NASA), ReadCSV.NASA);
+      //find updates between the different versions of the eu database
+      detectUpdates(ReadCSV.mapPlanetToData(PullingTools.localExoplanetEuOld, ReadCSV.EU),
+              ReadCSV.mapPlanetToData(PullingTools.localExoplanetEu, ReadCSV.EU), ReadCSV.EU);
+      //Classify new additions into planets, stars and systems.
+      UpdateClassifier.classifyUpdates();
+      //classify attributes
+      UpdateClassifier.removeInvalidUpdatesAndAssignOecNames();
+      
+      //add the corresponding oec data to the attributes
+      UpdateClassifier.addSysOECData();
+      UpdateClassifier.addStarOECData();
+      UpdateClassifier.addPlanetOECData();
+      
+      //Find conflicts in the classified updates
+      //Order matters when finding conflicts, do the systems first, since there can be more than
+      //two system conflicts.
+      UpdateStorage.findNewSystemConflicts();
+      UpdateStorage.findNewStarConflicts();
+      UpdateStorage.findNewPlanetConflicts();
+      
+      //Find conflicts in the attribute lists here
+      UpdateStorage.findSystemPropertyConflicts();
+      UpdateStorage.findStarPropertyConflicts();
+      UpdateStorage.findPlanetPropertyConflicts();
+    } catch (ReadCSV.MissingColumnNameException | IOException e) {
+      e.printStackTrace();
+    }
+  }
+  
+>>>>>>> master
   //TODO: store the file names that updated in the merge somewhere. Also need to add the merge
   //part for the other stuff, once Rishi is done
   
@@ -148,59 +207,27 @@ public class Driver {
     for (ArrayList<Systems> as : UpdateStorage.planets) {
       Merge.newPlanet(as.get(0), generateXML.xmlPlanet(as.get(0)));
     }
-  }
+<<<<<<< HEAD
+=======
   
-  /**
-   * The JSON string is in the format List<List<Hashmap<String,String>>. In this case, the inner
-   * list is singleton lists with dictionaries. The dictionaries contain the information of a single
-   * system. The inner lists are not really required but are used to keep the format consistent
-   * with the other methods that return json strings.
-   *
-   * @return JSON string containing new planets
-   */
-  public static String getNewPlanets() {
-    return convertToMap(UpdateStorage.planets);
-  }
+    //merge updates now
+    for (ArrayList<Systems> as : UpdateStorage.systemUpdates) {
+      Merge.newSystemVals(as.get(0));
+    }
   
-  /**
-   * Add the new planets based on the user selection
-   *
-   * The input JSON string should be in the format List<List<Hashmap<String,String>>.
-   * In this case, the inner
-   * list is singleton lists with dictionaries. The dictionaries contain the information of a single
-   * system. The inner lists are not really required but are used to keep the format consistent
-   * with the other methods that return json strings.
-   */
-  public static void setNewPlanets(String json) {
-    createObjectFromJson(json, UpdateStorage.planets);
-  }
+    //merge updates now
+    for (ArrayList<Systems> as : UpdateStorage.starUpdates) {
+      Merge.newStarVals(as.get(0));
+    }
   
-  /**
-   * Add the new stars based on the user selection
-   *
-   * The input JSON string should be in the format List<List<Hashmap<String,String>>.
-   * In this case, the inner
-   * list is singleton lists with dictionaries. The dictionaries contain the information of a single
-   * system. The inner lists are not really required but are used to keep the format consistent
-   * with the other methods that return json strings.
-   */
-  public static void setNewStars(String json) {
-    createObjectFromJson(json, UpdateStorage.stars);
+    //merge updates now
+    for (ArrayList<Systems> as : UpdateStorage.planetUpdates) {
+      Merge.newPlanetVals(as.get(0));
+    }
+    
+    //still need to add things for the conflicts and attributes here
+>>>>>>> master
   }
-  
-  /**
-   * Add the new systems based on the user selection
-   *
-   * The input JSON string should be in the format List<List<Hashmap<String,String>>.
-   * In this case, the inner
-   * list is singleton lists with dictionaries. The dictionaries contain the information of a single
-   * system. The inner lists are not really required but are used to keep the format consistent
-   * with the other methods that return json strings.
-   */
-  public static void setNewSystems(String json) {
-    createObjectFromJson(json, UpdateStorage.systems);
-  }
-  
   /**
    * The JSON string is in the format List<List<Hashmap<String,String>>. In this case, the inner
    * list is singleton lists with dictionaries. The dictionaries contain the information of a single
@@ -223,6 +250,81 @@ public class Driver {
    */
   public static String getNewSystems() {
     return convertToMap(UpdateStorage.systems);
+  }
+  
+  /**
+   * The JSON string is in the format List<List<Hashmap<String,String>>. In this case, the inner
+   * list is singleton lists with dictionaries. The dictionaries contain the information of a single
+   * system. The inner lists are not really required but are used to keep the format consistent
+   * with the other methods that return json strings.
+   *
+   * @return JSON string containing new planets
+   */
+  public static String getNewPlanets() {
+    return convertToMap(UpdateStorage.planets);
+  }
+  
+  /**
+   * The JSON string is in the format List<List<Hashmap<String,String>>. In this case, the inner
+   * list is a tuple of dictionaries. The dictionary at index 0 contains properties in EU or NASA
+   * catalogue
+   * and the dictionary at index 1 contains the corresponding data from the OEC database
+   */
+  public static String getPlanetAttributeUpdates() {
+    return convertToMap(UpdateStorage.planetUpdates);
+  }
+  
+  /**
+   * The JSON string is in the format List<List<Hashmap<String,String>>. In this case, the inner
+   * list is a tuple of dictionaries. The dictionary at index 0 contains properties in EU or NASA
+   * catalogue
+   * and the dictionary at index 1 contains the corresponding data from the OEC database
+   */
+  public static String getSystemAttributeUpdates() {
+    return convertToMap(UpdateStorage.systemUpdates);
+  }
+  
+  /**
+   * The JSON string is in the format List<List<Hashmap<String,String>>. In this case, the inner
+   * list is a tuple of dictionaries. The dictionary at index 0 contains properties in EU or NASA
+   * catalogue
+   * and the dictionary at index 1 contains the corresponding data from the OEC database
+   */
+  public static String getStarAttributeUpdates() {
+    return convertToMap(UpdateStorage.starUpdates);
+  }
+  
+  /**
+   * The JSON string is in the format List<List<Hashmap<String,String>>. In this case, the inner
+   * list is a triplet of dictionaries. The dictionary at index 0 contains properties in EU
+   * catalogue
+   * and the dictionary at index 1 contains properties causing conflicts in NASA and the
+   * dictionary at index 2 contains the correspong OEC data
+   */
+  public static String getStarAttributeConflicts() {
+    return convertToMap(UpdateStorage.stPropConflicts);
+  }
+  
+  /**
+   * The JSON string is in the format List<List<Hashmap<String,String>>. In this case, the inner
+   * list is a triplet of dictionaries. The dictionary at index 0 contains properties in EU
+   * catalogue
+   * and the dictionary at index 1 contains properties causing conflicts in NASA and the
+   * dictionary at index 2 contains the correspong OEC data
+   */
+  public static String getSystemAttributeConflicts() {
+    return convertToMap(UpdateStorage.syPropConflicts);
+  }
+  
+  /**
+   * The JSON string is in the format List<List<Hashmap<String,String>>. In this case, the inner
+   * list is a triplet of dictionaries. The dictionary at index 0 contains properties in EU
+   * catalogue
+   * and the dictionary at index 1 contains properties causing conflicts in NASA and the
+   * dictionary at index 2 contains the correspong OEC data
+   */
+  public static String getPlanetAttributeConflicts() {
+    return convertToMap(UpdateStorage.plPropConflicts);
   }
   
   /**
@@ -254,7 +356,33 @@ public class Driver {
   public static String getNewStarConflicts() {
     return convertToMap(UpdateStorage.newStarConflicts);
   }
+  /**
+   * Add the new planets based on the user selection
+   *
+   * The input JSON string should be in the format List<List<Hashmap<String,String>>.
+   * In this case, the inner
+   * list is singleton lists with dictionaries. The dictionaries contain the information of a single
+   * system. The inner lists are not really required but are used to keep the format consistent
+   * with the other methods that return json strings.
+   */
+  public static void setNewPlanets(String json) {
+    createObjectFromJson(json, UpdateStorage.planets);
+  }
   
+  /**
+   * Add the new stars based on the user selection
+   *
+   * The input JSON string should be in the format List<List<Hashmap<String,String>>.
+   * In this case, the inner
+   * list is singleton lists with dictionaries. The dictionaries contain the information of a single
+   * system. The inner lists are not really required but are used to keep the format consistent
+   * with the other methods that return json strings.
+   */
+  public static void setNewStars(String json) {
+    createObjectFromJson(json, UpdateStorage.stars);
+  }
+  
+<<<<<<< HEAD
   //TODO: Can probably remove these three since after the conflicts are resolved, the data
   //can be passed in just the 3 regular lists
   /**
@@ -262,29 +390,69 @@ public class Driver {
    * The JSON string should be in the format List<List<Hashmap<String,String>>. In this case, the inner
    * list is a singleton containing a dictionary of the changes that the user made. The inner list isn't
    * required but it is being used to keep the format consistent
+=======
+  /**
+   * Add the new systems based on the user selection
+   *
+   * The input JSON string should be in the format List<List<Hashmap<String,String>>.
+   * In this case, the inner
+   * list is singleton lists with dictionaries. The dictionaries contain the information of a single
+   * system. The inner lists are not really required but are used to keep the format consistent
+   * with the other methods that return json strings.
    */
-  public static void setNewStarConflicts(String json) {
-    createObjectFromJson(json, UpdateStorage.newStarConflicts);
+  public static void setNewSystems(String json) {
+    createObjectFromJson(json, UpdateStorage.systems);
   }
   
   /**
+   *
+   * The input JSON string should be in the format List<List<Hashmap<String,String>>.
+   * In this case, the inner
+   * list is singleton lists with dictionaries. The dictionaries contain the information of a single
+   * system. The inner lists are not really required but are used to keep the format consistent
+   * with the other methods that return json strings.
+>>>>>>> master
+   */
+  public static void setPlanetAttributes(String json) {
+    createObjectFromJson(json, UpdateStorage.planetUpdates);
+  }
+  
+  /**
+<<<<<<< HEAD
    * Populate system conflicts based on user selection
    * The JSON string should be in the format List<List<Hashmap<String,String>>. In this case, the inner
    * list is a singleton containing a dictionary of the changes that the user made. The inner list isn't
    * required but it is being used to keep the format consistent
+=======
+   *
+   * The input JSON string should be in the format List<List<Hashmap<String,String>>.
+   * In this case, the inner
+   * list is singleton lists with dictionaries. The dictionaries contain the information of a single
+   * system. The inner lists are not really required but are used to keep the format consistent
+   * with the other methods that return json strings.
+>>>>>>> master
    */
-  public static void setNewSystemConflicts(String json) {
-    createObjectFromJson(json, UpdateStorage.newSystemConflicts);
+  public static void setSystemtAttributes(String json) {
+    createObjectFromJson(json, UpdateStorage.systemUpdates);
   }
   
   /**
+<<<<<<< HEAD
    * Populate planet conflicts based on user selection
    * The JSON string should be in the format List<List<Hashmap<String,String>>. In this case, the inner
    * list is a singleton containing a dictionary of the changes that the user made. The inner list isn't
    * required but it is being used to keep the format consistent
+=======
+   *
+   * The input JSON string should be in the format List<List<Hashmap<String,String>>.
+   * In this case, the inner
+   * list is singleton lists with dictionaries. The dictionaries contain the information of a single
+   * system. The inner lists are not really required but are used to keep the format consistent
+   * with the other methods that return json strings.
+>>>>>>> master
    */
-  public static void setNewPlanetConflicts(String json) {
-    createObjectFromJson(json, UpdateStorage.newPlanetConflicts);
+  public static void setStarAttributes(String json) {
+    createObjectFromJson(json, UpdateStorage.starUpdates);
   }
   
   /**
@@ -334,23 +502,18 @@ public class Driver {
         //Need to recreate the label identifiers
         for (String label : s.getProperties().keySet()) {
           //checking the null condition b/c gson removes keys with null values
-          if (s.getProperties().get(label) == null)
-            map.put("sy_" + label, "");
-          else
+          if (s.getProperties().get(label) != null)
             map.put("sy_" + label, s.getProperties().get(label));
         }
         
         for (String label : s.getChild().getProperties().keySet()) {
-          if (s.getChild().getProperties().get(label) == null)
-            map.put("st_" + label, "");
-          else
+          if (s.getChild().getProperties().get(label) != null)
             map.put("st_" + label, s.getChild().getProperties().get(label));
         }
         for (String label : s.getChild().getChild().getProperties().keySet()) {
-          if (s.getChild().getChild().getProperties().get(label) == null) {
-            map.put("pl_" + label, "");
-          } else
+          if (s.getChild().getChild().getProperties().get(label) != null) {
             map.put("pl_" + label, s.getChild().getChild().getProperties().get(label));
+          }
         }
         diffCatalogueData.add(map);
       }
@@ -449,61 +612,149 @@ public class Driver {
 //
 //      }
       
+      
       //System.out.println(getNewPlanetConflicts());
       //System.out.println(getNewPlanets());
       //initialSetupOrResetLocalCopies();
+      
 //      System.out.println(isInitialMergeDone());
 //      String json = getNewPlanetConflicts();
 //      createObjectFromJson(json);
+      
+      ///////////////////Test updating
       ArrayList<String> sorted = new ArrayList<>();
+<<<<<<< HEAD
       detectInitialUpdates();
+=======
+      //detectInitialUpdates();
+      updateDetection();
+//      System.out.println();
+//      System.out.println("planets");
+//      System.out.println();
+//      for (ArrayList<Systems> as : UpdateStorage.planets) {
+//        sorted.add(as.get(0).getChild().getChild().getName());
+//      }
+//      Collections.sort(sorted);
+//      for (String str : sorted) {
+//        System.out.println(str);
+//      }
+//
+//      System.out.println();
+//      System.out.println("planet conflicts ");
+//      System.out.println();
+//      sorted = new ArrayList<>();
+//      for (ArrayList<Systems> as : UpdateStorage.newPlanetConflicts) {
+//        sorted.add(as.get(0).getChild().getChild().getName());
+//      }
+//      Collections.sort(sorted);
+//      for (String str : sorted) {
+//        System.out.println(str);
+//      }
+//
+//      System.out.println();
+//      System.out.println("systems");
+//      System.out.println();
+//      sorted = new ArrayList<>();
+//      for (ArrayList<Systems> as : UpdateStorage.systems) {
+//        sorted.add(as.get(0).getName());
+//      }
+//      Collections.sort(sorted);
+//      for (String str : sorted) {
+//        System.out.println(str);
+//      }
+//      sorted = new ArrayList<>();
+//      System.out.println();
+//      System.out.println("systems conflicts");
+//      System.out.println();
+//      for (ArrayList<Systems> as : UpdateStorage.newSystemConflicts) {
+//        sorted.add(as.get(0).getName());
+//      }
+//      Collections.sort(sorted);
+//      for (String str : sorted) {
+//        System.out.println(str);
+//      }
+
+>>>>>>> master
       System.out.println();
-      System.out.println("planets");
+      System.out.println("System Attribute changes");
       System.out.println();
-      for (ArrayList<Systems> as : UpdateStorage.planets) {
-        sorted.add(as.get(0).getChild().getChild().getName());
+      for (ArrayList<Systems> as : UpdateStorage.systemUpdates) {
+        System.out.println(as.get(0).getName());
+        System.out.println(as.get(0).getProperties());
+        System.out.println(as.get(1).getProperties());
       }
-      Collections.sort(sorted);
-      for (String str : sorted) {
-        System.out.println(str);
+<<<<<<< HEAD
+  
+=======
+
+>>>>>>> master
+      System.out.println();
+      System.out.println("Star Attribute changes");
+      System.out.println();
+      for (ArrayList<Systems> as : starUpdates) {
+        System.out.println(as.get(0).getChild().getName());
+        System.out.println(as.get(0).getChild().getProperties());
+        System.out.println(as.get(1).getChild().getProperties());
+      }
+<<<<<<< HEAD
+     
+=======
+
+>>>>>>> master
+      System.out.println();
+      System.out.println("Planet Attribute changes");
+      System.out.println();
+      for (ArrayList<Systems> as : planetUpdates) {
+        System.out.println(as.get(0).getChild().getChild().getName());
+        System.out.println(as.get(0).getChild().getChild().getProperties());
+        System.out.println(as.get(1).getChild().getChild().getProperties());
       }
   
       System.out.println();
-      System.out.println("planet conflicts ");
+      System.out.println("System Attribute conflicts");
       System.out.println();
-      sorted = new ArrayList<>();
-      for (ArrayList<Systems> as : UpdateStorage.newPlanetConflicts) {
-        sorted.add(as.get(0).getChild().getChild().getName());
+      for (ArrayList<Systems> as : UpdateStorage.syPropConflicts) {
+        System.out.println(as.get(0).getName());
+        System.out.println(as.get(0).getProperties());
+        System.out.println(as.get(1).getProperties());
+        System.out.println(as.get(2).getProperties());
       }
-      Collections.sort(sorted);
-      for (String str : sorted) {
-        System.out.println(str);
-      }
-     
+  
       System.out.println();
-      System.out.println("systems");
+      System.out.println("Star Attribute conflicts");
       System.out.println();
-      sorted = new ArrayList<>();
-      for (ArrayList<Systems> as : UpdateStorage.systems) {
-        sorted.add(as.get(0).getName());
+      for (ArrayList<Systems> as : stPropConflicts) {
+        System.out.println(as.get(0).getChild().getName());
+        System.out.println(as.get(0).getChild().getProperties());
+        System.out.println(as.get(1).getChild().getProperties());
+        System.out.println(as.get(2).getChild().getProperties());
       }
-      Collections.sort(sorted);
-      for (String str : sorted) {
-        System.out.println(str);
-      }
-      sorted = new ArrayList<>();
+  
       System.out.println();
-      System.out.println("systems conflicts");
+      System.out.println("Planet Attribute conflicts");
       System.out.println();
-      for (ArrayList<Systems> as : UpdateStorage.newSystemConflicts) {
-        sorted.add(as.get(0).getName());
+      for (ArrayList<Systems> as : plPropConflicts) {
+        System.out.println(as.get(0).getChild().getChild().getName());
+        System.out.println(as.get(0).getChild().getChild().getProperties());
+        System.out.println(as.get(1).getChild().getChild().getProperties());
+        System.out.println(as.get(2).getChild().getChild().getProperties());
       }
-      Collections.sort(sorted);
-      for (String str : sorted) {
-        System.out.println(str);
-      }
+<<<<<<< HEAD
+=======
+  
+  
+  
+>>>>>>> master
       executeMerge();
       
+      ////////////////Test converting from json to system objects
+//      String x = "[[{'pl_name':'hi','st_name':'hello','sy_name':'bye', 'pl_mass':'999'}],[{'pl_name':'hi','st_name':'hello','sy_name':'bye', 'pl_mass':'999'}]]";
+//      createObjectFromJson(x, UpdateStorage.planets);
+//      for (ArrayList<Systems> each:UpdateStorage.planets) {
+//        for (Systems e : each) {
+//          System.out.println(e.getChild().getChild().getProperties());
+//        }
+//      }
     } catch (IOException e) {
       e.printStackTrace();
     } catch (ReadCSV.MissingColumnNameException e) {

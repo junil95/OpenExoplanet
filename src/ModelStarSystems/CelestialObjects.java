@@ -69,7 +69,7 @@ public abstract class CelestialObjects {
     this.parent = parent;
   }
   
-  public void setProperties(HashSet<String> objectLabels, String labelPrefix, HashMap<String, String> properties) {
+  protected void setProperties(HashSet<String> objectLabels, String labelPrefix, HashMap<String, String> properties) {
     this.properties = new HashMap<>();
     
     for (String label : objectLabels) {
@@ -85,6 +85,10 @@ public abstract class CelestialObjects {
         this.properties.replace(property.substring(3), properties.get(property));
       }
     }
+  }
+  
+  public HashMap<String, String> getModifiableProperties() {
+    return properties;
   }
   
   public HashMap<String, String> getProperties() {

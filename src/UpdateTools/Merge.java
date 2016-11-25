@@ -209,7 +209,6 @@ public static void newPlanet(Systems system, String xmlPlanet) {
         break;
       }
       
-      
     }
     
     //Writing result file (Overwrites old file)
@@ -253,7 +252,12 @@ public static void newPlanet(Systems system, String xmlPlanet) {
           NodeList sysElemList = syselem.getElementsByTagName(key);
           if (sysElemList.item(0) == null) {
             Node imported = sysdoc.importNode(generateXML.xmlValue(key, system.getProperties().get(key)), true);
+<<<<<<< HEAD
             syselem.insertBefore(imported, syselem.getElementsByTagName("star").item(0));
+=======
+            //TODO: rightascension tag may not exist, will crash, better to insert after name
+            syselem.insertBefore(imported, syselem.getElementsByTagName("rightascension").item(0));
+>>>>>>> master
           } else {
             sysElemList.item(0).setTextContent(system.getProperties().get(key));
           }
@@ -283,6 +287,7 @@ public static void newPlanet(Systems system, String xmlPlanet) {
               }
             }
           }
+<<<<<<< HEAD
           
           
           NodeList planetlist = corrstar.getElementsByTagName("planet");
@@ -305,6 +310,56 @@ public static void newPlanet(Systems system, String xmlPlanet) {
                     planetElemList.item(0).setTextContent(planetprop.get(key));
                   }
                 }
+=======
+        }
+      }
+
+      //Writing result file (Overwrites old file)
+      TransformerFactory transformerFactory = TransformerFactory.newInstance();
+      Transformer transformer = transformerFactory.newTransformer();
+      transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+      transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+      transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+      DOMSource source = new DOMSource(sysdoc);
+      StreamResult result = new StreamResult(new File(PullingTools.oecData + system.getName() + ".xml"));
+      transformer.transform(source, result);
+
+    } catch(Exception e){
+
+    }
+  }
+
+  public static void newPlanetVals(Systems system){
+    try {
+      //System file directory
+      File dir = new File(PullingTools.oecData + system.getName() + ".xml");
+
+      //parsing system file into document
+      DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+      Document sysdoc = db.parse(dir);
+
+      //get root system element from document
+      Element syselem = sysdoc.getDocumentElement();
+
+      //get planet properties and planet name
+      String planetName = system.getChild().getChild().getName();
+      HashMap<String,String> planetProps = system.getChild().getChild().getProperties();
+
+      NodeList planetList = syselem.getElementsByTagName("planet");
+
+      for(int i = 0; i < planetList.getLength(); i++){
+        if(planetList.item(i).getFirstChild().getTextContent().equals(planetName)){
+          Element planet =  (Element)planetList.item(i);
+          for(String key : planetProps.keySet()){
+            if(planetProps.get(key) != null){
+              NodeList planetKeyList = planet.getElementsByTagName(key);
+              if(planetKeyList.getLength() < 1){
+                Node imported = sysdoc.importNode(generateXML.xmlValue(key, planetProps.get(key)), true);
+                planet.appendChild(imported);
+              }else{
+                //if it does exist change the text content to the new value
+                planetKeyList.item(0).setTextContent(planetProps.get(key));
+>>>>>>> master
               }
             }
             break; //break planet loop once the correct planet's values have been updated

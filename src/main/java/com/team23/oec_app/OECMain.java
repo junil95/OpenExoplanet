@@ -29,6 +29,7 @@ public class OECMain extends HttpServlet
 {
 	
 	private boolean updating = false;
+	private int counter = 0;
 
 	/**
 	 * Default method used to handle all GET requests given to the server.
@@ -54,12 +55,12 @@ public class OECMain extends HttpServlet
     		resp.getWriter().print(readFile(req.getRequestURI().substring(1), StandardCharsets.UTF_8));
     		resp.getWriter().close();
     	}
-    	else if(req.getRequestURI().contains(".woff")){
-    		resp.getWriter().print(readFile(req.getRequestURI().substring(1), StandardCharsets.UTF_8));
-    		resp.getWriter().close();
+    	else if(req.getRequestURI().contains(".woff") || req.getRequestURI().contains("tff")){
+    		super.doGet(req, resp);
     	}
     	else if (req.getRequestURI().equals("/update")){
     		updating = false;
+    		counter += 1;
         	if(!Driver.isInitialMergeDone()){
         		Driver.initialSetupOrResetLocalCopies();
             	// Feteching initial updates
@@ -69,9 +70,15 @@ public class OECMain extends HttpServlet
     	}
     	else if (req.getRequestURI().equals("/request")){
     		if(updating == false){
+    			counter += 1;
     			resp.getWriter().print("Still updating...");
     			resp.getWriter().flush();
-    		}else{
+    		}
+    		else if(counter > 101){
+    			resp.getWriter().print("Took too long..");
+    			resp.getWriter().flush();
+    		}
+    		else {
         		resp.getWriter().print(Driver.getNewSystemConflicts());
         		resp.getWriter().flush();
     		}

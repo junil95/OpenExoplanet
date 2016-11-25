@@ -111,7 +111,9 @@ function selectRow(systemObjNum, childNum){
   var i = 1
   // Looping with + 1
   for(i; i < systemObj.info[0].length; i++){
-    $("#info-table").append(generateRowHTML(systemObj.info[0][i], systemObj.info[1][i], systemObj.info[2][i], systemObj.info[3][i], systemObj.info[4][i], i));
+    if(systemObj.info[0][i].indexOf('name') === -1){
+      $("#info-table").append(generateRowHTML(systemObj.info[0][i], systemObj.info[1][i], systemObj.info[2][i], systemObj.info[3][i], systemObj.info[4][i], i));
+    }
   }
 }
 

@@ -119,6 +119,8 @@ public class OECMain extends HttpServlet
         http.setPort(8080);
         http.setIdleTimeout(3000000);
         
+        server.addConnector(http);
+        
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
         server.setHandler(context);

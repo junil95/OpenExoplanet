@@ -135,8 +135,8 @@ function generateRowHTML(info0, info1, info2, info3, info4, num){
 function update(){
   // Getting the string data from the server
   $.get("https://pacific-shelf-92985.herokuapp.com/update", function(data) {
-  }
-  var data = request;
+  });
+  var data = request();
   // Restting systemObjs
   systemObjs = [];
   //populate('[[{"st_magJ_min":"","pl_longitude":"","pl_mass_error_max":"","st_age_error_max":"","pl_longitude_error_max":"","st_magK_max":"","pl_last_update":"","st_temperature":"6280.0","sy_name":"mu Arae","st_magJ_max":"","st_magV_max":"","pl_alternatenames":"","pl_periastron":"","pl_longitude_error_min":"","st_mass_error_max":"","pl_inclination_error_min":"","pl_impact_parameter_error_max":"","pl_discovery_year":"","pl_name":"mu Ara 99","st_magK_min":"","st_alternatenames":"","st_temperature_error_min":"","pl_periastron_error_max":"","pl_inclination":"83.75","st_radius_error_max":"","pl_mass":"0.805","st_magV_min":"","pl_period":"2.1746742","sy_distance":"530.0","pl_temperature_min":"","st_metallicity":"0.0","pl_eccentricity_error_min":"","pl_eccentricity_error_max":"","st_radius_error_min":"","pl_semi_major_axis_error_max":"","st_magI":"","st_magJ":"","pl_temperature_max":"","st_magK":"","st_magH":"","pl_mass_other_error_min":"","pl_semi_major_axis_error_min":"","pl_period_error_min":"","pl_radius_error_minpl_radius_error_min":"","pl_radius_error_max":"","st_magV":"13.18","pl_mass_other_error_max":"","st_temperature_error_max":"","pl_periastron_error_min":"","pl_radius":"1.461","pl_temperature":"","pl_period_error_max":"","sy_declination":"51.0411666736","pl_discovery_method":"","st_mass":"1.19","st_spectral_type":"F7","st_magI_max":"","sy_distance_error_max":"","pl_eccentricity":"0.0","st_name":"mu Ara","src":"eu","st_magH_min":"","st_age":"","pl_inclination_error_max":"","pl_mass_other":"","sy_distance_error_min":"","sy_right_ascension":"246.692000015","pl_impact_parameter":"0.608","st_magH_max":"","st_radius":"1.341","st_mass_error_min":"","pl_impact_parameter_error_min":"","st_age_error_min":"","pl_mass_error_min":"","st_magI_min":"","pl_semi_major_axis":"0.0348"}]]')

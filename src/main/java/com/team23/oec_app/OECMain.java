@@ -55,8 +55,10 @@ public class OECMain extends HttpServlet
     		resp.getWriter().print(readFile(req.getRequestURI().substring(1), StandardCharsets.UTF_8));
     		resp.getWriter().close();
     	}
-    	else if(req.getRequestURI().contains(".woff") || req.getRequestURI().contains("tff")){
-    		super.doGet(req, resp);
+    	else if(req.getRequestURI().contains(".woff")){
+    		resp.setContentType("application/x-font-woff");
+    		resp.getWriter().print(readFile(req.getRequestURI().substring(1), StandardCharsets.UTF_8));
+    		resp.getWriter().close();
     	}
     	else if (req.getRequestURI().equals("/update")){
     		updating = false;

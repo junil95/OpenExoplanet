@@ -26,6 +26,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static UpdateTools.DifferenceDetector.getNamesOEC;
 import static UpdateTools.DifferenceDetector.onlyAlphaNumeric;
 import static UpdateTools.UpdateStorage.planetUpdates;
 import static UpdateTools.UpdateStorage.starUpdates;
@@ -100,7 +101,7 @@ public class UpdateClassifier {
         //otherwise check if it is a new star
       } else if (!names.contains(onlyAlphaNumeric(s.getChild().getName()))){
         //need to assign primary system name found in OEC so we can find the individual xml file
-        s = assignOecSyName(s);
+        assignOecSyName(s, "system");
         temp = new ArrayList();
         temp.add(s);
         UpdateStorage.stars.add(temp);
@@ -108,7 +109,9 @@ public class UpdateClassifier {
         //exist as well, in which case it is not a new update
       } else if (!names.contains(onlyAlphaNumeric(s.getChild().getChild().getName()))){
         //need to assign primary system name found in OEC
-        s = assignOecSyName(s);
+        assignOecSyName(s, "system");
+        //doing this because the system and planet are the same in oec
+        assignOecSyName(s, "star");
         temp = new ArrayList();
         temp.add(s);
         UpdateStorage.planets.add(temp);
@@ -116,6 +119,63 @@ public class UpdateClassifier {
     }
     //clear updates set so we know we already completed classifying these systems
     UpdateStorage.updates.clear();
+  }
+  
+  /**
+   * Remove attribute updates where the system, star or planet doesn't exist in oec, because
+   * these updates won't apply. Also if the updates do apply to oec, change the
+   */
+  public static void removeInvalidUpdatesAndAssignOecNames() {
+    //remove invalid from system updates
+    Set<String> names = getNamesOEC();
+    Set<ArrayList<Systems>> discard = new HashSet<>();
+    for (ArrayList<Systems> as : UpdateStorage.systemUpdates) {
+      for (Systems s : as) {
+        //Invalid update since system doesn't exist in oec
+        if (!names.contains(DifferenceDetector.onlyAlphaNumeric(s.getName()))) {
+          discard.add(as);
+        }else{
+          //system does exist, so assign the oec system name to the object
+          assignOecSyName(s, "system");
+        }
+      }
+    }
+    UpdateStorage.systemUpdates.removeAll(discard);
+    discard = new HashSet<>();
+  
+    //remove invalid star updates
+    for (ArrayList<Systems> as : UpdateStorage.starUpdates) {
+      for (Systems s : as) {
+        //Invalid update since system doesn't exist in oec
+        if (!names.contains(DifferenceDetector.onlyAlphaNumeric(s.getChild().getName()))) {
+          discard.add(as);
+        }else{
+          //system does exist, so assign the oec system name to the object
+          assignOecSyName(s, "system");
+          //star name is same as system name in eu and nasa so this will also be the same
+          assignOecSyName(s, "star");
+        }
+      }
+    }
+    UpdateStorage.starUpdates.removeAll(discard);
+    discard = new HashSet<>();
+  
+    //remove invalid star updates
+    for (ArrayList<Systems> as : UpdateStorage.planetUpdates) {
+      for (Systems s : as) {
+        //Invalid update since system doesn't exist in oec
+        if (!names.contains(DifferenceDetector.onlyAlphaNumeric(s.getChild().getChild().getName()))) {
+          discard.add(as);
+        }else{
+          //system does exist, so assign the oec system name to the object
+          assignOecSyName(s, "system");
+          //star name is same as system name in eu and nasa so this will also be the same
+          assignOecSyName(s, "star");
+          assignOecSyName(s.getChild().getChild(), "planet");
+        }
+      }
+    }
+    UpdateStorage.planetUpdates.removeAll(discard);
   }
   
   private static void findSysPlanetAttributesCommon(ArrayList<ArrayList<Systems>> sysUpdates, String element, String label) {
@@ -182,6 +242,9 @@ public class UpdateClassifier {
                 } else {
                   props.put(key, null);
                 }
+                //case where tag is not in oec, so we should add it
+              }else{
+                OECData.put(label + key, "");
               }
             }
             //System.out.println(OECData);
@@ -315,20 +378,20 @@ Method adds data from OEC for each star in starUpdates
   }
   
   
+  
   /**
-   * If the system has an alternate name in the other catalogues, this will assign the main name
-   * that oec uses. This will only work if the system isn't brand new
-   * @param s
+   * Assigns the oec system, star and planet names to the given celestial object
+   * @param c
    * @return
    */
-  public static Systems assignOecSyName(Systems s) {
+  public static CelestialObjects assignOecSyName(CelestialObjects c, String label) {
     //Get a list of planet names
     try {
       DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
       DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
       Document doc = dBuilder.parse(PullingTools.localOecFile);
       doc.getDocumentElement().normalize();
-      NodeList tagNl = doc.getElementsByTagName("system");
+      NodeList tagNl = doc.getElementsByTagName(label);
       NodeList nameNl;
       Element element;
       String mainName = "";
@@ -340,18 +403,20 @@ Method adds data from OEC for each star in starUpdates
             mainName = nameNl.item(j).getTextContent();
           }
           if (onlyAlphaNumeric(nameNl.item(j).getTextContent()).
-                  equals(onlyAlphaNumeric(s.getName()))) {
+                  equals(onlyAlphaNumeric(c.getName()))) {
             //Found the system, now assign the main name to the system object
-            s.setName(mainName);
-            return s;
+            c.setName(mainName);
+            return c;
           }
         }
       }
     } catch (SAXException | IOException | ParserConfigurationException e) {
       e.printStackTrace();
     }
-    return s;
+    return c;
   }
+  
+  
   
   
   

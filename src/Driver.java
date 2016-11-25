@@ -36,6 +36,10 @@ import static UpdateTools.PullingTools.pullNasaArchive;
 import static UpdateTools.PullingTools.pullOecOneFile;
 import static UpdateTools.PullingTools.pullOecSeperateFiles;
 import static UpdateTools.UpdateStorage.findNewPlanetConflicts;
+import static UpdateTools.UpdateStorage.planetUpdates;
+import static UpdateTools.UpdateStorage.starUpdates;
+import static UpdateTools.UpdateStorage.systemUpdates;
+import static UpdateTools.UpdateStorage.updates;
 
 /**
  * Created by dhrumil on 06/11/16.
@@ -114,6 +118,7 @@ public class Driver {
       DifferenceDetector.getNewPlanetIDs(PullingTools.localExoplanetEu, ReadCSV.EU);
       DifferenceDetector.getNewPlanetIDs(PullingTools.localNasaArchive, ReadCSV.NASA);
       //Determine if they are really new planets by looking at OEC
+      
       UpdateClassifier.classifyUpdates();
       //Find conflicts in the classified updates
       //Order matters when finding conflicts, do the systems first, since there can be more than
@@ -139,17 +144,24 @@ public class Driver {
       //Get the new planets from NASA and EU
       UpdateStorage.clearAll();
       //need to create latest catalogue copy
-      //UpdateTools.PullingTools.createLatestCatalogueCopy();
+      
+      /* Uncomment after
+      UpdateTools.PullingTools.createLatestCatalogueCopy();
+      */
+      
       //find updates between different versions of the nasa database
       detectUpdates(ReadCSV.mapPlanetToData(PullingTools.localNasaArchiveOld, ReadCSV.NASA),
               ReadCSV.mapPlanetToData(PullingTools.localNasaArchive, ReadCSV.NASA), ReadCSV.NASA);
+      //find updates between the different versions of the eu database
       detectUpdates(ReadCSV.mapPlanetToData(PullingTools.localExoplanetEuOld, ReadCSV.EU),
               ReadCSV.mapPlanetToData(PullingTools.localExoplanetEu, ReadCSV.EU), ReadCSV.EU);
       //Classify new additions into planets, stars and systems.
       UpdateClassifier.classifyUpdates();
+     // UpdateClassifier.removeInvalidUpdatesAndAssignOecNames();
       
-      //find data from oec for individual attributes here
-      
+      UpdateClassifier.addSysOECData();
+      UpdateClassifier.addStarOECData();
+      UpdateClassifier.addPlanetOECData();
       
       //Find conflicts in the classified updates
       //Order matters when finding conflicts, do the systems first, since there can be more than
@@ -159,7 +171,6 @@ public class Driver {
       UpdateStorage.findNewPlanetConflicts();
       
       //Find conflicts in the attribute lists here
-      
       
     } catch (ReadCSV.MissingColumnNameException | IOException e) {
       e.printStackTrace();
@@ -462,11 +473,11 @@ public class Driver {
 //      System.out.println(isInitialMergeDone());
 //      String json = getNewPlanetConflicts();
 //      createObjectFromJson(json);
-//      ArrayList<String> sorted = new ArrayList<>();
       
-      /////////////////////Test updating
-//      updateDetection();
-//      System.out.println(getNewPlanets());
+      ///////////////////Test updating
+      ArrayList<String> sorted = new ArrayList<>();
+      //detectInitialUpdates();
+      updateDetection();
 //      System.out.println();
 //      System.out.println("planets");
 //      System.out.println();
@@ -512,19 +523,47 @@ public class Driver {
 //      for (String str : sorted) {
 //        System.out.println(str);
 //      }
-//      System.out.println(getNewPlanets());
-//      System.out.println(getNewSystems());
+
+      System.out.println();
+      System.out.println("System Attribute changes");
+      System.out.println();
+      for (ArrayList<Systems> as : UpdateStorage.systemUpdates) {
+        System.out.println("Update");
+        System.out.println(as.get(0).getProperties());
+        System.out.println("OEC");
+        System.out.println(as.get(1).getProperties());
+      }
+
+      System.out.println();
+      System.out.println("Star Attribute changes");
+      System.out.println();
+      for (ArrayList<Systems> as : starUpdates) {
+        System.out.println("Update");
+        System.out.println(as.get(0).getChild().getProperties());
+        System.out.println("OEC");
+        System.out.println(as.get(1).getChild().getProperties());
+      }
+
+      System.out.println();
+      System.out.println("Planet Attribute changes");
+      System.out.println();
+      for (ArrayList<Systems> as : planetUpdates) {
+        System.out.println("Update");
+        System.out.println(as.get(0).getChild().getChild().getProperties());
+        System.out.println("OEC");
+        System.out.println(as.get(1).getChild().getChild().getProperties());
+      }
       
       //executeMerge();
       
       ////////////////Test converting from json to system objects
-      String x = "[[{'pl_name':'hi','st_name':'hello','sy_name':'bye', 'pl_mass':'999'}],[{'pl_name':'hi','st_name':'hello','sy_name':'bye', 'pl_mass':'999'}]]";
-      createObjectFromJson(x, UpdateStorage.planets);
-      for (ArrayList<Systems> each:UpdateStorage.planets) {
-        for (Systems e : each) {
-          System.out.println(e.getChild().getChild().getProperties());
-        }
-      }
+//      String x = "[[{'pl_name':'hi','st_name':'hello','sy_name':'bye', 'pl_mass':'999'}],[{'pl_name':'hi','st_name':'hello','sy_name':'bye', 'pl_mass':'999'}]]";
+//      createObjectFromJson(x, UpdateStorage.planets);
+//      for (ArrayList<Systems> each:UpdateStorage.planets) {
+//        for (Systems e : each) {
+//          System.out.println(e.getChild().getChild().getProperties());
+//        }
+//      }
     } catch (IOException e) {
       e.printStackTrace();
     } catch (ReadCSV.MissingColumnNameException e) {

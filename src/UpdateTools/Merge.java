@@ -177,7 +177,6 @@ public class Merge {
         break;
       }
       
-      
     }
     
     //Writing result file (Overwrites old file)
@@ -216,6 +215,7 @@ public class Merge {
           NodeList sysElemList = syselem.getElementsByTagName(key);
           if (sysElemList.getLength() < 1) {
             Node imported = sysdoc.importNode(generateXML.xmlValue(key, system.getProperties().get(key)), true);
+            //TODO: rightascension tag may not exist, will crash, better to insert after name
             syselem.insertBefore(imported, syselem.getElementsByTagName("rightascension").item(0));
           } else {
             sysElemList.item(0).setTextContent(system.getProperties().get(key));
@@ -324,6 +324,9 @@ public class Merge {
               if(planetKeyList.getLength() < 1){
                 Node imported = sysdoc.importNode(generateXML.xmlValue(key, planetProps.get(key)), true);
                 planet.appendChild(imported);
+              }else{
+                //if it does exist change the text content to the new value
+                planetKeyList.item(0).setTextContent(planetProps.get(key));
               }
             }
           }

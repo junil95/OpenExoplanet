@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.webapp.WebAppContext;
 
 import com.google.gson.Gson;
 import com.team23.Driver;
@@ -57,20 +58,11 @@ public class OECMain extends HttpServlet
     	else if (req.getRequestURI().equals("/update")){
     		// Calling from Driver to get all the new updated celestial objects
         	// Doing the initial merge and setting up local repos
-        	resp.getWriter().println("sending...");
-        	resp.getWriter().flush();
-    		
         	if(!Driver.isInitialMergeDone()){
         		Driver.initialSetupOrResetLocalCopies();
-        		
             	// Feteching initial updates
         		Driver.detectInitialUpdates(); 
         	}
-        	
-    		
-        	resp.getWriter().println("sending...");
-        	resp.getWriter().flush();
-
     		/*
     		ArrayList<String> list = new ArrayList<String>();
     		
@@ -84,7 +76,7 @@ public class OECMain extends HttpServlet
     		list.add(Driver.getNewStarConflicts());
     		
     		*/
-    		System.out.println();	
+    		System.out.println(Driver.getNewPlanetConflicts());	
     		resp.getWriter().print(Driver.getNewSystemConflicts());
     		resp.getWriter().close();
     	}
@@ -120,10 +112,13 @@ public class OECMain extends HttpServlet
 
     public static void main(String[] args) throws Exception{    	
         Server server = new Server(Integer.valueOf(System.getenv("PORT")));
+        
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
         server.setHandler(context);
+        context.getSessionHandler().getSessionManager().setMaxInactiveInterval(300);
         context.addServlet(new ServletHolder(new OECMain()),"/*");
+        
         server.start();
         server.join(); 
     }

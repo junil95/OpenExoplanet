@@ -18,4 +18,6 @@ public class Planet extends CelestialObjects {
     setName(name);
     setProperties(ReadCSV.getPlanetLabels(), "pl_", properties);
   }
+  
+  
 }

@@ -78,7 +78,7 @@ public class OECMain extends HttpServlet
     		
     		*/
     		
-    		System.out.println(Driver.getNewSystems() );	
+    		System.out.println();	
     		resp.getWriter().print(Driver.getNewSystemConflicts());
     		resp.getWriter().close();
     	}

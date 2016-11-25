@@ -354,7 +354,7 @@ public class UpdateStorage {
                                 //dont do anything if the value of second cataloge is null
                                 //only update if value of first cataloge is null but second one isnt
                                 if ((sysOEC1.getProperties().get(key) == null) && (sysOEC2.getProperties().get(key) != null))
-                                    sysOEC1.getProperties().put(key, sysOEC2.getProperties().get(key));
+                                    sysOEC1.getModifiableProperties().put(key, sysOEC2.getProperties().get(key));
                             }
 
                             //add the updated version of the OEC system into the array
@@ -372,7 +372,7 @@ public class UpdateStorage {
         ArrayList<Integer> decreasing = new ArrayList<>(exclude);
         Collections.sort(decreasing, Collections.reverseOrder());
         for (int i : decreasing)
-            systems.remove(i);
+            systemUpdates.remove(i);
     }
 
 
@@ -426,7 +426,7 @@ public class UpdateStorage {
                                 //dont do anything if the value of second cataloge is null
                                 //only update(ie.merge) if value of first cataloge is null but second one isnt
                                 if ((stOEC1.getChild().getProperties().get(key) == null) && (stOEC2.getChild().getProperties().get(key) != null))
-                                    stOEC1.getChild().getProperties().put(key, stOEC2.getChild().getProperties().get(key));
+                                    stOEC1.getChild().getModifiableProperties().put(key, stOEC2.getChild().getProperties().get(key));
                             }
                             //add the updated version of the OEC system into the array
                             triplets.add(stOEC1);
@@ -442,7 +442,7 @@ public class UpdateStorage {
         ArrayList<Integer> decreasing = new ArrayList<>(exclude);
         Collections.sort(decreasing, Collections.reverseOrder());
         for (int i : decreasing)
-            systems.remove(i);
+            starUpdates.remove(i);
     }
 
 
@@ -496,7 +496,7 @@ public class UpdateStorage {
                                 //dont do anything if the value of second cataloge is null
                                 //only update(ie.merge) if value of first cataloge is null but second one isnt
                                 if ((plOEC1.getChild().getChild().getProperties().get(key) == null) && (plOEC2.getChild().getChild().getProperties().get(key) != null))
-                                    plOEC1.getChild().getChild().getProperties().put(key, plOEC2.getChild().getChild().getProperties().get(key));
+                                    plOEC1.getChild().getChild().getModifiableProperties().put(key, plOEC2.getChild().getChild().getProperties().get(key));
                             }
                             //add the updated version of the OEC system into the array
                             triplets.add(plOEC1);
@@ -512,7 +512,7 @@ public class UpdateStorage {
         ArrayList<Integer> decreasing = new ArrayList<>(exclude);
         Collections.sort(decreasing, Collections.reverseOrder());
         for (int i : decreasing)
-            systems.remove(i);
+            planetUpdates.remove(i);
     }
     
 

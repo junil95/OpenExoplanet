@@ -215,55 +215,58 @@ function populate(data){
   for(var system_key in data){
     // Setting the system
     system = data[system_key];
-    var initSource = system[0];
-    // Some initial Vars to help us keep track
-    var column = 1;
-    var sy_name = initSource["sy_name"];
-    var st_name = initSource["st_name"];
-    var pl_name = initSource["pl_name"];
 
-    // The new system object created
-    var created = new SystemObject(sy_name, null, "system");
-    if(st_name){
-       created.child = new SystemObject(st_name, null, "star")
-       if(pl_name){
-         created.child.child = new SystemObject(pl_name, null, "planet");
-       }
+    if(system.length != 0){
+      var initSource = system[0];
+      // Some initial Vars to help us keep track
+      var column = 1;
+      var sy_name = initSource["sy_name"];
+      var st_name = initSource["st_name"];
+      var pl_name = initSource["pl_name"];
+
+      // The new system object created
+      var created = new SystemObject(sy_name, null, "system");
+      if(st_name){
+         created.child = new SystemObject(st_name, null, "star")
+         if(pl_name){
+           created.child.child = new SystemObject(pl_name, null, "planet");
+         }
+      }
+
+      // Looping through each source in the system
+      for(var source_key in system){
+        // Which column they belong to
+        var source = system[source_key];
+        var source_key = source["src"];
+        if (source_key === ""){
+          column = 1;
+        }
+        else if(source_key === "nasa"){
+          column = 2;
+        }
+        else if(source_key === "eu"){
+          column = 3;
+        }
+
+        // Looping through the keys
+        for(var att_key in source){
+          // After seperating the planet/system/star from the tag
+          var column_name = att_key.substring(0);
+
+          // Looping through which key it is
+          if(att_key.includes("sy_")){
+            created.addAttribute(column, column_name, source[att_key]);
+          }
+          else if(att_key.includes("st_")){
+            created.child.addAttribute(column, column_name, source[att_key]);
+          }
+          else if(att_key.includes("pl_")){
+            created.child.child.addAttribute(column, column_name, source[att_key]);
+          }
+        }
+      }
+      systemObjs.push(created);
     }
-
-    // Looping through each source in the system
-    for(var source_key in system){
-      // Which column they belong to
-      var source = system[source_key];
-      var source_key = source["src"];
-      if (source_key === ""){
-        column = 1;
-      }
-      else if(source_key === "nasa"){
-        column = 2;
-      }
-      else if(source_key === "eu"){
-        column = 3;
-      }
-
-      // Looping through the keys
-      for(var att_key in source){
-        // After seperating the planet/system/star from the tag
-        var column_name = att_key.substring(0);
-
-        // Looping through which key it is
-        if(att_key.includes("sy_")){
-          created.addAttribute(column, column_name, source[att_key]);
-        }
-        else if(att_key.includes("st_")){
-          created.child.addAttribute(column, column_name, source[att_key]);
-        }
-        else if(att_key.includes("pl_")){
-          created.child.child.addAttribute(column, column_name, source[att_key]);
-        }
-      }
-    }
-    systemObjs.push(created);
   }
 }
 

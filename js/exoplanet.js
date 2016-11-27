@@ -137,16 +137,12 @@ function generateRowHTML(info0, info1, info2, info3, info4, num){
 
 function update(){
   // Getting the string data from the server
-  $.get("https://pacific-shelf-92985.herokuapp.com/update", function(data) {
+  $.get("https://pacific-shelf-92985.herokuapp.com/img/sample.txt", function(data) {
+    systemObjs = [];
+    populate(data);
+    setNewRows();
   });
-  request();
-
-  /*
-  systemObjs = [];
-  populate('[[{"st_magJ_min":"","pl_longitude":"","pl_mass_error_max":"","st_age_error_max":"","pl_longitude_error_max":"","st_magK_max":"","pl_last_update":"","st_temperature":"6280.0","sy_name":"mu Arae","st_magJ_max":"","st_magV_max":"","pl_alternatenames":"","pl_periastron":"","pl_longitude_error_min":"","st_mass_error_max":"","pl_inclination_error_min":"","pl_impact_parameter_error_max":"","pl_discovery_year":"","pl_name":"mu Ara 99","st_magK_min":"","st_alternatenames":"","st_temperature_error_min":"","pl_periastron_error_max":"","pl_inclination":"83.75","st_radius_error_max":"","pl_mass":"0.805","st_magV_min":"","pl_period":"2.1746742","sy_distance":"530.0","pl_temperature_min":"","st_metallicity":"0.0","pl_eccentricity_error_min":"","pl_eccentricity_error_max":"","st_radius_error_min":"","pl_semi_major_axis_error_max":"","st_magI":"","st_magJ":"","pl_temperature_max":"","st_magK":"","st_magH":"","pl_mass_other_error_min":"","pl_semi_major_axis_error_min":"","pl_period_error_min":"","pl_radius_error_minpl_radius_error_min":"","pl_radius_error_max":"","st_magV":"13.18","pl_mass_other_error_max":"","st_temperature_error_max":"","pl_periastron_error_min":"","pl_radius":"1.461","pl_temperature":"","pl_period_error_max":"","sy_declination":"51.0411666736","pl_discovery_method":"","st_mass":"1.19","st_spectral_type":"F7","st_magI_max":"","sy_distance_error_max":"","pl_eccentricity":"0.0","st_name":"mu Ara","src":"eu","st_magH_min":"","st_age":"","pl_inclination_error_max":"","pl_mass_other":"","sy_distance_error_min":"","sy_right_ascension":"246.692000015","pl_impact_parameter":"0.608","st_magH_max":"","st_radius":"1.341","st_mass_error_min":"","pl_impact_parameter_error_min":"","st_age_error_min":"","pl_mass_error_min":"","st_magI_min":"","pl_semi_major_axis":"0.0348"}]]')
-  populate('[[{"src":"nasa","pl_mass":0.333333, "pl_name":"mu Ara 99", "st_name":"mu Ara", "sy_name":"mu Arae"},{"st_spectral_type":"F7","pl_inclination":"83.75","pl_mass":"0.805","pl_eccentricity":"0.0","st_name":"mu Ara","src":"eu","pl_period":"2.1746742","sy_distance":"530.0","st_metallicity":"0.0","st_magV":"13.18","st_temperature":"6280.0","sy_name":"mu Arae","sy_right_ascension":"246.692000015","pl_impact_parameter":"0.608","st_radius":"1.341","pl_radius":"1.461","sy_declination":"51.0411666736","pl_name":"mu Ara 99","pl_semi_major_axis":"0.0348","st_mass":"1.19"}],[{"st_magJ_min":"0.025","st_magK_max":"0.028","st_temperature":"5309.00","sy_name":"11 Com","st_magJ_max":"0.025","pl_periastron":"330.0000","pl_temperature":"455","sy_declination":"+42d36m15.0s","pl_name":"alright","st_mass":"0.90","st_magK_min":"0.028","pl_inclination":"87.400","pl_mass":"0.37600","pl_eccentricity":"0.014600","st_name":"11 com","src":"nasa","pl_period":"57.01100000","sy_distance":"855.00","pl_temperature_min":"-13","st_metallicity":"[M/H]","st_magH_min":"0.020","st_age":"9.700","sy_right_ascension":"19h17m04.50s","st_magH_max":"0.020","st_radius":"0.79","st_magJ":"13.814","pl_temperature_max":"14","st_magK":"13.347","pl_semi_major_axis":"0.279900","st_magH":"13.436"}]]')
-  setNewRows();
-  */
+  //request();
 }
 
 function request(){
@@ -160,8 +156,6 @@ function request(){
     else{
       // Restting systemObjs
       systemObjs = [];
-      //populate('[[{"st_magJ_min":"","pl_longitude":"","pl_mass_error_max":"","st_age_error_max":"","pl_longitude_error_max":"","st_magK_max":"","pl_last_update":"","st_temperature":"6280.0","sy_name":"mu Arae","st_magJ_max":"","st_magV_max":"","pl_alternatenames":"","pl_periastron":"","pl_longitude_error_min":"","st_mass_error_max":"","pl_inclination_error_min":"","pl_impact_parameter_error_max":"","pl_discovery_year":"","pl_name":"mu Ara 99","st_magK_min":"","st_alternatenames":"","st_temperature_error_min":"","pl_periastron_error_max":"","pl_inclination":"83.75","st_radius_error_max":"","pl_mass":"0.805","st_magV_min":"","pl_period":"2.1746742","sy_distance":"530.0","pl_temperature_min":"","st_metallicity":"0.0","pl_eccentricity_error_min":"","pl_eccentricity_error_max":"","st_radius_error_min":"","pl_semi_major_axis_error_max":"","st_magI":"","st_magJ":"","pl_temperature_max":"","st_magK":"","st_magH":"","pl_mass_other_error_min":"","pl_semi_major_axis_error_min":"","pl_period_error_min":"","pl_radius_error_minpl_radius_error_min":"","pl_radius_error_max":"","st_magV":"13.18","pl_mass_other_error_max":"","st_temperature_error_max":"","pl_periastron_error_min":"","pl_radius":"1.461","pl_temperature":"","pl_period_error_max":"","sy_declination":"51.0411666736","pl_discovery_method":"","st_mass":"1.19","st_spectral_type":"F7","st_magI_max":"","sy_distance_error_max":"","pl_eccentricity":"0.0","st_name":"mu Ara","src":"eu","st_magH_min":"","st_age":"","pl_inclination_error_max":"","pl_mass_other":"","sy_distance_error_min":"","sy_right_ascension":"246.692000015","pl_impact_parameter":"0.608","st_magH_max":"","st_radius":"1.341","st_mass_error_min":"","pl_impact_parameter_error_min":"","st_age_error_min":"","pl_mass_error_min":"","st_magI_min":"","pl_semi_major_axis":"0.0348"}]]')
-      //populate('[[{"src":"nasa","pl_mass":0.333333, "pl_name":"mu Ara 99", "st_name":"mu Ara", "sy_name":"mu Arae"},{"st_spectral_type":"F7","pl_inclination":"83.75","pl_mass":"0.805","pl_eccentricity":"0.0","st_name":"mu Ara","src":"eu","pl_period":"2.1746742","sy_distance":"530.0","st_metallicity":"0.0","st_magV":"13.18","st_temperature":"6280.0","sy_name":"mu Arae","sy_right_ascension":"246.692000015","pl_impact_parameter":"0.608","st_radius":"1.341","pl_radius":"1.461","sy_declination":"51.0411666736","pl_name":"mu Ara 99","pl_semi_major_axis":"0.0348","st_mass":"1.19"}],[{"st_magJ_min":"0.025","st_magK_max":"0.028","st_temperature":"5309.00","sy_name":"11 Com","st_magJ_max":"0.025","pl_periastron":"330.0000","pl_temperature":"455","sy_declination":"+42d36m15.0s","pl_name":"alright","st_mass":"0.90","st_magK_min":"0.028","pl_inclination":"87.400","pl_mass":"0.37600","pl_eccentricity":"0.014600","st_name":"11 com","src":"nasa","pl_period":"57.01100000","sy_distance":"855.00","pl_temperature_min":"-13","st_metallicity":"[M/H]","st_magH_min":"0.020","st_age":"9.700","sy_right_ascension":"19h17m04.50s","st_magH_max":"0.020","st_radius":"0.79","st_magJ":"13.814","pl_temperature_max":"14","st_magK":"13.347","pl_semi_major_axis":"0.279900","st_magH":"13.436"}]]')
       populate(data);
       setNewRows();
     }
@@ -209,63 +203,81 @@ function clearRows(){
 }
 
 function populate(data){
-  data = JSON.parse(data);
-  var system;
-  // Looping through the system changes
-  for(var system_key in data){
-    // Setting the system
-    system = data[system_key];
+  total = JSON.parse(data);
 
-    if(system.length != 0){
-      var initSource = system[0];
-      // Some initial Vars to help us keep track
-      var column = 1;
-      var sy_name = initSource["sy_name"];
-      var st_name = initSource["st_name"];
-      var pl_name = initSource["pl_name"];
+  // List type if based on which list was passed e.g. newPLanets, newSystems etc
+  for(var listTypeIndex in data){
 
-      // The new system object created
-      var created = new SystemObject(sy_name, null, "system");
-      if(st_name){
-         created.child = new SystemObject(st_name, null, "star")
-         if(pl_name){
-           created.child.child = new SystemObject(pl_name, null, "planet");
-         }
+    var data = total[listTypeIndex];
+    var listTypeName = "newSystem";
+
+    switch(listTypeIndex){
+      case 1:
+        listTypeName = "newStars";
+        break;
+      case 2:
+        listTypeName = "newStars";
+        break;
+    }
+
+    var system;
+    // Looping through the system changes
+    for(var system_key in data){
+      // Setting the system
+      system = data[system_key];
+
+      if(system.length != 0){
+        var initSource = system[0];
+        // Some initial Vars to help us keep track
+        var column = 1;
+        var sy_name = initSource["sy_name"];
+        var st_name = initSource["st_name"];
+        var pl_name = initSource["pl_name"];
+
+        // The new system object created
+        var created = new SystemObject(sy_name, null, "system");
+        if(st_name){
+           created.child = new SystemObject(st_name, null, "star")
+           if(pl_name){
+             created.child.child = new SystemObject(pl_name, null, "planet");
+           }
+        }
+
+        // Looping through each source in the system
+        for(var source_key in system){
+          // Which column they belong to
+          var source = system[source_key];
+          var source_key = source["src"];
+          if (source_key === ""){
+            column = 1;
+          }
+          else if(source_key === "nasa"){
+            column = 2;
+          }
+          else if(source_key === "eu"){
+            column = 3;
+          }
+
+          // Looping through the keys
+          for(var att_key in source){
+            // After seperating the planet/system/star from the tag
+            var column_name = att_key.substring(0);
+
+            // Looping through which key it is
+            if(att_key.includes("sy_")){
+              created.addAttribute(column, column_name, source[att_key]);
+            }
+            else if(att_key.includes("st_")){
+              created.child.addAttribute(column, column_name, source[att_key]);
+            }
+            else if(att_key.includes("pl_")){
+              created.child.child.addAttribute(column, column_name, source[att_key]);
+            }
+          }
+        }
+        systemObjs.push(created);
+
       }
-
-      // Looping through each source in the system
-      for(var source_key in system){
-        // Which column they belong to
-        var source = system[source_key];
-        var source_key = source["src"];
-        if (source_key === ""){
-          column = 1;
-        }
-        else if(source_key === "nasa"){
-          column = 2;
-        }
-        else if(source_key === "eu"){
-          column = 3;
-        }
-
-        // Looping through the keys
-        for(var att_key in source){
-          // After seperating the planet/system/star from the tag
-          var column_name = att_key.substring(0);
-
-          // Looping through which key it is
-          if(att_key.includes("sy_")){
-            created.addAttribute(column, column_name, source[att_key]);
-          }
-          else if(att_key.includes("st_")){
-            created.child.addAttribute(column, column_name, source[att_key]);
-          }
-          else if(att_key.includes("pl_")){
-            created.child.child.addAttribute(column, column_name, source[att_key]);
-          }
-        }
-      }
-      systemObjs.push(created);
     }
   }
 }

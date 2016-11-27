@@ -55,6 +55,10 @@ public class OECMain extends HttpServlet
     		resp.getWriter().print(readFile(req.getRequestURI().substring(1), StandardCharsets.UTF_8));
     		resp.getWriter().close();
     	}
+    	else if(req.getRequestURI().contains("sample.txt")){
+    		resp.getWriter().print(readFile(req.getRequestURI().substring(1), StandardCharsets.UTF_8));
+    		resp.getWriter().close();
+    	}
     	else if (req.getRequestURI().equals("/update")){
     		updating = false;
     		counter += 1;
@@ -100,7 +104,6 @@ public class OECMain extends HttpServlet
                 resp.getWriter().print(Driver.getStarAttributeConflicts());
                 resp.getWriter().print(",");
                 resp.getWriter().print(Driver.getPlanetAttributeUpdates());
-        		
         		resp.getWriter().print("]");
         		resp.getWriter().flush();
     		}

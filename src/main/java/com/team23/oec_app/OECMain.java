@@ -88,6 +88,19 @@ public class OECMain extends HttpServlet
         		resp.getWriter().print(Driver.getNewStars());
         		resp.getWriter().print(",");
         		resp.getWriter().print(Driver.getNewSystems());
+        		resp.getWriter().print(",");
+        		resp.getWriter().print(Driver.getSystemAttributeUpdates());
+                resp.getWriter().print(",");
+                resp.getWriter().print(Driver.getStarAttributeUpdates());
+                resp.getWriter().print(",");
+                resp.getWriter().print(Driver.getPlanetAttributeUpdates());
+                resp.getWriter().print(",");
+                resp.getWriter().print(Driver.getSystemAttributeConflicts());
+                resp.getWriter().print(",");
+                resp.getWriter().print(Driver.getStarAttributeConflicts());
+                resp.getWriter().print(",");
+                resp.getWriter().print(Driver.getPlanetAttributeUpdates());
+        		
         		resp.getWriter().print("]");
         		resp.getWriter().flush();
     		}
@@ -117,11 +130,21 @@ public class OECMain extends HttpServlet
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
-    	if (req.getRequestURI().equals("/upload")){
-    		resp.getWriter().close();
-    	}
-    	else if (req.getRequestURI().equals("/upload")){
-        	Driver.executeMerge();
+    	if (req.getRequestURI().equals("/upload")){		
+            //get input from the user
+    		
+    		/*
+            Driver.setNewSystems(json[0]);
+            Driver.setNewStars(json[1]);
+            Driver.setNewPlanets(json[2]);
+            Driver.setSystemtAttributes(json[3]);
+            Driver.setStarAttributes(json[4]);
+            Driver.setPlanetAttributes(json[5]);
+            */
+            
+            //Now execute merge
+            Driver.executeMerge();
+    		
     		resp.getWriter().close();
     	}
     	else{

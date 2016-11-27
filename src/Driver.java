@@ -22,10 +22,12 @@ import java.util.List;
 
 import ModelStarSystems.SystemBuilder;
 import ModelStarSystems.Systems;
+import UpdateTools.CreateOecClone;
 import UpdateTools.DifferenceDetector;
 import UpdateTools.Merge;
 import UpdateTools.PullingTools;
 import UpdateTools.ReadCSV;
+import UpdateTools.SendPullRequest;
 import UpdateTools.UpdateClassifier;
 import UpdateTools.UpdateStorage;
 import UpdateTools.generateXML;
@@ -90,9 +92,10 @@ public class Driver {
     try {
       pullExoplanetEu();
       pullNasaArchive();
-      pullOecSeperateFiles();
+      CreateOecClone.gitCloneRepo();
+      CreateOecClone.createNewBranch();
       pullOecOneFile();
-    } catch (IOException | ZipException e) {
+    } catch (IOException e) {
       e.printStackTrace();
     }
     
@@ -149,6 +152,9 @@ public class Driver {
       /* Uncomment after
       UpdateTools.PullingTools.createLatestCatalogueCopy();
       */
+      CreateOecClone.gitCloneRepo();
+      CreateOecClone.createNewBranch();
+      
       
       //find updates between different versions of the nasa database
       detectUpdates(ReadCSV.mapPlanetToData(PullingTools.localNasaArchiveOld, ReadCSV.NASA),
@@ -204,17 +210,17 @@ public class Driver {
     for (ArrayList<Systems> as : UpdateStorage.planets) {
       Merge.newPlanet(as.get(0), generateXML.xmlPlanet(as.get(0)));
     }
-  
+    
     //merge updates now
     for (ArrayList<Systems> as : UpdateStorage.systemUpdates) {
       Merge.newSystemVals(as.get(0));
     }
-  
+    
     //merge updates now
     for (ArrayList<Systems> as : UpdateStorage.starUpdates) {
       Merge.newStarVals(as.get(0));
     }
-  
+    
     //merge updates now
     for (ArrayList<Systems> as : UpdateStorage.planetUpdates) {
       Merge.newPlanetVals(as.get(0));
@@ -222,6 +228,7 @@ public class Driver {
     
     //still need to add things for the conflicts and attributes here
   }
+  
   /**
    * The JSON string is in the format List<List<Hashmap<String,String>>. In this case, the inner
    * list is singleton lists with dictionaries. The dictionaries contain the information of a single
@@ -350,6 +357,7 @@ public class Driver {
   public static String getNewStarConflicts() {
     return convertToMap(UpdateStorage.newStarConflicts);
   }
+  
   /**
    * Add the new planets based on the user selection
    *
@@ -390,7 +398,6 @@ public class Driver {
   }
   
   /**
-   *
    * The input JSON string should be in the format List<List<Hashmap<String,String>>.
    * In this case, the inner
    * list is singleton lists with dictionaries. The dictionaries contain the information of a single
@@ -402,7 +409,6 @@ public class Driver {
   }
   
   /**
-   *
    * The input JSON string should be in the format List<List<Hashmap<String,String>>.
    * In this case, the inner
    * list is singleton lists with dictionaries. The dictionaries contain the information of a single
@@ -414,7 +420,6 @@ public class Driver {
   }
   
   /**
-   *
    * The input JSON string should be in the format List<List<Hashmap<String,String>>.
    * In this case, the inner
    * list is singleton lists with dictionaries. The dictionaries contain the information of a single
@@ -490,6 +495,12 @@ public class Driver {
       convertToMap.add(diffCatalogueData);
     }
     return gson.toJson(convertToMap);
+  }
+  
+  public static void commitPushPullRequest(String token) {
+    CreateOecClone.commitChanges();
+    CreateOecClone.pushChanges(token, CreateOecClone.getBranchName());
+    SendPullRequest.createPullRequest(token, CreateOecClone.getBranchName());
   }
   
   public static void main(String[] args) {
@@ -586,7 +597,7 @@ public class Driver {
       //System.out.println(getNewPlanetConflicts());
       //System.out.println(getNewPlanets());
       //initialSetupOrResetLocalCopies();
-      
+
 //      System.out.println(isInitialMergeDone());
 //      String json = getNewPlanetConflicts();
 //      createObjectFromJson(json);
@@ -640,7 +651,7 @@ public class Driver {
 //      for (String str : sorted) {
 //        System.out.println(str);
 //      }
-
+      
       System.out.println();
       System.out.println("System Attribute changes");
       System.out.println();
@@ -649,7 +660,7 @@ public class Driver {
         System.out.println(as.get(0).getProperties());
         System.out.println(as.get(1).getProperties());
       }
-
+      
       System.out.println();
       System.out.println("Star Attribute changes");
       System.out.println();
@@ -658,7 +669,7 @@ public class Driver {
         System.out.println(as.get(0).getChild().getProperties());
         System.out.println(as.get(1).getChild().getProperties());
       }
-
+      
       System.out.println();
       System.out.println("Planet Attribute changes");
       System.out.println();
@@ -667,7 +678,7 @@ public class Driver {
         System.out.println(as.get(0).getChild().getChild().getProperties());
         System.out.println(as.get(1).getChild().getChild().getProperties());
       }
-  
+      
       System.out.println();
       System.out.println("System Attribute conflicts");
       System.out.println();
@@ -677,7 +688,7 @@ public class Driver {
         System.out.println(as.get(1).getProperties());
         System.out.println(as.get(2).getProperties());
       }
-  
+      
       System.out.println();
       System.out.println("Star Attribute conflicts");
       System.out.println();
@@ -687,7 +698,7 @@ public class Driver {
         System.out.println(as.get(1).getChild().getProperties());
         System.out.println(as.get(2).getChild().getProperties());
       }
-  
+      
       System.out.println();
       System.out.println("Planet Attribute conflicts");
       System.out.println();
@@ -697,10 +708,10 @@ public class Driver {
         System.out.println(as.get(1).getChild().getChild().getProperties());
         System.out.println(as.get(2).getChild().getChild().getProperties());
       }
-  
-  
-     executeMerge();
-      String json = "";
+      
+      
+      executeMerge();
+      commitPushPullRequest("a0e0b081561d3abaeae3bd2536b929d2c2c607d2");
       
       ////////////////Test converting from json to system objects
 //      String x = "[[{'pl_name':'hi','st_name':'hello','sy_name':'bye', 'pl_mass':'999'}],[{'pl_name':'hi','st_name':'hello','sy_name':'bye', 'pl_mass':'999'}]]";

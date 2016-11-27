@@ -15,6 +15,7 @@ function SystemObject(name, child, type){
     this.info[4][0] = 'Result';
 
     this.type = type || "system";
+    this.conflict = false;
 }
 
 SystemObject.prototype.addRow = function() {
@@ -270,15 +271,19 @@ function commitChanges(){
   var text = document.getElementById("commit-message").value;
   window.alert("Your Changes Have Been Made: "+ text);
   var data = exportAsJSON();
-  console.log(data);
+
+  // Sending it as a post
   $.post("https://pacific-shelf-92985.herokuapp.com/update", function(data) {
     window.alert("Your data has been sent");
   });
 }
 
 function exportAsJSON(){
+  $('.theClass:checkbox:checked');
+
   var total = [];
 
+  // Exporting it as a JSON
   var i = 0;
   for(i; i < systemObjs.length; i++){
     // looping through and making a temp dict

@@ -195,11 +195,8 @@ function generateRowHTML(info0, info1, info2, info3, info4, num){
 function update(){
   // Getting the string data from the server
   $.get("https://pacific-shelf-92985.herokuapp.com/img/sample.txt", function(data) {
-    systemObjs = [];
-    populate(data);
-    setNewRows();
   });
-  //request();
+  request();
 }
 
 function request(){
@@ -214,7 +211,7 @@ function request(){
       // Restting systemObjs
       systemObjs = [];
       populate(data);
-      setNewRows();
+      setNewRows(systemObjs);
     }
   });
 }

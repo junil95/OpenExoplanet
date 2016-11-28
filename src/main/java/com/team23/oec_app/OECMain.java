@@ -74,7 +74,6 @@ public class OECMain extends HttpServlet
         	if(!Driver.isInitialMergeDone()){
         		Driver.initialSetupOrResetLocalCopies();
             	// Feteching initial updates
-        		Driver.detectInitialUpdates(); 
         	}
         	updating = true;
     	}

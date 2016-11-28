@@ -57,22 +57,20 @@ public class OECMain extends HttpServlet
     	}
     	else if (req.getRequestURI().equals("/update")){
     		updating = false;
-    		counter += 1;
+    		counter = 1;
         	if(!Driver.isInitialMergeDone()){
         		Driver.initialSetupOrResetLocalCopies();
-            	// Feteching initial updates
-        		Driver.detectInitialUpdates(); 
         	}
         	updating = true;
     	}
     	else if (req.getRequestURI().equals("/request")){
-    		if(updating == false){
+    		if(counter > 101){
+     			resp.getWriter().print("Took too long..");
+     			resp.getWriter().flush();
+     		}
+    		else if(updating == false){
     			counter += 1;
     			resp.getWriter().print("Still updating...");
-    			resp.getWriter().flush();
-    		}
-    		else if(counter > 101){
-    			resp.getWriter().print("Took too long..");
     			resp.getWriter().flush();
     		}
     		else {

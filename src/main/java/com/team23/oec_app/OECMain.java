@@ -30,7 +30,7 @@ import com.team23.UpdateTools.generateXML;
 public class OECMain extends HttpServlet
 {
 	
-	private boolean updating = true;
+	private boolean updating = false;
 	private int counter = 0;
 
 	/**

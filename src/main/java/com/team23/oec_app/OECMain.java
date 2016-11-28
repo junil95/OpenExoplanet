@@ -127,6 +127,9 @@ public class OECMain extends HttpServlet
     		*/
     		//System.out.println(Driver.getNewPlanetConflicts());	
     	}
+    	else{
+    		super.doGet(req, resp);
+    	}
     }
     
     /**

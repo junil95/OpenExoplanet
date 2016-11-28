@@ -345,18 +345,18 @@ function commitChanges(){
   // Sending it as a post
   $.post("https://pacific-shelf-92985.herokuapp.com/setkey", function(text) {
       var result = []
-      result.push(exportAsJSON(seperateFunctions("newSystem"));
-      result.push(exportAsJSON(seperateFunctions("newStar"));
-      result.push(exportAsJSON(seperateFunctions("newPlanet"));
-      result.push(exportAsJSON(seperateFunctions("newConflictingSystem"));
-      result.push(exportAsJSON(seperateFunctions("newConflictingStar"));
-      result.push(exportAsJSON(seperateFunctions("newConflictingPlanet"));
-      result.push(exportAsJSON(seperateFunctions("existingSystem"));
-      result.push(exportAsJSON(seperateFunctions("existingStar"));
-      result.push(exportAsJSON(seperateFunctions("existingPlanet"));
-      result.push(exportAsJSON(seperateFunctions("existingConflictingSystem"));
-      result.push(exportAsJSON(seperateFunctions("existingConflictingStar"));
-      result.push(exportAsJSON(seperateFunctions("existingConflictingPlanet"));
+      result.push(exportAsJSON(seperateFunctions("newSystem")));
+      result.push(exportAsJSON(seperateFunctions("newStar")));
+      result.push(exportAsJSON(seperateFunctions("newPlanet")));
+      result.push(exportAsJSON(seperateFunctions("newConflictingSystem")));
+      result.push(exportAsJSON(seperateFunctions("newConflictingStar")));
+      result.push(exportAsJSON(seperateFunctions("newConflictingPlanet")));
+      result.push(exportAsJSON(seperateFunctions("existingSystem")));
+      result.push(exportAsJSON(seperateFunctions("existingStar")));
+      result.push(exportAsJSON(seperateFunctions("existingPlanet")));
+      result.push(exportAsJSON(seperateFunctions("existingConflictingSystem")));
+      result.push(exportAsJSON(seperateFunctions("existingConflictingStar")));
+      result.push(exportAsJSON(seperateFunctions("existingConflictingPlanet")));
       var data = exportAsJSON();
 
     $.post("https://pacific-shelf-92985.herokuapp.com/upload", {result: 'result'}, function(data) {

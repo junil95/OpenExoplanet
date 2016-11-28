@@ -16,6 +16,10 @@ function SystemObject(name, child, type){
 
     this.type = type || "system";
     this.conflict = false;
+
+    // In one of four lists
+    // New/Conflicts/
+    this.listType = "new";
 }
 
 SystemObject.prototype.addRow = function() {
@@ -82,6 +86,29 @@ SystemObject.prototype.finalize = function(){
     }
   }
   return conflicts;
+}
+
+SystemObject.prototype.setSystemType = function(number){
+  var id = Math.floor(number / 3);
+
+  switch(number){
+    case 0:
+      this.listType = "new";
+      break;
+    case 1:
+      this.listType = "conflict";
+      break;
+    case 2:
+      this.listType = "existingNew";
+      break;
+    case 3:
+      this.listType = "existingConflict";
+      break;
+  }
+
+  if(this.child != null){
+    this.child.setSystemType(number);
+  }
 }
 
 // Dispalys the correct row for the table to permute
@@ -207,18 +234,8 @@ function populate(data){
 
   // List type if based on which list was passed e.g. newPLanets, newSystems etc
   for(var listTypeIndex in data){
-
     var data = total[listTypeIndex];
     var listTypeName = "newSystem";
-
-    switch(listTypeIndex){
-      case 1:
-        listTypeName = "newStars";
-        break;
-      case 2:
-        listTypeName = "newStars";
-        break;
-    }
 
     var system;
     // Looping through the system changes
@@ -258,6 +275,8 @@ function populate(data){
             column = 3;
           }
 
+          created.setSystemType(listTypeIndex);
+
           // Looping through the keys
           for(var att_key in source){
             // After seperating the planet/system/star from the tag
@@ -276,7 +295,6 @@ function populate(data){
           }
         }
         systemObjs.push(created);
-
       }
     }
   }

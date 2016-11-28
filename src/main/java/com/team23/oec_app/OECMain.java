@@ -1,8 +1,6 @@
 package com.team23.oec_app;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -40,13 +38,6 @@ public class OECMain extends HttpServlet
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
     	
-    	File dir = new File("nameoffolder");
-    	dir.mkdir();
-	   PrintWriter writer = new PrintWriter("the-file-name.txt", "UTF-8");
-	    writer.println("The first line");
-	    writer.println("The second line");
-	    writer.close();
-    	
     	if(req.getRequestURI().equals("/")){
     		resp.setContentType("text/html");
     		resp.getWriter().print(readFile("index.html", StandardCharsets.UTF_8));
@@ -64,16 +55,13 @@ public class OECMain extends HttpServlet
     		resp.getWriter().print(readFile(req.getRequestURI().substring(1), StandardCharsets.UTF_8));
     		resp.getWriter().close();
     	}
-    	else if(req.getRequestURI().contains("sample.txt")){
-    		resp.getWriter().print(readFile(req.getRequestURI().substring(1), StandardCharsets.UTF_8));
-    		resp.getWriter().close();
-    	}
     	else if (req.getRequestURI().equals("/update")){
     		updating = false;
     		counter += 1;
         	if(!Driver.isInitialMergeDone()){
         		Driver.initialSetupOrResetLocalCopies();
             	// Feteching initial updates
+        		Driver.detectInitialUpdates(); 
         	}
         	updating = true;
     	}
@@ -116,9 +104,23 @@ public class OECMain extends HttpServlet
         		resp.getWriter().flush();
     		}
     		resp.getWriter().close();
-    	}
-    	else{
-    		super.doGet(req, resp);
+    		// Calling from Driver to get all the new updated celestial objects
+        	// Doing the initial merge and setting up local repos
+
+    		/*
+    		ArrayList<String> list = new ArrayList<String>();
+    		
+    		list.add(Driver.getNewSystems());
+    		list.add(Driver.getNewPlanetConflicts());
+    		
+    		list.add(Driver.getNewPlanets());
+    		list.add(Driver.getNewPlanetConflicts());
+    		
+    		list.add(Driver.getNewStars());
+    		list.add(Driver.getNewStarConflicts());
+    		
+    		*/
+    		//System.out.println(Driver.getNewPlanetConflicts());	
     	}
     }
     
@@ -129,9 +131,20 @@ public class OECMain extends HttpServlet
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
     	if (req.getRequestURI().equals("/upload")){		
             //get input from the user
-    	}
-    	if (req.getRequestURI().equals("/setkey")){		
-    		System.out.println(req.getParameter("result"));
+    		
+    		/*
+            Driver.setNewSystems(json[0]);
+            Driver.setNewStars(json[1]);
+            Driver.setNewPlanets(json[2]);
+            Driver.setSystemtAttributes(json[3]);
+            Driver.setStarAttributes(json[4]);
+            Driver.setPlanetAttributes(json[5]);
+            */
+            
+            //Now execute merge
+            Driver.executeMerge();
+    		
+    		resp.getWriter().close();
     	}
     	else{
     		super.doPost(req, resp);

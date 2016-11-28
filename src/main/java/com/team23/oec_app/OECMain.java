@@ -1,5 +1,6 @@
 package com.team23.oec_app;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -37,6 +38,9 @@ public class OECMain extends HttpServlet
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+    	
+    	File dir = new File("nameoffolder");
+    	dir.mkdir();
     	
     	if(req.getRequestURI().equals("/")){
     		resp.setContentType("text/html");

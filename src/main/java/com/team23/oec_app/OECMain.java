@@ -30,7 +30,7 @@ import com.team23.UpdateTools.generateXML;
 public class OECMain extends HttpServlet
 {
 	
-	private boolean updating = false;
+	private boolean updating = true;
 	private int counter = 0;
 
 	/**
@@ -131,20 +131,9 @@ public class OECMain extends HttpServlet
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
     	if (req.getRequestURI().equals("/upload")){		
             //get input from the user
-    		
-    		/*
-            Driver.setNewSystems(json[0]);
-            Driver.setNewStars(json[1]);
-            Driver.setNewPlanets(json[2]);
-            Driver.setSystemtAttributes(json[3]);
-            Driver.setStarAttributes(json[4]);
-            Driver.setPlanetAttributes(json[5]);
-            */
-            
-            //Now execute merge
-            Driver.executeMerge();
-    		
-    		resp.getWriter().close();
+    	}
+    	if (req.getRequestURI().equals("/setkey")){		
+    		System.out.println(req.getParameter("result"));
     	}
     	else{
     		super.doPost(req, resp);

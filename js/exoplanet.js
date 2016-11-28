@@ -19,7 +19,7 @@ function SystemObject(name, child, type){
     this.conflict = false;
 
     // In one of four lists
-    // New/Conflicts/
+    // New/Conflicts/newAttribute/newCOnflict
     this.listType = "new";
 }
 
@@ -301,25 +301,52 @@ function populate(data){
   }
 }
 
+function seperateFunctions(type, listType){
+  var result = [];
+  for(systemObjIndex in systemObjs){
+    var curr = systemObjs[systemObjIndex];
+    while(curr.child != null){
+      if(curr.type != type && curr.listType = listType){
+        result.add(curr);
+      }
+    }
+  };
+  return result;
+}
+
 function commitChanges(){
   var text = document.getElementById("commit-message").value;
-  window.alert("Your Changes Have Been Made: "+ text);
-  var data = exportAsJSON();
-
   // Sending it as a post
-  $.post("https://pacific-shelf-92985.herokuapp.com/update", function(data) {
-    window.alert("Your data has been sent");
+  $.post("https://pacific-shelf-92985.herokuapp.com/setkey", function(text) {
+      var result = []
+      result.push(exportAsJSON(seperateFunctions("new", "system"));
+      result.push(exportAsJSON(seperateFunctions("new", "star"));
+      result.push(exportAsJSON(seperateFunctions("new", "planet"));
+      result.push(exportAsJSON(seperateFunctions("conflicting", "system"));
+      result.push(exportAsJSON(seperateFunctions("conflicting", "star"));
+      result.push(exportAsJSON(seperateFunctions("conflicting", "planet"));
+      result.push(exportAsJSON(seperateFunctions("newAttribute", "system"));
+      result.push(exportAsJSON(seperateFunctions("newAttribute", "star"));
+      result.push(exportAsJSON(seperateFunctions("newAttribute", "planet"));
+      result.push(exportAsJSON(seperateFunctions("conflictingAttribute", "system"));
+      result.push(exportAsJSON(seperateFunctions("conflictingAttribute", "star"));
+      result.push(exportAsJSON(seperateFunctions("conflictingAttribute", "planet"));
+      var data = exportAsJSON();
+
+    $.post("https://pacific-shelf-92985.herokuapp.com/upload", {result: 'result'}, function(data) {
+      window.alert("Your data has been sent");
+    });
   });
 }
 
-function exportAsJSON(){
+function exportAsJSON(systemObjList){
   $('.theClass:checkbox:checked');
 
   var total = [];
 
   // Exporting it as a JSON
   var i = 0;
-  for(i; i < systemObjs.length; i++){
+  for(i; i < systemObjList.length; i++){
     // looping through and making a temp dict
     var temp = {};
     var curr = systemObjs[i];

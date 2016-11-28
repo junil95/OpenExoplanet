@@ -2,6 +2,7 @@ package com.team23.oec_app;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -41,6 +42,10 @@ public class OECMain extends HttpServlet
     	
     	File dir = new File("nameoffolder");
     	dir.mkdir();
+	   PrintWriter writer = new PrintWriter("the-file-name.txt", "UTF-8");
+	    writer.println("The first line");
+	    writer.println("The second line");
+	    writer.close();
     	
     	if(req.getRequestURI().equals("/")){
     		resp.setContentType("text/html");

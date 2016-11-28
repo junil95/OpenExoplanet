@@ -88,7 +88,6 @@ public class OECMain extends HttpServlet
     			resp.getWriter().flush();
     		}
     		else {
-    			Driver.updateDetection();
     			resp.getWriter().print("[");
         		resp.getWriter().print(Driver.getNewSystemConflicts());
         		resp.getWriter().print(",");

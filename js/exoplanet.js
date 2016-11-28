@@ -94,22 +94,51 @@ SystemObject.prototype.setSystemType = function(number){
 
   switch(number){
     case 0:
-      this.listType = "new";
+      this.listType = "newSystem";
       break;
     case 1:
-      this.listType = "conflict";
+      this.listType = "newStar";
       break;
     case 2:
-      this.listType = "existingNew";
+      this.listType = "newPlanet";
       break;
     case 3:
-      this.listType = "existingConflict";
+      this.listType = "conflictingSystem";
+      break;
+    case 4:
+      this.listType = "conflictingStar";
+      break;
+    case 5:
+      this.listType = "conflictingPlanet";
+      break;
+    case 6:
+      this.listType = "existingSystem";
+      break;
+    case 7:
+      this.listType = "existingStar";
+      break;
+    case 8:
+      this.listType = "existingPlanet";
+      break;
+    case 9:
+      this.listType = "existingConflictingSystem";
+      break;
+    case 10:
+      this.listType = "existingConflictingStar";
+      break;
+    case 11:
+      this.listType = "existingConflictingPlanet";
       break;
   }
 
   if(this.child != null){
     this.child.setSystemType(number);
   }
+}
+
+
+function setRowType(rowName){
+  setNewRows(seperateFunctions(rowName));
 }
 
 // Dispalys the correct row for the table to permute
@@ -190,12 +219,13 @@ function request(){
   });
 }
 
-function setNewRows(){
+function setNewRows(wantedSystemObjs){
   clearRows();
   var i = 0;
-  for(obj in systemObjs){
+  for(obj in wantedSystemObjs){
+    i = systemObjs.indexOf(wantedSystemObjs[obj]);
     // Pointing the obj correctly
-    obj = systemObjs[i];
+    obj = wantedSystemObjs[obj];
     // Counter to do children
     var childCounter = 0;
     var lastId = 'changed-list';
@@ -220,7 +250,6 @@ function setNewRows(){
       childCounter++;
       obj = obj.child;
     }
-    i++;
   }
 }
 
@@ -301,12 +330,12 @@ function populate(data){
   }
 }
 
-function seperateFunctions(type, listType){
+function seperateFunctions(listType){
   var result = [];
   for(systemObjIndex in systemObjs){
     var curr = systemObjs[systemObjIndex];
     while(curr.child != null){
-      if(curr.type != type && curr.listType = listType){
+      if(curr.listType === listType){
         result.add(curr);
       }
     }
@@ -319,18 +348,18 @@ function commitChanges(){
   // Sending it as a post
   $.post("https://pacific-shelf-92985.herokuapp.com/setkey", function(text) {
       var result = []
-      result.push(exportAsJSON(seperateFunctions("new", "system"));
-      result.push(exportAsJSON(seperateFunctions("new", "star"));
-      result.push(exportAsJSON(seperateFunctions("new", "planet"));
-      result.push(exportAsJSON(seperateFunctions("conflicting", "system"));
-      result.push(exportAsJSON(seperateFunctions("conflicting", "star"));
-      result.push(exportAsJSON(seperateFunctions("conflicting", "planet"));
-      result.push(exportAsJSON(seperateFunctions("newAttribute", "system"));
-      result.push(exportAsJSON(seperateFunctions("newAttribute", "star"));
-      result.push(exportAsJSON(seperateFunctions("newAttribute", "planet"));
-      result.push(exportAsJSON(seperateFunctions("conflictingAttribute", "system"));
-      result.push(exportAsJSON(seperateFunctions("conflictingAttribute", "star"));
-      result.push(exportAsJSON(seperateFunctions("conflictingAttribute", "planet"));
+      result.push(exportAsJSON(seperateFunctions("newSystem"));
+      result.push(exportAsJSON(seperateFunctions("newStar"));
+      result.push(exportAsJSON(seperateFunctions("newPlanet"));
+      result.push(exportAsJSON(seperateFunctions("newConflictingSystem"));
+      result.push(exportAsJSON(seperateFunctions("newConflictingStar"));
+      result.push(exportAsJSON(seperateFunctions("newConflictingPlanet"));
+      result.push(exportAsJSON(seperateFunctions("existingSystem"));
+      result.push(exportAsJSON(seperateFunctions("existingStar"));
+      result.push(exportAsJSON(seperateFunctions("existingPlanet"));
+      result.push(exportAsJSON(seperateFunctions("existingConflictingSystem"));
+      result.push(exportAsJSON(seperateFunctions("existingConflictingStar"));
+      result.push(exportAsJSON(seperateFunctions("existingConflictingPlanet"));
       var data = exportAsJSON();
 
     $.post("https://pacific-shelf-92985.herokuapp.com/upload", {result: 'result'}, function(data) {

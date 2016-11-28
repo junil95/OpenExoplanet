@@ -18,6 +18,16 @@ body {
     display: flex;
     flex-direction: column; }
 
+#tab-selector {
+  width: 100px; }
+
+.tab-selectors {
+  width: 200px;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  float: left;
+  clear: left; }
+
 #top-panel {
   position: relative;
   margin-top: 25px; }

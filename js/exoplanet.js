@@ -90,46 +90,8 @@ SystemObject.prototype.finalize = function(){
 }
 
 SystemObject.prototype.setSystemType = function(number){
-  var id = Math.floor(number / 3);
-
-  switch(number){
-    case 0:
-      this.listType = "newSystem";
-      break;
-    case 1:
-      this.listType = "newStar";
-      break;
-    case 2:
-      this.listType = "newPlanet";
-      break;
-    case 3:
-      this.listType = "conflictingSystem";
-      break;
-    case 4:
-      this.listType = "conflictingStar";
-      break;
-    case 5:
-      this.listType = "conflictingPlanet";
-      break;
-    case 6:
-      this.listType = "existingSystem";
-      break;
-    case 7:
-      this.listType = "existingStar";
-      break;
-    case 8:
-      this.listType = "existingPlanet";
-      break;
-    case 9:
-      this.listType = "existingConflictingSystem";
-      break;
-    case 10:
-      this.listType = "existingConflictingStar";
-      break;
-    case 11:
-      this.listType = "existingConflictingPlanet";
-      break;
-  }
+  var list =["newSystem", "newStar", "newPlanet", "newConflictingSystem", "newConflictingStar", "newConflictingPlanet", "existingSystem", "existingStar", "existingPlanet", "existingConflictingSystem", "existingConflictingStar", "existingConflictingPlanet"];
+  this.listType = list[number];
 
   if(this.child != null){
     this.child.setSystemType(number);
@@ -137,8 +99,13 @@ SystemObject.prototype.setSystemType = function(number){
 }
 
 
-function setRowType(rowName){
-  setNewRows(seperateFunctions(rowName));
+function selectRowType(rowName){
+  if(rowName === "All"){
+      setNewRows(systemObjs);
+  }
+  else{
+    setNewRows(seperateFunctions(rowName));
+  }
 }
 
 // Dispalys the correct row for the table to permute
@@ -194,9 +161,15 @@ function generateRowHTML(info0, info1, info2, info3, info4, num){
 
 function update(){
   // Getting the string data from the server
-  $.get("https://pacific-shelf-92985.herokuapp.com/img/sample.txt", function(data) {
+  $.get("https://pacific-shelf-92985.herokuapp.com/img/update", function(data) {
   });
   request();
+
+/*
+  systemObjs = [];
+  populate('[ [{"sy_name":"1", "st_name": "1-2", "pl_name": "1-2"}], [{"sy_name":"1", "st_name": "1-2", "pl_name": "1-2"}], [{"sy_name":"1", "st_name": "1-2", "pl_name": "1-2"}], [{"sy_name":"1", "st_name": "1-2", "pl_name": "1-2"}], [{"sy_name":"1", "st_name": "1-2", "pl_name": "1-2"}], [{"sy_name":"1", "st_name": "1-2", "pl_name": "1-2"}], [], [], [], [], [], [] ]');
+  setNewRows(systemObjs);
+  */
 }
 
 function request(){
@@ -261,22 +234,21 @@ function populate(data){
 
   // List type if based on which list was passed e.g. newPLanets, newSystems etc
   for(var listTypeIndex in data){
-    var data = total[listTypeIndex];
+    var dataList = total[listTypeIndex];
     var listTypeName = "newSystem";
 
     var system;
     // Looping through the system changes
-    for(var system_key in data){
+    for(var system_key in dataList){
       // Setting the system
-      system = data[system_key];
+      system = dataList[system_key];
 
       if(system.length != 0){
-        var initSource = system[0];
         // Some initial Vars to help us keep track
         var column = 1;
-        var sy_name = initSource["sy_name"];
-        var st_name = initSource["st_name"];
-        var pl_name = initSource["pl_name"];
+        var sy_name = system["sy_name"];
+        var st_name = system["st_name"];
+        var pl_name = system["pl_name"];
 
         // The new system object created
         var created = new SystemObject(sy_name, null, "system");
@@ -286,6 +258,8 @@ function populate(data){
              created.child.child = new SystemObject(pl_name, null, "planet");
            }
         }
+
+        created.setSystemType(listTypeIndex);
 
         // Looping through each source in the system
         for(var source_key in system){
@@ -302,7 +276,6 @@ function populate(data){
             column = 3;
           }
 
-          created.setSystemType(listTypeIndex);
 
           // Looping through the keys
           for(var att_key in source){
@@ -331,10 +304,8 @@ function seperateFunctions(listType){
   var result = [];
   for(systemObjIndex in systemObjs){
     var curr = systemObjs[systemObjIndex];
-    while(curr.child != null){
-      if(curr.listType === listType){
-        result.add(curr);
-      }
+    if(curr.listType === listType){
+      result.push(curr);
     }
   };
   return result;

@@ -51,7 +51,7 @@ public class MergeTest {
             Document testdoc = db.parse(testFile);
 
             //hopefully creates correct system file in oecData directory
-            newSystem(s, generateXML.xmlSystem(s));
+            //newSystem(s, generateXML.xmlSystem(s));
 
             //Parse created file
             DocumentBuilder db2 = DocumentBuilderFactory.newInstance().newDocumentBuilder();

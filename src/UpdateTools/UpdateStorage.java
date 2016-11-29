@@ -2,7 +2,6 @@ package UpdateTools;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.*;
 
 import ModelStarSystems.Planet;
@@ -11,8 +10,6 @@ import ModelStarSystems.SystemBuilder;
 import ModelStarSystems.Systems;
 
 import com.opencsv.CSVReader;
-<<<<<<< HEAD
-=======
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -21,11 +18,9 @@ import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
->>>>>>> master
 
 import static UpdateTools.ReadCSV.NASA;
 import static UpdateTools.ReadCSV.mapIndexes;
-import static UpdateTools.ReadCSV.mapPlanetToData;
 
 /**
  * Created by Tirth Shah on 2016-11-14.
@@ -224,63 +219,6 @@ public class UpdateStorage {
         //names are the same in EU and NASA. But there will still have to find conflicts for the
         //attributes. Leaving this here in case, we need to add something here
     }
-<<<<<<< HEAD
-    systemConflicts.add(nasaSystems);
-    systemConflicts.add(euSystems);
-    
-    return systemConflicts;
-  }
-  
-  public static void main(String[] args) {
-    try {
-      mapIndexes();
-      CSVReader r1 = new CSVReader(new FileReader(PullingTools.localExoplanetEu));
-      List<String[]> allData1 = r1.readAll();
-      Systems s1 = SystemBuilder.buildSystemWithCSVRow(Arrays.asList(allData1.get(678)), ReadCSV.EU);
-      //System.out.println(Arrays.asList((allData1.get(678))));
-      
-      CSVReader r2 = new CSVReader(new FileReader(PullingTools.localNasaArchive));
-      List<String[]> allData2 = r2.readAll();
-      Systems s2 = SystemBuilder.buildSystemWithCSVRow(Arrays.asList(allData2.get(1)), ReadCSV.NASA);
-      //System.out.println();
-      //System.out.println(Arrays.asList((allData2.get(1))));
-      s2.getChild().getChild().setName(s1.getChild().getChild().getName());
-      Systems s3 = SystemBuilder.buildSystemWithCSVRow(Arrays.asList(allData2.get(3)), ReadCSV.NASA);
-      ArrayList<Systems> as = new ArrayList<>();
-      as.add(s1);
-      UpdateStorage.planets.add(as);
-      as = new ArrayList<>();
-      as.add(s2);
-      UpdateStorage.planets.add(as);
-      as = new ArrayList<>();
-      as.add(s3);
-      UpdateStorage.planets.add(as);
-      
-      System.out.print("Planets Added: ");
-      findNewPlanetConflicts();
-      for (ArrayList<Systems> each : UpdateStorage.planets) {
-        System.out.print(each.get(0).getChild().getChild().getName() + "   ");
-      }
-      
-      System.out.println();
-      System.out.print("Planet Conflicts: ");
-      System.out.println(UpdateStorage.newPlanetConflicts.size());
-      for (int i = 0; i < UpdateStorage.newPlanetConflicts.size(); i++) {
-        System.out.print(UpdateStorage.newPlanetConflicts.get(i).get(0).getChild().getChild().getName() + "   ");
-        
-      }
-      //System.out.println(u.findPlanetConflicts());
-      
-      
-      //Systems s = SystemBuilder.buildSystemWithHashMap(test, "eu");
-      
-    } catch (IOException e) {
-      e.printStackTrace();
-    } catch (ReadCSV.MissingColumnNameException e) {
-      e.printStackTrace();
-    } catch (ArrayIndexOutOfBoundsException e) {
-      e.printStackTrace();
-=======
 
     public static void findNewSystemConflicts() {
         ArrayList<Systems> tuple;
@@ -575,7 +513,6 @@ public class UpdateStorage {
         Collections.sort(decreasing, Collections.reverseOrder());
         for (int i : decreasing)
             planetUpdates.remove(i);
->>>>>>> master
     }
     
 

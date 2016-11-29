@@ -22,7 +22,7 @@ import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.team23.UpdateTools.Merge.newSystem;
+import static UpdateTools.Merge.newSystem;
 import static junit.framework.TestCase.assertEquals;
 
 /**

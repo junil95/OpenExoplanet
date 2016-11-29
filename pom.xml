@@ -110,6 +110,14 @@
       <type>jar</type>
       <scope>compile</scope>
     </dependency>
+    <dependency>
+      <groupId>org.eclipse.egit.github.core</groupId>
+      <artifactId>github</artifactId>
+      <version>2.1.5</version>
+      <type>jar</type>
+      <scope>compile</scope>
+      <systemPath>${project.basedir}/libs/org.eclipse.egit.github.core-2.1.5</systemPath>
+    </dependency>
 	<dependency>
 		<groupId>org.eclipse.jetty</groupId>
 		<artifactId>jetty-server</artifactId>

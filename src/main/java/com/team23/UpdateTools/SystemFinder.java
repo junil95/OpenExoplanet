@@ -142,7 +142,7 @@ public class SystemFinder {
             //Star s1 = new Star("kasfi",update2,p1,ReadCSV.EU);
             HashMap<String, String> update3 = new HashMap<>();
             Systems sys = new Systems("16 cYgni", update3, s1, ReadCSV.EU);
-            System.out.println(SystemFinder.getSystem(s1));
+            System.out.println(com.team23.UpdateTools.SystemFinder.getSystem(s1));
             //System.out.println(UpdateTools.SystemFinder.systemCheck(sys));
         } catch (SystemFinder.MissingCelestialObjectException e) {
             e.printStackTrace();

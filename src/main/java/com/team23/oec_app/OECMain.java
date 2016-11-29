@@ -22,6 +22,7 @@ import com.google.gson.Gson;
 import com.team23.Driver;
 import com.team23.ModelStarSystems.Systems;
 import com.team23.UpdateTools.Merge;
+import com.team23.UpdateTools.SendPullRequest;
 import com.team23.UpdateTools.UpdateStorage;
 import com.team23.UpdateTools.generateXML;
 
@@ -102,6 +103,9 @@ public class OECMain extends HttpServlet
         		resp.getWriter().flush();
     		}
     		resp.getWriter().close();
+    		
+    		SendPullRequest.createPullRequest("test", "Test");
+    		
     		// Calling from Driver to get all the new updated celestial objects
         	// Doing the initial merge and setting up local repos
 

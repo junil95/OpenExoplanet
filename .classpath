@@ -12,12 +12,12 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7">
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
+	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
@@ -32,5 +32,10 @@
 	<classpathentry exported="true" kind="lib" path="E:/Extra Allocated Space/Personal/School/Year - 3/CSCC01 - Intro To Software Engineering/team23-Project/libs/junit-4.12.jar"/>
 	<classpathentry exported="true" kind="lib" path="E:/Extra Allocated Space/Personal/School/Year - 3/CSCC01 - Intro To Software Engineering/team23-Project/libs/opencsv-3.8.jar"/>
 	<classpathentry exported="true" kind="lib" path="E:/Extra Allocated Space/Personal/School/Year - 3/CSCC01 - Intro To Software Engineering/team23-Project/libs/zip4j_1.3.2.jar"/>
+	<classpathentry kind="lib" path="libs/org.eclipse.egit.github.core-2.1.5-javadoc.jar"/>
+	<classpathentry kind="lib" path="libs/org.eclipse.egit.github.core-2.1.5-sources.jar"/>
+	<classpathentry kind="lib" path="libs/org.eclipse.egit.github.core-2.1.5.jar"/>
+	<classpathentry kind="lib" path="libs/org.eclipse.jgit-4.5.0.201609210915-r-javadoc.jar"/>
+	<classpathentry kind="lib" path="libs/org.eclipse.jgit-4.5.0.201609210915-r.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

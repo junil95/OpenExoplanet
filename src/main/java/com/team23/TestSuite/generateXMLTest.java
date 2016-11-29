@@ -1,11 +1,19 @@
 package com.team23.TestSuite;
 
-import com.team23.ModelStarSystems.Systems;
-import com.team23.UpdateTools.PullingTools;
-import com.team23.UpdateTools.ReadCSV;
+import static com.team23.UpdateTools.generateXML.xmlPlanet;
+import static com.team23.UpdateTools.generateXML.xmlStar;
+import static com.team23.UpdateTools.generateXML.xmlSystem;
+import static com.team23.UpdateTools.generateXML.xmlValue;
+import static junit.framework.TestCase.assertEquals;
 
-import com.opencsv.CSVReader;
-import com.team23.ModelStarSystems.SystemBuilder;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.junit.Test;
 import org.w3c.dom.Document;
@@ -13,18 +21,11 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-
-import static junit.framework.TestCase.assertEquals;
-import static com.team23.UpdateTools.generateXML.*;
+import com.opencsv.CSVReader;
+import com.team23.ModelStarSystems.SystemBuilder;
+import com.team23.ModelStarSystems.Systems;
+import com.team23.UpdateTools.PullingTools;
+import com.team23.UpdateTools.ReadCSV;
 
 /**
  * Created by Rishi on 2016-11-13.

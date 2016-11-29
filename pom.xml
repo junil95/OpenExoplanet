@@ -15,6 +15,21 @@
   <build>
   	<finalName>pacific-shelf-92985</finalName>
 	  <plugins>
+			  <plugin>
+		    <groupId>org.apache.maven.plugins</groupId>
+		    <artifactId>maven-resources-plugin</artifactId>
+		    <version>2.7</version>
+		    <configuration>
+		      <nonFilteredFileExtensions>
+		        <nonFilteredFileExtension>woff</nonFilteredFileExtension>
+		        <nonFilteredFileExtension>ttf</nonFilteredFileExtension>
+		        <nonFilteredFileExtension>woff2</nonFilteredFileExtension>
+		        <nonFilteredFileExtension>eot</nonFilteredFileExtension>
+		        <nonFilteredFileExtension>swf</nonFilteredFileExtension>
+		        <nonFilteredFileExtension>ico</nonFilteredFileExtension>
+		      </nonFilteredFileExtensions>
+		    </configuration>
+		  </plugin>
 	  	<plugin>
                <groupId>org.apache.maven.plugins</groupId>
                <artifactId>maven-dependency-plugin</artifactId>

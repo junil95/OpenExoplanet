@@ -5,7 +5,6 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -13,18 +12,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
-import com.google.gson.Gson;
 import com.team23.Driver;
-import com.team23.ModelStarSystems.Systems;
-import com.team23.UpdateTools.Merge;
-import com.team23.UpdateTools.UpdateStorage;
-import com.team23.UpdateTools.generateXML;
+import com.team23.UpdateTools.SendPullRequest;
 
 public class OECMain extends HttpServlet
 {
+	
+	private boolean updating = false;
+	private int counter = 0;
 
 	/**
 	 * Default method used to handle all GET requests given to the server.
@@ -32,8 +31,6 @@ public class OECMain extends HttpServlet
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-    	
-    	System.out.println(req.getRequestURI());
     	
     	if(req.getRequestURI().equals("/")){
     		resp.setContentType("text/html");
@@ -52,19 +49,58 @@ public class OECMain extends HttpServlet
     		resp.getWriter().print(readFile(req.getRequestURI().substring(1), StandardCharsets.UTF_8));
     		resp.getWriter().close();
     	}
-    	else if(req.getRequestURI().contains(".woff")){
-    		resp.getWriter().print(readFile(req.getRequestURI().substring(1), StandardCharsets.UTF_8));
-    		resp.getWriter().close();
-    	}
     	else if (req.getRequestURI().equals("/update")){
-    		// Calling from Driver to get all the new updated celestial objects
-        	// Doing the initial merge and setting up local repos
+    		updating = false;
+    		counter = 1;
         	if(!Driver.isInitialMergeDone()){
         		Driver.initialSetupOrResetLocalCopies();
-        		
-            	// Feteching initial updates
-        		Driver.detectInitialUpdates(); 
-        	}	
+        	}
+        	updating = true;
+    	}
+    	else if (req.getRequestURI().equals("/request")){
+    		if(counter > 101){
+     			resp.getWriter().print("Took too long..");
+     			resp.getWriter().flush();
+     		}
+    		else if(updating == false){
+    			counter += 1;
+    			resp.getWriter().print("Still updating...");
+    			resp.getWriter().flush();
+    		}
+    		else {
+    			resp.getWriter().print("[");
+        		resp.getWriter().print(Driver.getNewSystemConflicts());
+        		resp.getWriter().print(",");
+        		resp.getWriter().print(Driver.getNewStarConflicts());
+        		resp.getWriter().print(",");
+        		resp.getWriter().print(Driver.getNewPlanetConflicts());
+        		resp.getWriter().print(",");
+        		resp.getWriter().print(Driver.getNewPlanets());
+        		resp.getWriter().print(",");
+        		resp.getWriter().print(Driver.getNewStars());
+        		resp.getWriter().print(",");
+        		resp.getWriter().print(Driver.getNewSystems());
+        		resp.getWriter().print(",");
+        		resp.getWriter().print(Driver.getSystemAttributeUpdates());
+                resp.getWriter().print(",");
+                resp.getWriter().print(Driver.getStarAttributeUpdates());
+                resp.getWriter().print(",");
+                resp.getWriter().print(Driver.getPlanetAttributeUpdates());
+                resp.getWriter().print(",");
+                resp.getWriter().print(Driver.getSystemAttributeConflicts());
+                resp.getWriter().print(",");
+                resp.getWriter().print(Driver.getStarAttributeConflicts());
+                resp.getWriter().print(",");
+                resp.getWriter().print(Driver.getPlanetAttributeUpdates());
+        		resp.getWriter().print("]");
+        		resp.getWriter().flush();
+    		}
+    		resp.getWriter().close();
+    		
+    		SendPullRequest.createPullRequest("test", "Test");
+    		
+    		// Calling from Driver to get all the new updated celestial objects
+        	// Doing the initial merge and setting up local repos
 
     		/*
     		ArrayList<String> list = new ArrayList<String>();
@@ -79,10 +115,7 @@ public class OECMain extends HttpServlet
     		list.add(Driver.getNewStarConflicts());
     		
     		*/
-    		
-    		System.out.println(Driver.getNewSystems() );	
-    		resp.getWriter().print(Driver.getNewSystemConflicts());
-    		resp.getWriter().close();
+    		//System.out.println(Driver.getNewPlanetConflicts());	
     	}
     }
     
@@ -91,12 +124,25 @@ public class OECMain extends HttpServlet
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
-    	if (req.getRequestURI().equals("/upload")){
+    	if (req.getRequestURI().equals("/upload")){		
+            //get input from the user
+    		
+    		/*
+            Driver.setNewSystems(json[0]);
+            Driver.setNewStars(json[1]);
+            Driver.setNewPlanets(json[2]);
+            Driver.setSystemtAttributes(json[3]);
+            Driver.setStarAttributes(json[4]);
+            Driver.setPlanetAttributes(json[5]);
+            */
+            
+            //Now execute merge
+            Driver.executeMerge();
+    		
     		resp.getWriter().close();
     	}
-    	else if (req.getRequestURI().equals("/upload")){
-        	Driver.executeMerge();
-    		resp.getWriter().close();
+    	else{
+    		super.doPost(req, resp);
     	}
     }
     
@@ -116,10 +162,18 @@ public class OECMain extends HttpServlet
 
     public static void main(String[] args) throws Exception{    	
         Server server = new Server(Integer.valueOf(System.getenv("PORT")));
+        
+        ServerConnector http = new ServerConnector(server);
+        http.setPort(8080);
+        http.setIdleTimeout(3000000);
+        server.addConnector(http);
+        
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
+        context.getSessionHandler().getSessionManager().setMaxInactiveInterval(30000);
         server.setHandler(context);
         context.addServlet(new ServletHolder(new OECMain()),"/*");
+        
         server.start();
         server.join(); 
     }

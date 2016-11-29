@@ -1,19 +1,5 @@
 package com.team23.TestSuite;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
-
-import com.team23.ModelStarSystems.Systems;
-import com.team23.UpdateTools.DetectUpdates;
-import com.team23.UpdateTools.DifferenceDetector;
-import com.team23.UpdateTools.PullingTools;
-import com.team23.UpdateTools.ReadCSV;
-import com.team23.UpdateTools.UpdateStorage;
-
-import static junit.framework.Assert.assertTrue;
 
 /**
  * Created by dhrumil on 13/11/16.

@@ -10,10 +10,8 @@
     <link href="css/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Loading Flat UI -->
-    <link href="css/flat-ui.min.css" rel="stylesheet">
+    <link href="css/flat-ui.css" rel="stylesheet">
     <link href="css/style.min.css" rel="stylesheet">
-
-    <link rel="shortcut icon" href="img/favicon.ico">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
     <!--[if lt IE 9]>
@@ -23,7 +21,7 @@
 </head>
 
 <body>
-    <div class="container" id="total">
+    <div class="container-fluid" id="total">
         <div class="container" id="top-panel">
           <div class="col-xs-12">
           <nav class="navbar navbar-inverse navbar-embossed" role="navigation">
@@ -36,15 +34,30 @@
             <div class="collapse navbar-collapse" id="navbar-collapse-01">
               <ul class="nav navbar-nav navbar-left">
                 <li><a href="#fakelink" onclick="update()">Update</a></li>
+                <li><a href="#fakelink" onclick="request()">Reset Data</a></li>
                 <li><a href="#fakelink">Github</a></li>
-                <li><a href="#fakelink">Options</a></li>
                </ul>
             </div><!-- /.navbar-collapse -->
           </nav><!-- /navbar -->
         </div>
         </div>
-        <div class="wrapper">
-            <div class="container col-xs-4" id="left-panel">
+        <div class="wrapper container-fluid">
+          <div id="col-xs-1 tab-selector">
+            <button class="btn tab-selectors" onclick="selectRowType('All')">All</button>
+            <button class="btn tab-selectors" onclick="selectRowType('newSystem')">New System</button>
+            <button class="btn tab-selectors" onclick="selectRowType('newStar')">New Stars</button>
+            <button class="btn tab-selectors" onclick="selectRowType('newPlanet')">New Planets</button>
+            <button class="btn tab-selectors" onclick="selectRowType('newConflictingSystem')">New Conflicting Systems</button>
+            <button class="btn tab-selectors" onclick="selectRowType('newConflictingStar')">New Conflicting Stars</button>
+            <button class="btn tab-selectors" onclick="selectRowType('newConflictingPlanet')">New Conflicting Planets</button>
+            <button class="btn tab-selectors" onclick="selectRowType('existingSystem')">Existing System</button>
+            <button class="btn tab-selectors" onclick="selectRowType('existingStar')">Existing Star</button>
+            <button class="btn tab-selectors" onclick="selectRowType('existingPlanet')">Existing Planet</button>
+            <button class="btn tab-selectors" onclick="selectRowType('existingConflictingSystem')">Existing Conflicting System</button>
+            <button class="btn tab-selectors" onclick="selectRowType('existingConflictingStar')">Existing Conflicting Star</button>
+            <button class="btn tab-selectors" onclick="selectRowType('existingConflictingPlanet')">Existing Conflicting Planets</button>
+          </div>
+            <div class="container col-xs-3" id="left-panel">
                 <div id="row-subpanel">
                     <h3> Changes Made </h1>
                       <label class="checkbox col-xs-offset-1 col-xs-4" for="checkboxall" onclick="checkAll()">
@@ -74,14 +87,14 @@
           </div>
           <div id="confirm-subpanel">
             <div class="form-group">
-              <input type="text" value="" id="commit-message" placeholder="Commit Message" class="form-control">
+              <input type="text" value="" id="commit-message" placeholder="Github Key Here" class="form-control">
             </div>
             <div class="form-group confirm-button">
               <a href="#fakelink" class="btn btn-block btn-lg btn-inverse" onclick="commitChanges()">Confirm</a>
             </div>
           </div>
         </div>
-        <div class="container col-xs-8" id="right-panel">
+        <div class="container col-xs-7" id="right-panel">
           <div>
             <h3 id="current-title"> Changes for Object ExampleObject </h3>
                 </div>

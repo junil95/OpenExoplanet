@@ -4,12 +4,11 @@
  * and open the template in the editor.
  */
 package com.team23.UpdateTools;
-import com.team23.ModelStarSystems.*;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -18,10 +17,15 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-import static com.team23.UpdateTools.SystemFinder.getSystem;
+
+import com.team23.ModelStarSystems.CelestialObjects;
+import com.team23.ModelStarSystems.Planet;
+import com.team23.ModelStarSystems.Star;
+import com.team23.ModelStarSystems.Systems;
 
 /**
  *
@@ -143,7 +147,7 @@ public class SystemFinder {
             //Star s1 = new Star("kasfi",update2,p1,ReadCSV.EU);
             HashMap<String, String> update3 = new HashMap<>();
             Systems sys = new Systems("16 cYgni", update3, s1, ReadCSV.EU);
-            System.out.println(getSystem(s1));
+            System.out.println(com.team23.UpdateTools.SystemFinder.getSystem(s1));
             //System.out.println(UpdateTools.SystemFinder.systemCheck(sys));
         } catch (SystemFinder.MissingCelestialObjectException e) {
             e.printStackTrace();

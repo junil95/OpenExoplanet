@@ -5,7 +5,6 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -16,15 +15,9 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.eclipse.jetty.webapp.WebAppContext;
 
-import com.google.gson.Gson;
 import com.team23.Driver;
-import com.team23.ModelStarSystems.Systems;
-import com.team23.UpdateTools.Merge;
 import com.team23.UpdateTools.SendPullRequest;
-import com.team23.UpdateTools.UpdateStorage;
-import com.team23.UpdateTools.generateXML;
 
 public class OECMain extends HttpServlet
 {

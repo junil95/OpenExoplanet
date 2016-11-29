@@ -1,12 +1,12 @@
 package com.team23.UpdateTools;
 
+import java.io.IOException;
+
 import org.eclipse.egit.github.core.PullRequest;
 import org.eclipse.egit.github.core.PullRequestMarker;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.service.PullRequestService;
 import org.eclipse.egit.github.core.service.RepositoryService;
-
-import java.io.IOException;
 /**
  * Created by dhrumil on 26/11/16.
  */

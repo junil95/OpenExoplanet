@@ -1,13 +1,12 @@
 package com.team23.UpdateTools;
 
-import java.io.FileReader;
+import static com.team23.UpdateTools.ReadCSV.EU;
+import static com.team23.UpdateTools.ReadCSV.mapPlanetToData;
+
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -15,23 +14,11 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import com.opencsv.CSVReader;
-
 import com.team23.ModelStarSystems.SystemBuilder;
 import com.team23.ModelStarSystems.Systems;
-
-import static com.team23.UpdateTools.DifferenceDetector.getNewPlanetIDs;
-import static com.team23.UpdateTools.ReadCSV.EU;
-import static com.team23.UpdateTools.ReadCSV.NASA;
-import static com.team23.UpdateTools.ReadCSV.getIndexMappings;
-import static com.team23.UpdateTools.ReadCSV.mapPlanetToData;
-import static com.team23.UpdateTools.ReadCSV.onlyAlphanumericList;
-import static com.team23.UpdateTools.UpdateStorage.updates;
 
 
 /**

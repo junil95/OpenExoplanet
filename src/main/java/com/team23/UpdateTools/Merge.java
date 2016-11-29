@@ -1,15 +1,11 @@
 package com.team23.UpdateTools;
 
-import com.team23.ModelStarSystems.*;
-
-import com.opencsv.CSVReader;
-import com.team23.ModelStarSystems.Systems;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
+import java.io.File;
+import java.io.FileReader;
+import java.io.StringReader;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -19,15 +15,15 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 
-import static com.team23.UpdateTools.DifferenceDetector.onlyAlphaNumeric;
+import com.opencsv.CSVReader;
+import com.team23.ModelStarSystems.SystemBuilder;
+import com.team23.ModelStarSystems.Systems;
 
 /**
  * @author Rishi A class used to create new systems, but also merge new stars, new planets or new

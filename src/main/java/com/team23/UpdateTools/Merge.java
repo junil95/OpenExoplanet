@@ -212,9 +212,15 @@ public class Merge {
 
       for (String key : system.getProperties().keySet()) {
         if (system.getProperties().get(key) != null) {
-          NodeList sysElemList = syselem.getElementsByTagName(key);
+          NodeList sysElemList = syselem.getElementsByTagName(key.replaceAll("_", ""));
           if (sysElemList.getLength() < 1) {
-            Node imported = sysdoc.importNode(generateXML.xmlValue(key, system.getProperties().get(key)), true);
+            Node imported = sysdoc.importNode(generateXML.xmlValue(key.replaceAll("_", ""), system.getProperties().get(key)), true);
+            for(int node = 0; node < syselem.getChildNodes().getLength(); node++){
+              if(!syselem.getChildNodes().item(node).getNodeName().equals("name")){
+                syselem.insertBefore(imported, syselem.getChildNodes().item(node));
+                break;
+              }
+            }
             syselem.insertBefore(imported, syselem.getElementsByTagName("name").item(0).getNextSibling());
             //inserted after name instead of before "rightascension"
           } else {
@@ -261,21 +267,44 @@ public class Merge {
       //for each star in star list
       for(int i= 0; i < starList.getLength(); i++){
         Element star = (Element) starList.item(i); //current star
+        NodeList starChildren = star.getChildNodes();
         //check if it is the star that requires changes in attributes
-        if(star.getFirstChild().getTextContent().equals(starName)){
+
+        int nameNodePlace = 0;
+        for(int nameNode = 0; nameNode < starChildren.getLength(); nameNode++) {
+          if(starChildren.item(nameNode).getNodeName().equals("name")){
+            nameNodePlace = nameNode;
+            break;
+          }
+        }
+        System.out.println(starChildren.item(nameNodePlace).getTextContent());
+        if(starChildren.item(nameNodePlace).getTextContent().equals(starName)){
           HashMap<String, String> starProps = system.getChild().getProperties();
           //if it is loop through properties and check which ones need to be changed (which ones are not null)
+
           for(String key: starProps.keySet()){
             if(starProps.get(key)!= null) {
-              NodeList starKeyList = star.getElementsByTagName(key);
-              if (starKeyList.getLength() < 1) {
+              Node valueNode = null;
+              for(int node = 0; node < starChildren.getLength(); node++){
+                if (starChildren.item(node).getNodeName().equals(key.replaceAll("_", ""))){
+                  valueNode = starChildren.item(node);
+                  break;
+                }
+              }
+              if (valueNode == null) {
                 //if the attribute does not exist, add it in a new node
-                Node imported = sysdoc.importNode(generateXML.xmlValue(key, starProps.get(key)), true);
-                star.insertBefore(imported, star.getElementsByTagName("name").item(0).getNextSibling());
+                Node imported = sysdoc.importNode(generateXML.xmlValue(key.replaceAll("_", ""), starProps.get(key)), true);
+
+                for(int node = 0; node < starChildren.getLength(); node++){
+                  if(!starChildren.item(node).getNodeName().equals("name")){
+                    star.insertBefore(imported, starChildren.item(node));
+                    break;
+                  }
+                }
               }
               else{
                 //if it does exist change the text content to the new value
-                starKeyList.item(0).setTextContent(starProps.get(key));
+                valueNode.setTextContent(starProps.get(key));
               }
             }
           }
@@ -316,8 +345,8 @@ public class Merge {
       NodeList planetList = syselem.getElementsByTagName("planet");
 
       for(int i = 0; i < planetList.getLength(); i++){
-        if(planetList.item(i).getFirstChild().getTextContent().equals(planetName)){
-          Element planet =  (Element)planetList.item(i);
+        Element planet = (Element) planetList.item(i);
+        if(planet.getElementsByTagName("name").item(0).getTextContent().equals(planetName)){
           for(String key : planetProps.keySet()){
             if(planetProps.get(key) != null){
               NodeList planetKeyList = planet.getElementsByTagName(key);

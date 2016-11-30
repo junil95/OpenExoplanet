@@ -50,6 +50,7 @@ public class DifferenceDetector {
    * @return A line with only alphanumeric characters
    */
   public static String onlyAlphaNumeric(String line) {
+    
     // Regex stripping all non alphanumerics to blank
     line = line.replaceAll("[^A-Za-z0-9]", "");
     return line.toLowerCase();
@@ -146,19 +147,21 @@ public class DifferenceDetector {
     } catch (ReadCSV.MissingColumnNameException e) {
       e.printStackTrace();
     }
-  //Create a system
-    HashMap<String, String> build = new HashMap<>();
-    build.put("pl_name", "hi");
-    build.put("st_name", "alright");
-    build.put("sy_name", "HD 107383");
-    try {
-      Systems s = SystemBuilder.buildSystemWithHashMap(build, ReadCSV.EU);
-      UpdateClassifier.assignOecSyName(s, "system");
-      System.out.println(s.getName());
-    } catch (SystemBuilder.MissingCelestialObjectNameException e) {
-      e.printStackTrace();
-    }
+//  //Create a system
+//    HashMap<String, String> build = new HashMap<>();
+//    build.put("pl_name", "hi");
+//    build.put("st_name", "alright");
+//    build.put("sy_name", "HD 107383");
+//    try {
+//      Systems s = SystemBuilder.buildSystemWithHashMap(build, ReadCSV.EU);
+//      UpdateClassifier.assignOecSyName(s, "system");
+//      System.out.println(s.getName());
+//    } catch (SystemBuilder.MissingCelestialObjectNameException e) {
+//      e.printStackTrace();
+//    }
   
+    double d = Double.parseDouble("999.0");
+    System.out.println(d);
   
   }
 }

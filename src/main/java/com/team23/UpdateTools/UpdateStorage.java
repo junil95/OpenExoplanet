@@ -4,10 +4,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
-import com.team23.ModelStarSystems.Planet;
-import com.team23.ModelStarSystems.Star;
-import com.team23.ModelStarSystems.SystemBuilder;
-import com.team23.ModelStarSystems.Systems;
+import ModelStarSystems.Planet;
+import ModelStarSystems.Star;
+import ModelStarSystems.SystemBuilder;
+import ModelStarSystems.Systems;
 
 import com.opencsv.CSVReader;
 
@@ -109,6 +109,13 @@ public class UpdateStorage {
         systemUpdates = new ArrayList<>();
         starUpdates = new ArrayList<>();
         planetUpdates = new ArrayList<>();
+        newSystemConflicts = new ArrayList<>();
+        newStarConflicts = new ArrayList<>();
+        newPlanetConflicts = new ArrayList<>();
+        syPropConflicts = new ArrayList<>();
+        stPropConflicts = new ArrayList<>();
+        plPropConflicts = new ArrayList<>();
+        
     }
 
     /**

@@ -113,9 +113,9 @@ public class SystemFinder {
           }
         }
 
-    public static void main(String[] args) throws SAXException, XPathExpressionException {
+    public static void main(String[] args){
 
-        try {
+        /*try {
             ReadCSV.mapIndexes();
         } catch (IOException | ReadCSV.MissingColumnNameException ex) {
             Logger.getLogger(SystemFinder.class.getName()).log(Level.SEVERE, null, ex);
@@ -141,6 +141,6 @@ public class SystemFinder {
             //System.out.println(UpdateTools.SystemFinder.systemCheck(sys));
         } catch (SystemFinder.MissingCelestialObjectException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 }

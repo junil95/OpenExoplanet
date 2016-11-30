@@ -5,9 +5,9 @@ import com.team23.ModelStarSystems.Systems;
 import com.team23.UpdateTools.PullingTools;
 import com.team23.UpdateTools.ReadCSV;
 import com.team23.UpdateTools.UpdateStorage;
-import com.team23.com.opencsv.CSVReader;
-import com.team23.org.junit.Before;
-import com.team23.org.junit.Test;
+import com.opencsv.CSVReader;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;

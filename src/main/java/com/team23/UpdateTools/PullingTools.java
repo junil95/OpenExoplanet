@@ -1,5 +1,7 @@
 package com.team23.UpdateTools;
 
+import org.apache.commons.io.FileUtils;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -10,7 +12,6 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
 
-import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import net.lingala.zip4j.model.FileHeader;
 

@@ -1,13 +1,6 @@
 package com.team23;
 
-import static com.team23.UpdateTools.DetectUpdates.detectUpdates;
-import static com.team23.UpdateTools.PullingTools.pullExoplanetEu;
-import static com.team23.UpdateTools.PullingTools.pullNasaArchive;
-import static com.team23.UpdateTools.PullingTools.pullOecOneFile;
-import static com.team23.UpdateTools.UpdateStorage.plPropConflicts;
-import static com.team23.UpdateTools.UpdateStorage.planetUpdates;
-import static com.team23.UpdateTools.UpdateStorage.stPropConflicts;
-import static com.team23.UpdateTools.UpdateStorage.starUpdates;
+import org.eclipse.jgit.api.errors.GitAPIException;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -94,10 +87,11 @@ public class Driver {
     //pull local files
     try {
       pullExoplanetEu();
+	System.out.println("after eu");
       pullNasaArchive();
-      CreateOecClone.gitCloneRepo();
-      CreateOecClone.createNewBranch();
-      pullOecOneFile();
+      //CreateOecClone.gitCloneRepo();
+      //CreateOecClone.createNewBranch();
+      //pullOecOneFile();
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -584,10 +578,16 @@ return "hi";
     return gson.toJson(convertToMap);
   }
   
-  public static void commitPushPullRequest(String token) {
+  public static String commitPushPullRequest(String token) {
     CreateOecClone.commitChanges();
-    CreateOecClone.pushChanges(token, CreateOecClone.getBranchName());
-    SendPullRequest.createPullRequest(token, CreateOecClone.getBranchName());
+    String valid = "1";
+    try {
+      CreateOecClone.pushChanges(token, CreateOecClone.getBranchName());
+      SendPullRequest.createPullRequest(token, CreateOecClone.getBranchName());
+    } catch (GitAPIException e) {
+      valid = "0";
+    }
+    return  valid;
   }
   
   public static void main(String[] args) {

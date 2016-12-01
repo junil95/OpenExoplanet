@@ -3,6 +3,8 @@ package UpdateTools;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -23,21 +25,23 @@ import com.opencsv.CSVReader;
 import ModelStarSystems.SystemBuilder;
 import ModelStarSystems.Systems;
 
+import static UpdateTools.DifferenceDetector.getNewPlanetIDs;
 import static UpdateTools.ReadCSV.EU;
 import static UpdateTools.ReadCSV.NASA;
 import static UpdateTools.ReadCSV.getIndexMappings;
 import static UpdateTools.ReadCSV.mapPlanetToData;
 import static UpdateTools.ReadCSV.onlyAlphanumericList;
+import static UpdateTools.UpdateStorage.updates;
 
 
 /**
  * Created on 12/10/2016
  *
- * @author John A class used to highlight the difference between the local/master/ and pulled
+ * @author John
+ *         A class used to highlight the difference between the local/master/ and pulled
  *         databases from Nasa and Exoplanet.eu.
  */
 public class DifferenceDetector {
-  
   
   /**
    * Returns the string ignoring non alphanumeric characters.
@@ -52,81 +56,16 @@ public class DifferenceDetector {
   }
   
   /**
-   * Return the names of all new planets not in the oce.
-   *
-   * @return A list of new names not in the oce.
+   * Finds planets from provided database that are not in OEC. This will add the new updates to
+   * the updates list in the UpdateStorage
+   * @param databasePath
+   * @param database
+   * @throws IOException
    */
-//	public static ArrayList<HashMap<String, String[]>> getNewPlanetIDs() throws IOException, SAXException, ParserConfigurationException{
-//		ArrayList<HashMap<String, String[]>> newPlanets = new ArrayList<HashMap<String, String[]>>();
-//		HashMap<String, List<String[]>> info = readCSVs();
-//
-//		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-//		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-//		Document doc = dBuilder.parse(PullingTools.localOecFile);
-//
-//		doc.getDocumentElement().normalize();
-//
-//		// Getting all known names in a set
-//	    Set<String> total = new HashSet<String>();
-//
-//	    // Adding the default names
-//	    NodeList nodeList = doc.getElementsByTagName("name");
-//	    for (int i=0; i<nodeList.getLength(); i++) {
-//	        // Get element
-//	    	String name = nodeList.item(i).getTextContent();
-//	    	total.add(onlyAlphaNumeric(name));
-//	    }
-//
-//	    //Getting the index for our ids
-//	    int exoplanetIdIndex = 0;
-//	    int exoplanetAlternateIdIndex = 0;
-//	    // Failsafe for nasa index is 270
-//	    int nasaIdIndex = 270;
-//	    for(int i = 0; i < info.get("exoplanetEntries").get(0).length; i++){
-//	    	if(info.get("exoplanetEntries").get(0)[i].equals(exoplanetColumnID)){
-//	    		exoplanetIdIndex = i;
-//	    	}
-//	    	// Getting alternate name index
-//	    	else if(info.get("exoplanetEntries").get(0)[i].equals(exoplanetAlternateColumnID)){
-//	    		exoplanetAlternateIdIndex = i;
-//	    	}
-//	    }
-//	    for(int i = 0; i < info.get("nasaArchives").get(0).length; i++){
-//	    	if(info.get("nasaArchives").get(0)[i].equals(nasaColumnID)){
-//	    		nasaIdIndex = i;
-//	    		break;
-//	    	}
-//	    }
-//
-//	    // Temp for stroing current
-//	    HashMap<String, String[]> newPlanetsTempExoplanet = new HashMap<String, String[]>();
-//	    // Getting names of our unknown/new planets
-//	    for(int i = 0; i < info.get("exoplanetEntries").size(); i++){
-//	    	if(total.contains(info.get("exoplanetEntries").get(i)[exoplanetIdIndex]) == false && total.contains(info.get("exoplanetEntries").get(i)[exoplanetAlternateIdIndex]) == false){
-//	    		newPlanetsTempExoplanet.put(onlyAlphaNumeric((info.get("exoplanetEntries").get(i)[exoplanetIdIndex])), info.get("exoplanetEntries").get(i));
-//	    	}
-//	    }
-//
-//	    // Temp for stroing current
-//	    HashMap<String, String[]> newPlanetsTempNasa = new HashMap<String, String[]>();
-//	    // Getting names of our unknown/new planets
-//	    for(int i = 0; i < info.get("nasaArchives").size(); i++){
-//	    	if(total.contains(info.get("nasaArchives").get(i)[nasaIdIndex]) == false){
-//	    		newPlanetsTempNasa.put(onlyAlphaNumeric((info.get("nasaArchives").get(i)[nasaIdIndex])), info.get("nasaArchives").get(i));
-//	    	}
-//	    }
-//
-//	    // Dealing with the altnerate name column in exoplanet eu
-//
-//	    newPlanets.add(newPlanetsTempExoplanet);
-//	    newPlanets.add(newPlanetsTempNasa);
-//	    return newPlanets;
-//	}
-  
-  public static UpdateStorage getNewPlanetIDs(String databasePath, String database, UpdateStorage us) throws IOException {
+  public static void getNewPlanetIDs(String databasePath, String database) throws IOException {
     HashMap<String, HashMap<String, String>> planetDataOther = mapPlanetToData(databasePath, database);
     //will get only alphanumeric planet names
-    Set<String> oecPlanetNames = getPlanetNamesOEC();
+    Set<String> oecPlanetNames = getNamesOEC();
     String[] tempList;
     ArrayList<String> tempSet;
     Systems sys;
@@ -161,51 +100,65 @@ public class DifferenceDetector {
       try {
         if (isNew) {
           sys = SystemBuilder.buildSystemWithHashMap(planetDataOther.get(planet), database);
-          us.updates.add(sys);
+          UpdateStorage.updates.add(sys);
         }
       } catch (SystemBuilder.MissingCelestialObjectNameException e) {
         e.printStackTrace();
       }
     }
-    return us;
   }
   
-  public static Set<String> getPlanetNamesOEC() {
+  
+  /**
+   * Get a set of all system, star and planet names in oec
+   *
+   * @return Set of all possible names in oec, stripped of special characters
+   */
+  public static Set<String> getNamesOEC() {
     //Get a list of planet names
-    Set<String> planetNames = new HashSet<>();
+    Set<String> tagNames = new HashSet<>();
     try {
       DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
       DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
       Document doc = dBuilder.parse(PullingTools.localOecFile);
       doc.getDocumentElement().normalize();
-      NodeList planetNl = doc.getElementsByTagName("planet");
-      NodeList nameNl;
-      Element element;
-      for (int i = 0; i < planetNl.getLength(); i++) {
-        element = (Element) planetNl.item(i);
-        nameNl = element.getElementsByTagName("name");
-        for (int j = 0; j < nameNl.getLength(); j++) {
-          planetNames.add(onlyAlphaNumeric(nameNl.item(j).getTextContent()));
-        }
+      NodeList nameNl = doc.getElementsByTagName("name");
+      
+      for (int j = 0; j < nameNl.getLength(); j++) {
+        tagNames.add(onlyAlphaNumeric(nameNl.item(j).getTextContent()));
       }
-    } catch (SAXException | IOException | ParserConfigurationException e) {
+    } catch (SAXException | IOException |
+            ParserConfigurationException e) {
       e.printStackTrace();
     }
-    return planetNames;
+    return tagNames;
   }
   
   public static void main(String[] args) {
     try {
-      ReadCSV.mapIndexes();
-      UpdateStorage us = new UpdateStorage();
-      us = getNewPlanetIDs(PullingTools.localNasaArchive, NASA, us);
-      for (Systems s : us.updates) {
-        System.out.println(s.getChild().getChild().getName());
-      }
+     ReadCSV.mapIndexes();
+//      getNewPlanetIDs(PullingTools.localNasaArchive, NASA);
+//      for (Systems s : UpdateStorage.updates) {
+//        System.out.println(s.getChild().getChild().getName());
+//      }
     } catch (IOException e) {
       e.printStackTrace();
     } catch (ReadCSV.MissingColumnNameException e) {
       e.printStackTrace();
     }
+  //Create a system
+    HashMap<String, String> build = new HashMap<>();
+    build.put("pl_name", "hi");
+    build.put("st_name", "alright");
+    build.put("sy_name", "HD 107383");
+    try {
+      Systems s = SystemBuilder.buildSystemWithHashMap(build, ReadCSV.EU);
+      UpdateClassifier.assignOecSyName(s, "system");
+      System.out.println(s.getName());
+    } catch (SystemBuilder.MissingCelestialObjectNameException e) {
+      e.printStackTrace();
+    }
+  
+  
   }
 }

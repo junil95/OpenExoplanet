@@ -167,7 +167,7 @@ function update(){
   $("#update-button").text("UPDATING");
   $("#update-button").addClass("pulse");
   $("#update-button").css("color", "#1ABC9C");
-  $.get("https://pacific-shelf-92985.herokuapp.com/img/update", function(data) {
+  $.get("https://pacific-shelf-92985.herokuapp.com/update", function(data) {
     console.log(data);
   });
   request();

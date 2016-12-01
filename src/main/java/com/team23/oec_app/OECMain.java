@@ -52,7 +52,9 @@ public class OECMain extends HttpServlet
     	else if (req.getRequestURI().equals("/update")){
     		updating = false;
     		counter = 1;
-    		System.out.println("hi");
+        	if(!Driver.isInitialMergeDone()){
+        		Driver.initialSetupOrResetLocalCopies();
+        	}
         	updating = true;
     	}
     	else if (req.getRequestURI().equals("/request")){

@@ -126,7 +126,7 @@ public class OECMain extends HttpServlet
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
     	if (req.getRequestURI().equals("/upload")){		
     		// The data from the key
-    		String data = req.getParameter("request");
+    		String data = req.getParameter("result");
     		
     		resp.getWriter().close();
     		

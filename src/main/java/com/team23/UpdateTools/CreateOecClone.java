@@ -109,7 +109,7 @@ public class CreateOecClone {
    * @param token
    * @param name
    */
-  public static void pushChanges(String token, String name) {
+  public static void pushChanges(String token, String name) throws GitAPIException{
     try {
       File f = new File(oecClonePath);
       Repository repo = new FileRepositoryBuilder().readEnvironment().findGitDir(f).build();
@@ -119,13 +119,7 @@ public class CreateOecClone {
       pushCommand.setRemote("origin");
       pushCommand.setRefSpecs(new RefSpec(name));
       pushCommand.call();
-    } catch (InvalidRemoteException e) {
-      e.printStackTrace();
     } catch (IOException e) {
-      e.printStackTrace();
-    } catch (TransportException e) {
-      e.printStackTrace();
-    } catch (GitAPIException e) {
       e.printStackTrace();
     }
   }

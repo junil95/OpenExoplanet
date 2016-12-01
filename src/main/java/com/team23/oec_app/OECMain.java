@@ -128,10 +128,8 @@ public class OECMain extends HttpServlet
     		// The data from the key
     		String data = req.getParameter("result");
 		//String name = Driver.distributeData(data);
-    		//resp.getWriter().print(name);
-		resp.getWriter().print("Hi");
-    		//resp.getWriter().close();
-    		//System.out.println(data);
+    		resp.getWriter().close();
+    		System.out.println(data);
 //System.out.println(name);
     	}
     	else if (req.getRequestURI().equals("/setkey")){

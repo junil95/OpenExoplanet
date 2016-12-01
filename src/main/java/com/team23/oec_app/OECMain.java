@@ -131,7 +131,7 @@ public class OECMain extends HttpServlet
             Driver.executeMerge();	
     		resp.getWriter().close();
     	}
-    	else if (req.getRequestURI().equals("/upload")){
+    	else if (req.getRequestURI().equals("/setkey")){
     		// The key from the github upload
     		String key = req.getParameter("key");
     	}

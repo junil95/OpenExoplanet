@@ -96,6 +96,24 @@ public class OECMain extends HttpServlet
         		resp.getWriter().flush();
     		}
     		resp.getWriter().close();
+    		
+    		// Calling from Driver to get all the new updated celestial objects
+        	// Doing the initial merge and setting up local repos
+
+    		/*
+    		ArrayList<String> list = new ArrayList<String>();
+    		
+    		list.add(Driver.getNewSystems());
+    		list.add(Driver.getNewPlanetConflicts());
+    		
+    		list.add(Driver.getNewPlanets());
+    		list.add(Driver.getNewPlanetConflicts());
+    		
+    		list.add(Driver.getNewStars());
+    		list.add(Driver.getNewStarConflicts());
+    		
+    		*/
+    		//System.out.println(Driver.getNewPlanetConflicts());	
     	}
     }
     
@@ -107,12 +125,18 @@ public class OECMain extends HttpServlet
     	if (req.getRequestURI().equals("/upload")){		
     		// The data from the key
     		String data = req.getParameter("result");
-    		
+System.out.println("here");
+		Driver.initialSetupOrResetLocalCopies();
+		String name = Driver.distributeData(data);
     		resp.getWriter().close();
+		System.out.println(name);
+    		System.out.println(data);
     	}
     	else if (req.getRequestURI().equals("/setkey")){
     		// The key from the github upload
     		String key = req.getParameter("key");
+		resp.getWriter().print(key);
+    		System.out.println(key);
     	}
     	else{
     		super.doPost(req, resp);

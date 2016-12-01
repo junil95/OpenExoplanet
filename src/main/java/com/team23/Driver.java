@@ -458,7 +458,7 @@ try {
     }
   }
   
-  public static String distributeData(String json) {
+  public static void distributeData(String json) {
     ArrayList<ArrayList<Systems>> data = new ArrayList<>();
     UpdateStorage.clearAll();
     createObjectFromJson(json, data);
@@ -534,8 +534,6 @@ try {
       singleton.add(s);
       UpdateStorage.planetUpdates.add(singleton);
     }
-
-return "hi";
   }
   
   /**

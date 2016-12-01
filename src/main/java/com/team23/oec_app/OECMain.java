@@ -139,7 +139,9 @@ public class OECMain extends HttpServlet
     	else if (req.getRequestURI().equals("/setkey")){
     		// The key from the github upload
     		String key = req.getParameter("key");
-		resp.getWriter().print(key);
+    		resp.getWriter().print("success");
+    		resp.getWriter().flush();
+    		resp.getWriter().close();
     		System.out.println(key);
     	}
     	else{

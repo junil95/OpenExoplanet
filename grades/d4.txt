@@ -1,0 +1,137 @@
+Team 23
+SegFault
+
+CSCC01 Deliverable 4 Marking Guide
+-----------------------------------
+
+Project Management:  __________ (17/20%)
+
+  Release plan: 3/3
+    - each release corresponds to end of Sprint
+    - project fully laid out:
+      for each release date, list of user stories to implement
+    - project velocity specified and used
+    - highest priority user stories first modulo dependencies
+    - reasonable goals for each release
+
+  Product Backlog: 3/3
+    - user stories follow the correct format.
+    - user stories, together, reflect all the user requirements (from
+      all personas).
+    - user stories correspond to actual requirements (no "invented"
+      features).
+    - user stories contain enough information for devs to estimate how
+      long it would take to implement it.
+    - each user story addresses one specific requirement (no "world
+      peace" stories).
+
+  Sprint Backlog(s): 0/2
+    * Not given. Although technically shown in taskboard, this section is needed
+      to give summary of what is (to be) completed in a sprint.
+     - user stories taken from the Product Backlog
+     - estimated costs
+     - estimated values
+
+  Sprint Plan(s): 3/3
+    * [D3] Same issues not deducted.
+    * Don't have to show after snapshot. Only need to see initial plan.
+      * Need snapshots for task board and burndown chart, however.
+    - user stories divided into tasks when appropriate.
+    - each Sprint Plan contains all the necessary information:
+        who is working on which task on which day
+    - sum of costs of user stories in the sprint = project velocity
+    - good planning decisions
+
+  Use of Task Board: 1/2
+    * [D3] Same issues not deducted.
+      * Make sure to show all the cards!
+    * Tasks should be categorized according to stories. -1
+      * Although specified in plan, it needs to be reflected here.
+    - correct format of task boards
+    - snapshots in the begginning and end of each Sprint are provided
+
+  Use of Burndown Charts: 3/3
+    - snapshots in the begginning and end of each Sprint are provided
+    - correctness of burndown charts
+
+  Use of Repo: 2/2
+      (including good use of branching from now on!)
+
+  Use of communication tools: 2/2
+     - evidence of using communication tools of their choice effectively
+
+
+Design and Implementation:  __________ (16/30%)
+
+   System Design: 3/5
+      * [D3] Same issues not deducted.
+      * Doesn't say much on the software design level. -1
+        * Any inheritance relationships? Any 'uses' relationships? Cannot
+          determine if design is good from software design perspective.
+      * Too many arrows makes it difficult to see if system satisfies client's
+        requirements. -1
+      - good modular design
+      - general and easy to extend
+      - it is clear how the current implementation is going to be
+        extended into an application that satisfies the client's needs
+
+   Implementation: 5/10
+     * No instructions provided on how to run (this was mentioned in previous
+       meetings). -1
+       * Especially when an IDE is required to run it.
+     * Incomplete features that should've been compelted at this stage. -2
+       * No cmd interface.
+       * Missing git ops.
+     * Code is in bits and pieces, no real integration. -2
+     - 0 marks if it doesn't run
+     - most of the features are either fully implemented of nearly implemented
+     - quality and maturity of code
+
+
+Verification and Validation:  __________ (18/25%)
+
+  - quality of unit tests: 6/10
+    * Repeated initialization steps should be placed in test setUp. -1
+    * Coverage: Incomplete/missing unit tests. -2
+    * Redundancy: Tests should be targeting specific edge cases. -1
+      * e.g. UpdateStorageTest: Should not need to read the entire EU catalog.
+        Identify specific cases and create tests for those.
+    * Comment: Why are tests for detectUpdates() so cumbersome to write?
+      * Consider what tasks detectUpdates() is doing. If it is trying to do
+        multiple things at once, then the unit tests will also reflect that.
+      * i.e. Long unit tests => unit under test is doing too many things.
+      * Possible soln: Delegate file parsing to another component, or find
+        other methods to split the responsibilities of detectUpdates().
+    - good coverage
+    - no redundancy
+
+  - code review activities and outcomes: 7/10
+    * Different items per review. -1
+    * No evidence of outcome being addressed in summaries -1
+    * Avoid long points, this is a review summary and should be concise. -1
+      * Important points to address: Problem, location, suggestion, steps-taken.
+    * Video is good.
+    - each review follows a checklist (not necessarily the example one, but the
+      same checklist for all)
+    - each review is thorough
+    - evidence of addressing the outcomes of the review
+    - the video demonstrates an effective process used for the review/collection
+      meeting
+
+
+  - validation activities and outcomes: 5/5
+    * Good.
+    - evidence of feedback from the user
+    - evidence of addressing feedback from the user
+
+
+Report: __________ (15/15%)
+  * Good.
+  - well-presented, is easy to read and to navigate
+  - spelling and grammar
+  - looks professional
+  - quality of the README file
+
+
+Interview: ________ (8/10%)
+  * Issues setting up and presenting demo. -2

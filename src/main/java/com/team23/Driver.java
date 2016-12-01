@@ -152,7 +152,7 @@ public class Driver {
       UpdateStorage.clearAll();
       //need to create latest catalogue copy
       
-      UpdateTools.PullingTools.createLatestCatalogueCopy();
+      createLatestCatalogueCopy();
       CreateOecClone.gitCloneRepo();
       CreateOecClone.createNewBranch();
       
@@ -457,7 +457,7 @@ public class Driver {
     }
   }
   
-  public static void distributeData(String json) {
+  public static String distributeData(String json) {
     ArrayList<ArrayList<Systems>> data = new ArrayList<>();
     UpdateStorage.clearAll();
     createObjectFromJson(json, data);
@@ -533,6 +533,7 @@ public class Driver {
       singleton.add(s);
       UpdateStorage.planetUpdates.add(singleton);
     }
+    return UpdateStorage.get(0).getName();
   }
   
   /**

@@ -75,17 +75,17 @@ public class OECMain extends HttpServlet
 
     			System.out.println("Finished Updating");
     			resp.getWriter().print("[");
+        		resp.getWriter().print(Driver.getNewSystems());
+        		resp.getWriter().print(",");
+        		resp.getWriter().print(Driver.getNewStars());
+        		resp.getWriter().print(",");
+        		resp.getWriter().print(Driver.getNewPlanets());
+        		resp.getWriter().print(",");
         		resp.getWriter().print(Driver.getNewSystemConflicts());
         		resp.getWriter().print(",");
         		resp.getWriter().print(Driver.getNewStarConflicts());
         		resp.getWriter().print(",");
         		resp.getWriter().print(Driver.getNewPlanetConflicts());
-        		resp.getWriter().print(",");
-        		resp.getWriter().print(Driver.getNewPlanets());
-        		resp.getWriter().print(",");
-        		resp.getWriter().print(Driver.getNewStars());
-        		resp.getWriter().print(",");
-        		resp.getWriter().print(Driver.getNewSystems());
         		resp.getWriter().print(",");
         		resp.getWriter().print(Driver.getSystemAttributeUpdates());
                 resp.getWriter().print(",");
@@ -97,7 +97,7 @@ public class OECMain extends HttpServlet
                 resp.getWriter().print(",");
                 resp.getWriter().print(Driver.getStarAttributeConflicts());
                 resp.getWriter().print(",");
-                resp.getWriter().print(Driver.getPlanetAttributeUpdates());
+                resp.getWriter().print(Driver.getPlanetAttributeConflicts());
         		resp.getWriter().print("]");
         		resp.getWriter().flush();
     		}

@@ -18,10 +18,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.StringReader;
-import java.io.StringWriter;
+import java.io.*;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -52,11 +49,17 @@ public class Merge {
       TransformerFactory transformerFactory = TransformerFactory.newInstance();
       Transformer transformer = transformerFactory.newTransformer();
       transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-      transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-      transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+      //transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+      //transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
       DOMSource source = new DOMSource(doc);
-      StreamResult result = new StreamResult(new File(PullingTools.oecData + system.getName() + ".xml"));
-      transformer.transform(source, result);
+      StringWriter writer = new StringWriter();
+      //StreamResult result = new StreamResult(new File(PullingTools.oecData + system.getName() + ".xml"));
+      transformer.transform(source, new StreamResult(writer));
+      String output = writer.getBuffer().toString();
+      String prettyOutput = generateXML.toPrettyString(output, 4);
+      try(  PrintWriter out = new PrintWriter(PullingTools.oecData + system.getName() + ".xml")  ){
+        out.println( prettyOutput );
+      }
       
     } catch (Exception e) {
       
@@ -110,15 +113,20 @@ public class Merge {
         }
       }
 
-      //Writing result file (Overwrites old file)
       TransformerFactory transformerFactory = TransformerFactory.newInstance();
       Transformer transformer = transformerFactory.newTransformer();
       transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-      transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-      //transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+      //transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+      //transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
       DOMSource source = new DOMSource(sysdoc);
-      StreamResult result = new StreamResult(new File(PullingTools.oecData + system.getName() + ".xml"));
-      transformer.transform(source, result);
+      StringWriter writer = new StringWriter();
+      //StreamResult result = new StreamResult(new File(PullingTools.oecData + system.getName() + ".xml"));
+      transformer.transform(source, new StreamResult(writer));
+      String output = writer.getBuffer().toString();
+      String prettyOutput = generateXML.toPrettyString(output, 4);
+      try(  PrintWriter out = new PrintWriter(PullingTools.oecData + system.getName() + ".xml")  ){
+        out.println( prettyOutput );
+      }
       
     } catch (Exception e) {
       e.printStackTrace();
@@ -183,11 +191,17 @@ public class Merge {
     TransformerFactory transformerFactory = TransformerFactory.newInstance();
     Transformer transformer = transformerFactory.newTransformer();
     transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-    transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-    transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+    //transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+    //transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
     DOMSource source = new DOMSource(sysdoc);
-    StreamResult result = new StreamResult(new File(PullingTools.oecData + system.getName() + ".xml"));
-    transformer.transform(source, result);
+    StringWriter writer = new StringWriter();
+    //StreamResult result = new StreamResult(new File(PullingTools.oecData + system.getName() + ".xml"));
+    transformer.transform(source, new StreamResult(writer));
+    String output = writer.getBuffer().toString();
+    String prettyOutput = generateXML.toPrettyString(output, 4);
+    try(  PrintWriter out = new PrintWriter(PullingTools.oecData + system.getName() + ".xml")  ){
+      out.println( prettyOutput );
+    }
     
   } catch (Exception e) {
     e.printStackTrace();
@@ -234,11 +248,17 @@ public class Merge {
       TransformerFactory transformerFactory = TransformerFactory.newInstance();
       Transformer transformer = transformerFactory.newTransformer();
       transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-      transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-      transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+      //transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+      //transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
       DOMSource source = new DOMSource(sysdoc);
-      StreamResult result = new StreamResult(new File(PullingTools.oecData + system.getName() + ".xml"));
-      transformer.transform(source, result);
+      StringWriter writer = new StringWriter();
+      //StreamResult result = new StreamResult(new File(PullingTools.oecData + system.getName() + ".xml"));
+      transformer.transform(source, new StreamResult(writer));
+      String output = writer.getBuffer().toString();
+      String prettyOutput = generateXML.toPrettyString(output, 4);
+      try(  PrintWriter out = new PrintWriter(PullingTools.oecData + system.getName() + ".xml")  ){
+        out.println( prettyOutput );
+      }
 
 
     } catch(Exception e){
@@ -315,11 +335,17 @@ public class Merge {
       TransformerFactory transformerFactory = TransformerFactory.newInstance();
       Transformer transformer = transformerFactory.newTransformer();
       transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-      transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-      transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+      //transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+      //transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
       DOMSource source = new DOMSource(sysdoc);
-      StreamResult result = new StreamResult(new File(PullingTools.oecData + system.getName() + ".xml"));
-      transformer.transform(source, result);
+      StringWriter writer = new StringWriter();
+      //StreamResult result = new StreamResult(new File(PullingTools.oecData + system.getName() + ".xml"));
+      transformer.transform(source, new StreamResult(writer));
+      String output = writer.getBuffer().toString();
+      String prettyOutput = generateXML.toPrettyString(output, 4);
+      try(  PrintWriter out = new PrintWriter(PullingTools.oecData + system.getName() + ".xml")  ){
+        out.println( prettyOutput );
+      }
 
     } catch(Exception e){
 
@@ -366,11 +392,17 @@ public class Merge {
       TransformerFactory transformerFactory = TransformerFactory.newInstance();
       Transformer transformer = transformerFactory.newTransformer();
       transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-      transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-      transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+      //transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+      //transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
       DOMSource source = new DOMSource(sysdoc);
-      StreamResult result = new StreamResult(new File(PullingTools.oecData + system.getName() + ".xml"));
-      transformer.transform(source, result);
+      StringWriter writer = new StringWriter();
+      //StreamResult result = new StreamResult(new File(PullingTools.oecData + system.getName() + ".xml"));
+      transformer.transform(source, new StreamResult(writer));
+      String output = writer.getBuffer().toString();
+      String prettyOutput = generateXML.toPrettyString(output, 4);
+      try(  PrintWriter out = new PrintWriter(PullingTools.oecData + system.getName() + ".xml")  ){
+        out.println( prettyOutput );
+      }
 
 
     } catch(Exception e){

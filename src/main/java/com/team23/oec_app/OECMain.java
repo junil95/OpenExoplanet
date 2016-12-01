@@ -125,8 +125,6 @@ public class OECMain extends HttpServlet
     	if (req.getRequestURI().equals("/upload")){		
     		// The data from the key
     		String data = req.getParameter("result");
-System.out.println("here");
-		Driver.initialSetupOrResetLocalCopies();
 		String name = Driver.distributeData(data);
     		resp.getWriter().close();
 		System.out.println(name);

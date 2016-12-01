@@ -125,21 +125,15 @@ public class OECMain extends HttpServlet
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
     	if (req.getRequestURI().equals("/upload")){		
-            //get input from the user
+    		// The data from the key
+    		String data = req.getParameter("request");
     		
-    		/*
-            Driver.setNewSystems(json[0]);
-            Driver.setNewStars(json[1]);
-            Driver.setNewPlanets(json[2]);
-            Driver.setSystemtAttributes(json[3]);
-            Driver.setStarAttributes(json[4]);
-            Driver.setPlanetAttributes(json[5]);
-            */
-            
-            //Now execute merge
-            Driver.executeMerge();
-    		
+            Driver.executeMerge();	
     		resp.getWriter().close();
+    	}
+    	else if (req.getRequestURI().equals("/upload")){
+    		// The key from the github upload
+    		String key = req.getParameter("key");
     	}
     	else{
     		super.doPost(req, resp);

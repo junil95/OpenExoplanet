@@ -86,7 +86,6 @@ public class Driver {
   public static void initialSetupOrResetLocalCopies() {
     //pull local files
     try {
-	System.out.println("after eu");
       pullExoplanetEu();
       pullNasaArchive();
       CreateOecClone.gitCloneRepo();

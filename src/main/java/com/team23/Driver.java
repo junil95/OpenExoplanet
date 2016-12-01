@@ -86,10 +86,15 @@ public class Driver {
   public static void initialSetupOrResetLocalCopies() {
     //pull local files
     try {
+System.out.println("1");
       pullExoplanetEu();
+System.out.println("1");
       pullNasaArchive();
+System.out.println("1");
       CreateOecClone.gitCloneRepo();
+System.out.println("1");
       CreateOecClone.createNewBranch();
+System.out.println("1");
       pullOecOneFile();
     } catch (IOException e) {
       e.printStackTrace();

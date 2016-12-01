@@ -96,26 +96,6 @@ public class OECMain extends HttpServlet
         		resp.getWriter().flush();
     		}
     		resp.getWriter().close();
-    		
-    		SendPullRequest.createPullRequest("test", "Test");
-    		
-    		// Calling from Driver to get all the new updated celestial objects
-        	// Doing the initial merge and setting up local repos
-
-    		/*
-    		ArrayList<String> list = new ArrayList<String>();
-    		
-    		list.add(Driver.getNewSystems());
-    		list.add(Driver.getNewPlanetConflicts());
-    		
-    		list.add(Driver.getNewPlanets());
-    		list.add(Driver.getNewPlanetConflicts());
-    		
-    		list.add(Driver.getNewStars());
-    		list.add(Driver.getNewStarConflicts());
-    		
-    		*/
-    		//System.out.println(Driver.getNewPlanetConflicts());	
     	}
     }
     

@@ -52,8 +52,7 @@ public class OECMain extends HttpServlet
     	else if (req.getRequestURI().equals("/update")){
     		updating = false;
     		counter = 1;
-        	Boolean x = isInitialMergeDone();
-		System.out.println(x);
+        	isInitialMergeDone();
         	updating = true;
     	}
     	else if (req.getRequestURI().equals("/request")){

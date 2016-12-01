@@ -60,6 +60,7 @@ public class Driver {
    */
   public static boolean isInitialMergeDone() {
     boolean initialMerge = false;
+System.out.println("in here");
     File file = new File(configPath);
     String cLine;
     

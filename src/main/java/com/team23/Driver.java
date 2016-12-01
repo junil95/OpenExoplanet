@@ -60,7 +60,6 @@ public class Driver {
    */
   public static boolean isInitialMergeDone() {
     boolean initialMerge = false;
-System.out.println("in here");
     File file = new File(configPath);
     String cLine;
     
@@ -87,15 +86,11 @@ System.out.println("in here");
   public static void initialSetupOrResetLocalCopies() {
     //pull local files
     try {
-System.out.println("1");
+
       pullExoplanetEu();
-System.out.println("1");
       pullNasaArchive();
-System.out.println("1");
       CreateOecClone.gitCloneRepo();
-System.out.println("1");
       CreateOecClone.createNewBranch();
-System.out.println("1");
       pullOecOneFile();
     } catch (IOException e) {
       e.printStackTrace();

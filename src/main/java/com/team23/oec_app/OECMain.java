@@ -55,8 +55,8 @@ public class OECMain extends HttpServlet
         	if(!Driver.isInitialMergeDone()){
         		Driver.initialSetupOrResetLocalCopies();
         	}
-        	updating = true;
 			Driver.detectInitialUpdates();
+			updating = true;
         	System.out.println("Flag is raised to true");
     	}
     	else if (req.getRequestURI().equals("/request")){

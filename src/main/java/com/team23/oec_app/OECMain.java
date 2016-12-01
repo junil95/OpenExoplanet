@@ -129,14 +129,16 @@ public class OECMain extends HttpServlet
     		String data = req.getParameter("result");
 		//String name = Driver.distributeData(data);
     		//resp.getWriter().print(name);
-    		resp.getWriter().close();
+		resp.getWriter().print("Hi");
+    		//resp.getWriter().close();
     		//System.out.println(data);
 //System.out.println(name);
     	}
     	else if (req.getRequestURI().equals("/setkey")){
     		// The key from the github upload
     		String key = req.getParameter("key");
-    		
+    		resp.getWriter().print("Hello");
+		resp.getWriter().print(key);
     		System.out.println(key);
     	}
     	else{

@@ -331,8 +331,6 @@ function commitChanges(){
   result.push(exportAsJSON(seperateFunctions("existingConflictingStar")));
   result.push(exportAsJSON(seperateFunctions("existingConflictingPlanet")));
 
-  console.log(JSON.stringify(result));
-
   // Sending it as a post
   $.post("https://pacific-shelf-92985.herokuapp.com/setkey", {key: key}, function(text) {
     $.post("https://pacific-shelf-92985.herokuapp.com/upload", {result: result}, function(data) {

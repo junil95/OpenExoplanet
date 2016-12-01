@@ -435,6 +435,13 @@ public class Driver {
    * in terms of systems again
    */
   private static void createObjectFromJson(String json, ArrayList<ArrayList<Systems>> allData) {
+try {
+      ReadCSV.mapIndexes();
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (ReadCSV.MissingColumnNameException e) {
+      e.printStackTrace();
+    }
     //Make sure the provided list is empty
     allData.clear();
     Gson gson = new Gson();

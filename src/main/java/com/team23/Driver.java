@@ -533,7 +533,8 @@ public class Driver {
       singleton.add(s);
       UpdateStorage.planetUpdates.add(singleton);
     }
-    return UpdateStorage.systems.get(0).get(0).getName();
+
+return "hi";
   }
   
   /**

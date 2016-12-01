@@ -447,7 +447,7 @@ public class Driver {
       temp = new ArrayList<>();
       for (HashMap<String, String> m : as) {
         try {
-          s = SystemBuilder.buildSystemWithHashMap(m, m.get("src"));
+          s = SystemBuilder.buildSystemWithHashMap(m, "user");
           temp.add(s);
         } catch (SystemBuilder.MissingCelestialObjectNameException e) {
           e.printStackTrace();

@@ -150,9 +150,9 @@ public class Driver {
       UpdateStorage.clearAll();
       //need to create latest catalogue copy
       
-      /* Uncomment after
+      //Uncomment after
       UpdateTools.PullingTools.createLatestCatalogueCopy();
-      */
+      
       CreateOecClone.gitCloneRepo();
       CreateOecClone.createNewBranch();
       

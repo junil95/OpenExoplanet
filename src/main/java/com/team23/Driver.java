@@ -40,6 +40,7 @@ import static com.team23.UpdateTools.PullingTools.pullExoplanetEu;
 import static com.team23.UpdateTools.PullingTools.pullNasaArchive;
 import static com.team23.UpdateTools.PullingTools.pullOecOneFile;
 import static com.team23.UpdateTools.PullingTools.pullOecSeperateFiles;
+import static com.team23.UpdateTools.PullingTools.createLatestCatalogueCopy;
 import static com.team23.UpdateTools.UpdateStorage.findNewPlanetConflicts;
 import static com.team23.UpdateTools.UpdateStorage.plPropConflicts;
 import static com.team23.UpdateTools.UpdateStorage.planetUpdates;
@@ -151,7 +152,8 @@ public class Driver {
       UpdateStorage.clearAll();
       //need to create latest catalogue copy
       
-      PullingTools.createLatestCatalogueCopy();
+      //Uncomment after
+      createLatestCatalogueCopy();
       
       CreateOecClone.gitCloneRepo();
       CreateOecClone.createNewBranch();

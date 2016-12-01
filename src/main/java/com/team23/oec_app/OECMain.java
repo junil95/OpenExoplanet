@@ -24,6 +24,7 @@ public class OECMain extends HttpServlet
 	
 	private boolean updating = false;
 	private int counter = 0;
+	private String key = "";
 
 	/**
 	 * Default method used to handle all GET requests given to the server.
@@ -131,9 +132,21 @@ public class OECMain extends HttpServlet
     	if (req.getRequestURI().equals("/upload")){		
     		// The data from the key
     		String data = req.getParameter("result");
-		Driver.distributeData(data);
-    		resp.getWriter().close();
-    		//System.out.println(data);
+    		Driver.distributeData(data);
+    		resp.getWriter().print("Distribution Completed");
+    		resp.getWriter().flush();
+    		Driver.executeMerge();
+    		resp.getWriter().print("Merge Completed");
+    		resp.getWriter().flush();
+    		
+    		if(Driver.commitPushPullRequest(key)){
+        		resp.getWriter().print("Pull Request Completed");
+        		resp.getWriter().flush();
+    		}
+    		else{
+    			resp.getWriter().println("Pull went wrong");
+    			resp.getWriter().flush();
+    		}
     	}
     	else if (req.getRequestURI().equals("/setkey")){
     		// The key from the github upload
@@ -141,7 +154,8 @@ public class OECMain extends HttpServlet
     		resp.getWriter().print("success");
     		resp.getWriter().flush();
     		resp.getWriter().close();
-    		System.out.println(key);
+    		System.out.println("The key is" + key);
+    		this.key = key;
     	}
     	else{
     		super.doPost(req, resp);

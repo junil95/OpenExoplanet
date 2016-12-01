@@ -174,7 +174,7 @@ function update(){
 
   /*
   systemObjs = [];
-  populate('[[[{"st_spectral_type":"F7","pl_inclination":"83.75","pl_mass":"0.805","pl_eccentricity":"0.0","st_name":"mu Ara","src":"eu","pl_period":"2.1746742","sy_distance":"530.0","st_metallicity":"0.0","st_magV":"13.18","st_temperature":"6280.0","sy_name":"mu Arae","sy_right_ascension":"246.692000015","pl_impact_parameter":"0.608","st_radius":"1.341","pl_radius":"1.461","sy_declination":"51.0411666736","pl_name":"mu Ara 99","pl_semi_major_axis":"0.0348","st_mass":"1.19"}],[{"st_magJ_min":"0.025","st_magK_max":"0.028","st_temperature":"5309.00","sy_name":"11 Com","st_magJ_max":"0.025","pl_periastron":"330.0000","pl_temperature":"455","sy_declination":"+42d36m15.0s","pl_name":"alright","st_mass":"0.90","st_magK_min":"0.028","pl_inclination":"87.400","pl_mass":"0.37600","pl_eccentricity":"0.014600","st_name":"11 com","src":"nasa","pl_period":"57.01100000","sy_distance":"855.00","pl_temperature_min":"-13","st_metallicity":"[M/H]","st_magH_min":"0.020","st_age":"9.700","sy_right_ascension":"19h17m04.50s","st_magH_max":"0.020","st_radius":"0.79","st_magJ":"13.814","pl_temperature_max":"14","st_magK":"13.347","pl_semi_major_axis":"0.279900","st_magH":"13.436"}]], []]')
+  populate('');
   setNewRows(systemObjs);
 
   */
@@ -220,7 +220,7 @@ function setNewRows(wantedSystemObjs){
     // Loopign through to see if it has children
     while(obj != null){
       line = '<li class="child-' + childCounter + ' row changed-row" id="row' + i + '-' + childCounter + '" onclick="selectRow(' + i + ',' + childCounter + ')">' +
-             '<label class="checkbox col-xs-offset-1 col-xs-4" for="checkbox' + i + '-' + childCounter + '">' +
+             '<label class=" col-xs-offset-1 col-xs-4" for="checkbox' + i + '-' + childCounter + '">' +
              '<input type="checkbox" value="" id="checkbox' + i + '-' + childCounter + '" data-toggle="checkbox" class="custom-checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>' +
              obj.name +
              '</label>' +
@@ -348,7 +348,9 @@ function commitChanges(){
   $.post("https://pacific-shelf-92985.herokuapp.com/setkey", {key: key}, function(text) {
     if(text === "success"){
       $.post("https://pacific-shelf-92985.herokuapp.com/upload", {result: JSON.stringify(result)}, function(data) {
-        window.alert("Your data has been sent");
+        if(data === "error"){
+            window.alert("Your Pull Request cannot be completed at this time");
+        }
       });
     }
     else{

@@ -1,13 +1,12 @@
 package com.team23.TestSuite;
 
-import com.team23.ModelStarSystems.SystemBuilder;
-import com.team23.ModelStarSystems.Systems;
-import com.team23.UpdateTools.PullingTools;
-import com.team23.UpdateTools.ReadCSV;
-import com.team23.UpdateTools.generateXML;
-import com.opencsv.CSVReader;
-import org.junit.Test;
-import org.w3c.dom.Document;
+import static junit.framework.TestCase.assertEquals;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.StringWriter;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -16,14 +15,15 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.File;
-import java.io.FileReader;
-import java.io.StringWriter;
-import java.util.Arrays;
-import java.util.List;
 
-import static com.team23.UpdateTools.Merge.newSystem;
-import static junit.framework.TestCase.assertEquals;
+import org.junit.Test;
+import org.w3c.dom.Document;
+
+import com.opencsv.CSVReader;
+import com.team23.ModelStarSystems.SystemBuilder;
+import com.team23.ModelStarSystems.Systems;
+import com.team23.UpdateTools.PullingTools;
+import com.team23.UpdateTools.ReadCSV;
 
 /**
  * Created by Rishi on 2016-11-13.
@@ -51,7 +51,7 @@ public class MergeTest {
             Document testdoc = db.parse(testFile);
 
             //hopefully creates correct system file in oecData directory
-            newSystem(s, generateXML.xmlSystem(s));
+            //newSystem(s, generateXML.xmlSystem(s));
 
             //Parse created file
             DocumentBuilder db2 = DocumentBuilderFactory.newInstance().newDocumentBuilder();

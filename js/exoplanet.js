@@ -21,6 +21,8 @@ function SystemObject(name, child, type){
     // In one of four lists
     // New/Conflicts/newAttribute/newCOnflict
     this.listType = "new";
+
+    this.checked = false;
 }
 
 SystemObject.prototype.addRow = function() {
@@ -160,16 +162,18 @@ function generateRowHTML(info0, info1, info2, info3, info4, num){
 }
 
 function update(){
+  /*
+
   // Getting the string data from the server
   $.get("https://pacific-shelf-92985.herokuapp.com/img/update", function(data) {
   });
   request();
 
-/*
-  systemObjs = [];
-  populate('[ [{"sy_name":"1", "st_name": "1-2", "pl_name": "1-2"}], [{"sy_name":"1", "st_name": "1-2", "pl_name": "1-2"}], [{"sy_name":"1", "st_name": "1-2", "pl_name": "1-2"}], [{"sy_name":"1", "st_name": "1-2", "pl_name": "1-2"}], [{"sy_name":"1", "st_name": "1-2", "pl_name": "1-2"}], [{"sy_name":"1", "st_name": "1-2", "pl_name": "1-2"}], [], [], [], [], [], [] ]');
-  setNewRows(systemObjs);
   */
+
+  systemObjs = [];
+  populate('[[[{"st_spectral_type":"F7","pl_inclination":"83.75","pl_mass":"0.805","pl_eccentricity":"0.0","st_name":"mu Ara","src":"eu","pl_period":"2.1746742","sy_distance":"530.0","st_metallicity":"0.0","st_magV":"13.18","st_temperature":"6280.0","sy_name":"mu Arae","sy_right_ascension":"246.692000015","pl_impact_parameter":"0.608","st_radius":"1.341","pl_radius":"1.461","sy_declination":"51.0411666736","pl_name":"mu Ara 99","pl_semi_major_axis":"0.0348","st_mass":"1.19"}],[{"st_magJ_min":"0.025","st_magK_max":"0.028","st_temperature":"5309.00","sy_name":"11 Com","st_magJ_max":"0.025","pl_periastron":"330.0000","pl_temperature":"455","sy_declination":"+42d36m15.0s","pl_name":"alright","st_mass":"0.90","st_magK_min":"0.028","pl_inclination":"87.400","pl_mass":"0.37600","pl_eccentricity":"0.014600","st_name":"11 com","src":"nasa","pl_period":"57.01100000","sy_distance":"855.00","pl_temperature_min":"-13","st_metallicity":"[M/H]","st_magH_min":"0.020","st_age":"9.700","sy_right_ascension":"19h17m04.50s","st_magH_max":"0.020","st_radius":"0.79","st_magJ":"13.814","pl_temperature_max":"14","st_magK":"13.347","pl_semi_major_axis":"0.279900","st_magH":"13.436"}]], []]')
+  setNewRows(systemObjs);
 }
 
 function request(){
@@ -233,7 +237,7 @@ function populate(data){
   total = JSON.parse(data);
 
   // List type if based on which list was passed e.g. newPLanets, newSystems etc
-  for(var listTypeIndex in data){
+  for(var listTypeIndex in total){
     var dataList = total[listTypeIndex];
     var listTypeName = "newSystem";
 
@@ -246,9 +250,9 @@ function populate(data){
       if(system.length != 0){
         // Some initial Vars to help us keep track
         var column = 1;
-        var sy_name = system["sy_name"];
-        var st_name = system["st_name"];
-        var pl_name = system["pl_name"];
+        var sy_name = system[0]["sy_name"];
+        var st_name = system[0]["st_name"];
+        var pl_name = system[0]["pl_name"];
 
         // The new system object created
         var created = new SystemObject(sy_name, null, "system");
@@ -275,7 +279,6 @@ function populate(data){
           else if(source_key === "eu"){
             column = 3;
           }
-
 
           // Looping through the keys
           for(var att_key in source){
@@ -312,33 +315,33 @@ function seperateFunctions(listType){
 }
 
 function commitChanges(){
-  var text = document.getElementById("commit-message").value;
-  // Sending it as a post
-  $.post("https://pacific-shelf-92985.herokuapp.com/setkey", function(text) {
-      var result = []
-      result.push(exportAsJSON(seperateFunctions("newSystem")));
-      result.push(exportAsJSON(seperateFunctions("newStar")));
-      result.push(exportAsJSON(seperateFunctions("newPlanet")));
-      result.push(exportAsJSON(seperateFunctions("newConflictingSystem")));
-      result.push(exportAsJSON(seperateFunctions("newConflictingStar")));
-      result.push(exportAsJSON(seperateFunctions("newConflictingPlanet")));
-      result.push(exportAsJSON(seperateFunctions("existingSystem")));
-      result.push(exportAsJSON(seperateFunctions("existingStar")));
-      result.push(exportAsJSON(seperateFunctions("existingPlanet")));
-      result.push(exportAsJSON(seperateFunctions("existingConflictingSystem")));
-      result.push(exportAsJSON(seperateFunctions("existingConflictingStar")));
-      result.push(exportAsJSON(seperateFunctions("existingConflictingPlanet")));
-      var data = exportAsJSON();
+  var key = document.getElementById("commit-message").value;
 
-    $.post("https://pacific-shelf-92985.herokuapp.com/upload", {result: 'result'}, function(data) {
+  var result = []
+  result.push(exportAsJSON(seperateFunctions("newSystem")));
+  result.push(exportAsJSON(seperateFunctions("newStar")));
+  result.push(exportAsJSON(seperateFunctions("newPlanet")));
+  result.push(exportAsJSON(seperateFunctions("newConflictingSystem")));
+  result.push(exportAsJSON(seperateFunctions("newConflictingStar")));
+  result.push(exportAsJSON(seperateFunctions("newConflictingPlanet")));
+  result.push(exportAsJSON(seperateFunctions("existingSystem")));
+  result.push(exportAsJSON(seperateFunctions("existingStar")));
+  result.push(exportAsJSON(seperateFunctions("existingPlanet")));
+  result.push(exportAsJSON(seperateFunctions("existingConflictingSystem")));
+  result.push(exportAsJSON(seperateFunctions("existingConflictingStar")));
+  result.push(exportAsJSON(seperateFunctions("existingConflictingPlanet")));
+
+  console.log(JSON.stringify(result));
+
+  // Sending it as a post
+  $.post("https://pacific-shelf-92985.herokuapp.com/setkey", {key: key}, function(text) {
+    $.post("https://pacific-shelf-92985.herokuapp.com/upload", {result: JSON.stringify(result)}, function(data) {
       window.alert("Your data has been sent");
     });
   });
 }
 
 function exportAsJSON(systemObjList){
-  $('.theClass:checkbox:checked');
-
   var total = [];
 
   // Exporting it as a JSON
@@ -346,7 +349,7 @@ function exportAsJSON(systemObjList){
   for(i; i < systemObjList.length; i++){
     // looping through and making a temp dict
     var temp = {};
-    var curr = systemObjs[i];
+    var curr = systemObjList[i];
     while(curr != null){
       var k = 1;
       for(k; k < curr.info[0].length; k++){
@@ -354,9 +357,10 @@ function exportAsJSON(systemObjList){
       }
       curr = curr.child;
     }
+    // Pushing the dict past
     total.push(temp);
   }
-  return JSON.stringify(total);
+  return total;
 }
 
 function checkAll(){

@@ -1,11 +1,13 @@
 package com.team23;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import com.opencsv.CSVReader;
-
-import net.lingala.zip4j.exception.ZipException;
+import static com.team23.UpdateTools.DetectUpdates.detectUpdates;
+import static com.team23.UpdateTools.PullingTools.pullExoplanetEu;
+import static com.team23.UpdateTools.PullingTools.pullNasaArchive;
+import static com.team23.UpdateTools.PullingTools.pullOecOneFile;
+import static com.team23.UpdateTools.UpdateStorage.plPropConflicts;
+import static com.team23.UpdateTools.UpdateStorage.planetUpdates;
+import static com.team23.UpdateTools.UpdateStorage.stPropConflicts;
+import static com.team23.UpdateTools.UpdateStorage.starUpdates;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -16,12 +18,10 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.team23.ModelStarSystems.SystemBuilder;
 import com.team23.ModelStarSystems.Systems;
 import com.team23.UpdateTools.CreateOecClone;
@@ -30,6 +30,7 @@ import com.team23.UpdateTools.DifferenceDetector;
 import com.team23.UpdateTools.Merge;
 import com.team23.UpdateTools.PullingTools;
 import com.team23.UpdateTools.ReadCSV;
+import com.team23.UpdateTools.SendPullRequest;
 import com.team23.UpdateTools.UpdateClassifier;
 import com.team23.UpdateTools.UpdateStorage;
 import com.team23.UpdateTools.generateXML;

@@ -5,7 +5,6 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -16,14 +15,9 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.eclipse.jetty.webapp.WebAppContext;
 
-import com.google.gson.Gson;
 import com.team23.Driver;
-import com.team23.ModelStarSystems.Systems;
-import com.team23.UpdateTools.Merge;
-import com.team23.UpdateTools.UpdateStorage;
-import com.team23.UpdateTools.generateXML;
+import com.team23.UpdateTools.SendPullRequest;
 
 public class OECMain extends HttpServlet
 {
@@ -102,6 +96,9 @@ public class OECMain extends HttpServlet
         		resp.getWriter().flush();
     		}
     		resp.getWriter().close();
+    		
+    		SendPullRequest.createPullRequest("test", "Test");
+    		
     		// Calling from Driver to get all the new updated celestial objects
         	// Doing the initial merge and setting up local repos
 
@@ -128,21 +125,18 @@ public class OECMain extends HttpServlet
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
     	if (req.getRequestURI().equals("/upload")){		
-            //get input from the user
-    		
-    		/*
-            Driver.setNewSystems(json[0]);
-            Driver.setNewStars(json[1]);
-            Driver.setNewPlanets(json[2]);
-            Driver.setSystemtAttributes(json[3]);
-            Driver.setStarAttributes(json[4]);
-            Driver.setPlanetAttributes(json[5]);
-            */
-            
-            //Now execute merge
-            Driver.executeMerge();
+    		// The data from the key
+    		String data = req.getParameter("result");
     		
     		resp.getWriter().close();
+    		
+    		System.out.println(data);
+    	}
+    	else if (req.getRequestURI().equals("/setkey")){
+    		// The key from the github upload
+    		String key = req.getParameter("key");
+    		
+    		System.out.println(key);
     	}
     	else{
     		super.doPost(req, resp);

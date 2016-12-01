@@ -1,9 +1,8 @@
 package com.team23.TestSuite;
 
-import org.apache.commons.io.FileUtils;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -13,13 +12,14 @@ import java.io.Writer;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.io.FileUtils;
+import org.junit.Test;
+
 import com.team23.ModelStarSystems.Systems;
 import com.team23.UpdateTools.DifferenceDetector;
 import com.team23.UpdateTools.PullingTools;
 import com.team23.UpdateTools.ReadCSV;
 import com.team23.UpdateTools.UpdateStorage;
-
-import static junit.framework.Assert.*;
 
 /**
  * Created by dhrumil on 13/11/16.

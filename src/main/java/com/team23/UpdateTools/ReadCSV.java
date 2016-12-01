@@ -1,6 +1,5 @@
 package com.team23.UpdateTools;
 
-import com.opencsv.CSVReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.opencsv.CSVReader;
 import com.team23.ModelStarSystems.SystemBuilder;
 import com.team23.ModelStarSystems.Systems;
 

@@ -394,7 +394,7 @@ Method adds data from OEC for each star in starUpdates
       NodeList tagNl = doc.getElementsByTagName(label);
       NodeList nameNl;
       Element element;
-      String mainName="";
+      String mainName = "";
       for (int i = 0; i < tagNl.getLength(); i++) {
         element = (Element) tagNl.item(i);
         nameNl = element.getElementsByTagName("name");
@@ -403,11 +403,7 @@ Method adds data from OEC for each star in starUpdates
             mainName = nameNl.item(j).getTextContent();
           }
           if (onlyAlphaNumeric(nameNl.item(j).getTextContent()).
-<<<<<<< HEAD
-                  equals(onlyAlphaNumeric(s.getName()))){
-=======
                   equals(onlyAlphaNumeric(c.getName()))) {
->>>>>>> master
             //Found the system, now assign the main name to the system object
             c.setName(mainName);
             return c;

@@ -1,10 +1,7 @@
 package com.team23.ModelStarSystems;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-
-import com.team23.UpdateTools.ReadCSV;
 
 //TODO store converted units
 /**

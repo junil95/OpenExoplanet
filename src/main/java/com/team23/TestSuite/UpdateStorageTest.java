@@ -1,23 +1,6 @@
 package com.team23.TestSuite;
 
-import com.team23.ModelStarSystems.SystemBuilder;
-import com.team23.ModelStarSystems.Systems;
-import com.team23.UpdateTools.PullingTools;
-import com.team23.UpdateTools.ReadCSV;
-import com.team23.UpdateTools.UpdateStorage;
-import com.opencsv.CSVReader;
 import org.junit.Before;
-import org.junit.Test;
-
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import static com.team23.UpdateTools.ReadCSV.mapIndexes;
-import static org.junit.Assert.*;
 
 /**
  * Created by Tirth Shah on 2016-11-14.

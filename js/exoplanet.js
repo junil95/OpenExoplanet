@@ -335,7 +335,7 @@ function commitChanges(){
 
   // Sending it as a post
   $.post("https://pacific-shelf-92985.herokuapp.com/setkey", {key: key}, function(text) {
-    $.post("https://pacific-shelf-92985.herokuapp.com/upload", {result: 'result'}, function(data) {
+    $.post("https://pacific-shelf-92985.herokuapp.com/upload", {result: result}, function(data) {
       window.alert("Your data has been sent");
     });
   });

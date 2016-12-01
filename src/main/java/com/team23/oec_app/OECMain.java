@@ -61,11 +61,13 @@ public class OECMain extends HttpServlet
     		if(counter > 101){
      			resp.getWriter().print("Took too long..");
      			resp.getWriter().flush();
+     			System.out.println("Took too long");
      		}
     		else if(updating == false){
     			counter += 1;
     			resp.getWriter().print("Still updating...");
     			resp.getWriter().flush();
+    			System.out.println("Still updating");
     		}
     		else {
     			resp.getWriter().print("[");

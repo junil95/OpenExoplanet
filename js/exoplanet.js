@@ -168,6 +168,7 @@ function update(){
   $("#update-button").addClass("pulse");
   $("#update-button").css("color", "#1ABC9C");
   $.get("https://pacific-shelf-92985.herokuapp.com/img/update", function(data) {
+    console.log(data);
   });
   request();
 
@@ -181,6 +182,7 @@ function update(){
 
 function request(){
   $.get("https://pacific-shelf-92985.herokuapp.com/request", function(data) {
+    console.log(data);
     if(data === "Still updating..."){
         setTimeout(function(){
           request();

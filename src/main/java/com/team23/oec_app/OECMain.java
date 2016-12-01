@@ -71,6 +71,7 @@ public class OECMain extends HttpServlet
     			System.out.println("Still updating");
     		}
     		else {
+    			Driver.detectInitialUpdates();
     			System.out.println("Finished Updating");
     			resp.getWriter().print("[");
         		resp.getWriter().print(Driver.getNewSystemConflicts());

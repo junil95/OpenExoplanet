@@ -576,14 +576,14 @@ try {
     return gson.toJson(convertToMap);
   }
   
-  public static String commitPushPullRequest(String token) {
+  public static boolean commitPushPullRequest(String token) {
     CreateOecClone.commitChanges();
-    String valid = "1";
+    boolean valid = true;
     try {
       CreateOecClone.pushChanges(token, CreateOecClone.getBranchName());
       SendPullRequest.createPullRequest(token, CreateOecClone.getBranchName());
     } catch (GitAPIException e) {
-      valid = "0";
+      valid = false;
     }
     return  valid;
   }

@@ -163,6 +163,10 @@ function generateRowHTML(info0, info1, info2, info3, info4, num){
 
 function update(){
   // Getting the string data from the server
+
+  $("#update-button").text("UPDATING");
+  $("#update-button").addClass("pulse");
+  $("#update-button").css("color", "#1ABC9C");
   $.get("https://pacific-shelf-92985.herokuapp.com/img/update", function(data) {
   });
   request();
@@ -177,17 +181,25 @@ function update(){
 
 function request(){
   $.get("https://pacific-shelf-92985.herokuapp.com/request", function(data) {
-    console.log(data);
     if(data === "Still updating..."){
         setTimeout(function(){
           request();
       }, 5000);
+    }
+    else if(data === "Took too long.."){
+      $("#update-button").text("Update");
+      $("#update-button").removeClass("pulse");
+      $("#update-button").css("color", "");
     }
     else{
       // Restting systemObjs
       systemObjs = [];
       populate(data);
       setNewRows(systemObjs);
+
+      $("#update-button").text("Update");
+      $("#update-button").removeClass("pulse");
+      $("#update-button").css("color", "");
     }
   });
 }

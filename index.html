@@ -23,40 +23,42 @@
 <body>
     <div class="container-fluid" id="total">
         <div class="container" id="top-panel">
-          <div class="col-xs-12">
-          <nav class="navbar navbar-inverse navbar-embossed" role="navigation">
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
-                <span class="sr-only">Toggle navigation</span>
-              </button>
-              <a class="navbar-brand" href="#">Exoplanet Organizer!</a>
+            <div class="col-xs-12">
+                <nav class="navbar navbar-inverse navbar-embossed" role="navigation">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
+                            <span class="sr-only">Toggle navigation</span>
+                        </button>
+                        <a class="navbar-brand" href="#">Exoplanet Organizer!</a>
+                    </div>
+                    <div class="collapse navbar-collapse" id="navbar-collapse-01">
+                        <ul class="nav navbar-nav navbar-left">
+                            <li><a href="#fakelink" onclick="update()">Update</a></li>
+                            <li><a href="#fakelink" onclick="request()">Reset Data</a></li>
+                            <li><a href="#fakelink">Github</a></li>
+                        </ul>
+                    </div>
+                    <!-- /.navbar-collapse -->
+                </nav>
+                <!-- /navbar -->
             </div>
-            <div class="collapse navbar-collapse" id="navbar-collapse-01">
-              <ul class="nav navbar-nav navbar-left">
-                <li><a href="#fakelink" onclick="update()">Update</a></li>
-                <li><a href="#fakelink" onclick="request()">Reset Data</a></li>
-                <li><a href="#fakelink">Github</a></li>
-               </ul>
-            </div><!-- /.navbar-collapse -->
-          </nav><!-- /navbar -->
-        </div>
         </div>
         <div class="wrapper container-fluid">
-          <div id="col-xs-1 tab-selector">
-            <button class="btn tab-selectors" onclick="selectRowType('All')">All</button>
-            <button class="btn tab-selectors" onclick="selectRowType('newSystem')">New System</button>
-            <button class="btn tab-selectors" onclick="selectRowType('newStar')">New Stars</button>
-            <button class="btn tab-selectors" onclick="selectRowType('newPlanet')">New Planets</button>
-            <button class="btn tab-selectors" onclick="selectRowType('newConflictingSystem')">New Conflicting Systems</button>
-            <button class="btn tab-selectors" onclick="selectRowType('newConflictingStar')">New Conflicting Stars</button>
-            <button class="btn tab-selectors" onclick="selectRowType('newConflictingPlanet')">New Conflicting Planets</button>
-            <button class="btn tab-selectors" onclick="selectRowType('existingSystem')">Existing System</button>
-            <button class="btn tab-selectors" onclick="selectRowType('existingStar')">Existing Star</button>
-            <button class="btn tab-selectors" onclick="selectRowType('existingPlanet')">Existing Planet</button>
-            <button class="btn tab-selectors" onclick="selectRowType('existingConflictingSystem')">Existing Conflicting System</button>
-            <button class="btn tab-selectors" onclick="selectRowType('existingConflictingStar')">Existing Conflicting Star</button>
-            <button class="btn tab-selectors" onclick="selectRowType('existingConflictingPlanet')">Existing Conflicting Planets</button>
-          </div>
+            <div id="col-xs-1 tab-selector">
+                <button class="btn tab-selectors" onclick="selectRowType('All')">All</button>
+                <button class="btn tab-selectors" onclick="selectRowType('newSystem')">New System</button>
+                <button class="btn tab-selectors" onclick="selectRowType('newStar')">New Stars</button>
+                <button class="btn tab-selectors" onclick="selectRowType('newPlanet')">New Planets</button>
+                <button class="btn tab-selectors" onclick="selectRowType('newConflictingSystem')">New Conflicting Systems</button>
+                <button class="btn tab-selectors" onclick="selectRowType('newConflictingStar')">New Conflicting Stars</button>
+                <button class="btn tab-selectors" onclick="selectRowType('newConflictingPlanet')">New Conflicting Planets</button>
+                <button class="btn tab-selectors" onclick="selectRowType('existingSystem')">Existing System</button>
+                <button class="btn tab-selectors" onclick="selectRowType('existingStar')">Existing Star</button>
+                <button class="btn tab-selectors" onclick="selectRowType('existingPlanet')">Existing Planet</button>
+                <button class="btn tab-selectors" onclick="selectRowType('existingConflictingSystem')">Existing Conflicting System</button>
+                <button class="btn tab-selectors" onclick="selectRowType('existingConflictingStar')">Existing Conflicting Star</button>
+                <button class="btn tab-selectors" onclick="selectRowType('existingConflictingPlanet')">Existing Conflicting Planets</button>
+            </div>
             <div class="container col-xs-3" id="left-panel">
                 <div id="row-subpanel">
                     <h3> Changes Made </h1>
@@ -100,34 +102,46 @@
                 </div>
                 <div id="info-table-wrapper">
                     <table id="info-table">
-                      <tr>
-                        <th>Property</th>
-                        <th>Current</th>
-                        <th>Nasa</th>
-                        <th>Exoplanet</th>
-                        <th>Result</th>
-                      </tr>
-                      <tr>
-                        <td>N/A</td>
-                        <td>N/A</td>
-                        <td>N/A</td>
-                        <td>N/A</td>
-                        <td><div class="form-group"><input type="text" id="info1" value="N/A" placeholder="Wanted Value" class="form-control"></div></td>
-                      </tr>
-                      <tr>
-                        <td>N/A</td>
-                        <td>N/A</td>
-                        <td>N/A</td>
-                        <td>N/A</td>
-                        <td><div class="form-group"><input type="text" id="info2" value="N/A" placeholder="Wanted Value" class="form-control"></div></td>
-                      </tr>
-                      <tr>
-                        <td>N/A</td>
-                        <td>N/A</td>
-                        <td>N/A</td>
-                        <td>N/A</td>
-                        <td><div class="form-group"><input type="text" id="info3" value="N/A" placeholder="Wanted Value" class="form-control"></div></td>
-                      </tr>
+                        <tr>
+                            <th>Property</th>
+                            <th>Current</th>
+                            <th>Nasa</th>
+                            <th>Exoplanet</th>
+                            <th>Result</th>
+                        </tr>
+                        <tr>
+                            <td>N/A</td>
+                            <td>N/A</td>
+                            <td>N/A</td>
+                            <td>N/A</td>
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" id="info1" value="N/A" placeholder="Wanted Value" class="form-control">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>N/A</td>
+                            <td>N/A</td>
+                            <td>N/A</td>
+                            <td>N/A</td>
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" id="info2" value="N/A" placeholder="Wanted Value" class="form-control">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>N/A</td>
+                            <td>N/A</td>
+                            <td>N/A</td>
+                            <td>N/A</td>
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" id="info3" value="N/A" placeholder="Wanted Value" class="form-control">
+                                </div>
+                            </td>
+                        </tr>
                     </table>
                 </div>
             </div>

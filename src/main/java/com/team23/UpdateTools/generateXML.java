@@ -49,7 +49,7 @@ public class generateXML {
 		 */
 		CelestialObjects planet = system.getChild().getChild(); //planet
 		HashMap<String, String> prop = planet.getProperties(); //planet properties
-		
+
 		List<String> keyList = new ArrayList<String>(prop.keySet());
 		java.util.Collections.sort(keyList);
 
@@ -62,7 +62,7 @@ public class generateXML {
 		     Document document = db.newDocument();
 		     Element rootElement = document.createElement("planet");
 		     document.appendChild(rootElement);
-		     
+
 		     Element name = document.createElement("name");
 		     name.appendChild(document.createTextNode(planet.getName()));
 		     rootElement.appendChild(name);
@@ -96,7 +96,7 @@ public class generateXML {
 		     StringWriter writer = new StringWriter();
 		     transformer.transform(source, new StreamResult(writer));
 		     String output = writer.getBuffer().toString();
-			String prettyOutput = toPrettyString(output, 4);
+			String prettyOutput = toPrettyString(output, 6);
 			return prettyOutput;
 
 			} catch (Exception e){
@@ -113,7 +113,7 @@ public class generateXML {
 		 */
 		CelestialObjects star = system.getChild();
 		HashMap<String, String> prop = star.getProperties();
-		
+
 		List<String> keyList = new ArrayList<String>(prop.keySet());
 		java.util.Collections.sort(keyList);
 
@@ -125,7 +125,7 @@ public class generateXML {
 		     Document document = db.newDocument();
 		     Element rootElement = document.createElement("star");
 		     document.appendChild(rootElement);
-		     
+
 		     Element name = document.createElement("name");
 		     name.appendChild(document.createTextNode(star.getName()));
 		     rootElement.appendChild(name);
@@ -172,7 +172,7 @@ public class generateXML {
 		   	StringWriter writer = new StringWriter();
 		   	transformer.transform(source, new StreamResult(writer));
 		   	String output = writer.getBuffer().toString();
-			String prettyOutput = toPrettyString(output, 4);
+			String prettyOutput = toPrettyString(output, 6);
 			return prettyOutput;
 
 			}catch (Exception e){
@@ -190,10 +190,10 @@ public class generateXML {
 		 */
 		CelestialObjects sys = system;
 		HashMap<String, String> prop = sys.getProperties();
-		
+
 		List<String> keyList = new ArrayList<String>(prop.keySet());
 		java.util.Collections.sort(keyList);
-		
+
 		try {
 			 DocumentBuilderFactory df = DocumentBuilderFactory.newInstance();
 		     DocumentBuilder db = df.newDocumentBuilder();
@@ -202,7 +202,7 @@ public class generateXML {
 		     Document document = db.newDocument();
 		     Element rootElement = document.createElement("system");
 		     document.appendChild(rootElement);
-		     
+
 		     Element name = document.createElement("name");
 		     name.appendChild(document.createTextNode(sys.getName()));
 		     rootElement.appendChild(name);
@@ -248,7 +248,7 @@ public class generateXML {
 			StringWriter writer = new StringWriter();
 			transformer.transform(source, new StreamResult(writer));
 			String output = writer.getBuffer().toString();
-			String prettyOutput = toPrettyString(output, 4);
+			String prettyOutput = toPrettyString(output, 6);
 			return prettyOutput;
 
 		}catch (Exception e){

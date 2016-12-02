@@ -31,7 +31,7 @@ import com.team23.ModelStarSystems.Systems;
  *         values to the old system files
  */
 public class Merge {
-  
+
   public static void newSystem(Systems system, String xmlSystem) {
     /**
      * Creates a new system XML file
@@ -39,13 +39,13 @@ public class Merge {
      * @param xmlSystem The system string which will be parsed into the new system file
      */
     try {
-      
+
       //parsing xmlSystem string into a document
       DocumentBuilder documentbuild = DocumentBuilderFactory.newInstance().newDocumentBuilder();
       InputSource is = new InputSource();
       is.setCharacterStream(new StringReader(xmlSystem));
       Document doc = documentbuild.parse(is);
-      
+
       //outputting to a new system file
       TransformerFactory transformerFactory = TransformerFactory.newInstance();
       Transformer transformer = transformerFactory.newTransformer();
@@ -57,13 +57,13 @@ public class Merge {
       //StreamResult result = new StreamResult(new File(PullingTools.oecData + system.getName() + ".xml"));
       transformer.transform(source, new StreamResult(writer));
       String output = writer.getBuffer().toString();
-      String prettyOutput = generateXML.toPrettyString(output, 4);
+      String prettyOutput = generateXML.toPrettyString(output, 6);
       try(  PrintWriter out = new PrintWriter(PullingTools.oecData + system.getName() + ".xml")  ){
         out.println( prettyOutput );
       }
-      
+
     } catch (Exception e) {
-      
+
     }
   }
 
@@ -74,20 +74,20 @@ public class Merge {
      * @param xmlSystem The star string which will be merged into the existing system file
      */
     try {
-      
+
       //system file directory
       File dir = new File(PullingTools.oecData + system.getName() + ".xml");
-      
+
       //parsing xmlStar string into a document
       DocumentBuilder documentbuild = DocumentBuilderFactory.newInstance().newDocumentBuilder();
       InputSource is = new InputSource();
       is.setCharacterStream(new StringReader(xmlStar));
       Document stardoc = documentbuild.parse(is);
-      
+
       //parsing system file into a document
       DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
       Document sysdoc = db.parse(dir);
-      
+
       //Merging star document into system document
       Element sysroot = sysdoc.getDocumentElement(); // system document root element
 
@@ -124,16 +124,16 @@ public class Merge {
       //StreamResult result = new StreamResult(new File(PullingTools.oecData + system.getName() + ".xml"));
       transformer.transform(source, new StreamResult(writer));
       String output = writer.getBuffer().toString();
-      String prettyOutput = generateXML.toPrettyString(output, 4);
+      String prettyOutput = generateXML.toPrettyString(output, 6);
       try(  PrintWriter out = new PrintWriter(PullingTools.oecData + system.getName() + ".xml")  ){
         out.println( prettyOutput );
       }
-      
+
     } catch (Exception e) {
       e.printStackTrace();
     }
-    
-    
+
+
   }
 
   public static void newPlanet(Systems system, String xmlPlanet) {
@@ -143,26 +143,26 @@ public class Merge {
    * @param xmlPlanet The planet string which will be merged into the existing system file
    */
   try {
-    
+
     //system file directory
     File dir = new File(PullingTools.oecData + system.getName() + ".xml");
-    
+
     //parsing xmlPlanet string into a document
     DocumentBuilder documentbuild = DocumentBuilderFactory.newInstance().newDocumentBuilder();
     InputSource is = new InputSource();
     is.setCharacterStream(new StringReader(xmlPlanet));
     Document planetdoc = documentbuild.parse(is);
-    
+
     //parsing system file into a document
     DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
     Document sysdoc = db.parse(dir);
-    
+
     //merging planet document into system document
     Element syselem = sysdoc.getDocumentElement();
     NodeList starlist = syselem.getElementsByTagName("star");
     Element stElem;
     NodeList nameNl;
-    
+
     boolean found = false;
     //for each star
     for (int i = 0; i < starlist.getLength(); i++) {
@@ -180,14 +180,14 @@ public class Merge {
           break;
         }
       }
-      
+
       //exit the second loop as well if we found the parent star we were looking for
       if (found) {
         break;
       }
-      
+
     }
-    
+
     //Writing result file (Overwrites old file)
     TransformerFactory transformerFactory = TransformerFactory.newInstance();
     Transformer transformer = transformerFactory.newTransformer();
@@ -199,11 +199,11 @@ public class Merge {
     //StreamResult result = new StreamResult(new File(PullingTools.oecData + system.getName() + ".xml"));
     transformer.transform(source, new StreamResult(writer));
     String output = writer.getBuffer().toString();
-    String prettyOutput = generateXML.toPrettyString(output, 4);
+    String prettyOutput = generateXML.toPrettyString(output, 6);
     try(  PrintWriter out = new PrintWriter(PullingTools.oecData + system.getName() + ".xml")  ){
       out.println( prettyOutput );
     }
-    
+
   } catch (Exception e) {
     e.printStackTrace();
   }
@@ -256,7 +256,7 @@ public class Merge {
       //StreamResult result = new StreamResult(new File(PullingTools.oecData + system.getName() + ".xml"));
       transformer.transform(source, new StreamResult(writer));
       String output = writer.getBuffer().toString();
-      String prettyOutput = generateXML.toPrettyString(output, 4);
+      String prettyOutput = generateXML.toPrettyString(output, 6);
       try(  PrintWriter out = new PrintWriter(PullingTools.oecData + system.getName() + ".xml")  ){
         out.println( prettyOutput );
       }
@@ -343,7 +343,7 @@ public class Merge {
       //StreamResult result = new StreamResult(new File(PullingTools.oecData + system.getName() + ".xml"));
       transformer.transform(source, new StreamResult(writer));
       String output = writer.getBuffer().toString();
-      String prettyOutput = generateXML.toPrettyString(output, 4);
+      String prettyOutput = generateXML.toPrettyString(output, 6);
       try(  PrintWriter out = new PrintWriter(PullingTools.oecData + system.getName() + ".xml")  ){
         out.println( prettyOutput );
       }
@@ -400,7 +400,7 @@ public class Merge {
       //StreamResult result = new StreamResult(new File(PullingTools.oecData + system.getName() + ".xml"));
       transformer.transform(source, new StreamResult(writer));
       String output = writer.getBuffer().toString();
-      String prettyOutput = generateXML.toPrettyString(output, 4);
+      String prettyOutput = generateXML.toPrettyString(output, 6);
       try(  PrintWriter out = new PrintWriter(PullingTools.oecData + system.getName() + ".xml")  ){
         out.println( prettyOutput );
       }
@@ -421,7 +421,7 @@ public class Merge {
      * If running test in oecData path, be sure to give ai new system and remove s
      **/
     try {
-      
+
       ReadCSV.mapIndexes();
       CSVReader r = new CSVReader(new FileReader(PullingTools.localExoplanetEu));
       List<String[]> allData = r.readAll();

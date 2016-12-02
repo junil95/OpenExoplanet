@@ -19,7 +19,8 @@ body {
     flex-direction: column; }
 
 #tab-selector {
-  width: 100px; }
+  width: 100px;
+  overflow-y: scroll; }
 
 .tab-selectors {
   width: 200px;
@@ -100,16 +101,16 @@ body {
         text-align: left;
         padding: 5px; }
 
-#info-table-wrapper::-webkit-scrollbar, ul::-webkit-scrollbar {
+#info-table-wrapper::-webkit-scrollbar, ul::-webkit-scrollbar, div::-webkit-scrollbar {
   margin-right: 10px;
   width: 8px;
   background-color: #F5F5F5; }
 
-#info-table-wrapper::-webkit-scrollbar-track, ul::-webkit-scrollbar-track {
+#info-table-wrapper::-webkit-scrollbar-track, ul::-webkit-scrollbar-track, div::-webkit-scrollbar-track {
   border-radius: 10px;
   background-color: #F5F5F5; }
 
-#info-table-wrapper::-webkit-scrollbar-thumb, ul::-webkit-scrollbar-thumb {
+#info-table-wrapper::-webkit-scrollbar-thumb, ul::-webkit-scrollbar-thumb, div::-webkit-scrollbar-thumb {
   border-radius: 10px;
   background-color: #1ABC9C; }
 
@@ -152,3 +153,7 @@ body {
     transform: scale(1); }
   100% {
     transform: scale(1); } }
+
+#change-all {
+  position: relative;
+  bottom: 16px; }

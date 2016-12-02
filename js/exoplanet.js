@@ -137,6 +137,20 @@ SystemObject.prototype.finalize = function() {
     return conflicts;
 }
 
+SystemObject.prototype.hasConflict = function(){
+  return this.info[4].indexOf("CONFLICT OCCURS") != -1;
+}
+
+SystemObject.prototype.setConflicts = function(){
+  var curr = this;
+  while(curr != null){
+    if(this.hasConflict){
+      curr.conflict = true;
+    }
+    curr = curr.child;
+  }
+}
+
 SystemObject.prototype.setSystemType = function(number) {
     var list = ["newSystem", "newStar", "newPlanet", "newConflictingSystem", "newConflictingStar", "newConflictingPlanet", "existingSystem", "existingStar", "existingPlanet", "existingConflictingSystem", "existingConflictingStar", "existingConflictingPlanet"];
     this.listType = list[number];
@@ -224,17 +238,17 @@ function update() {
 
   /*
   systemObjs = [];
-  populate('[[[{"sy_distance":"530.0","sy_name":"mu Arae","sy_right_ascension":"246.692000015",'+
-  '"sy_declination":"51.0411666736","st_spectral_type":"F7","st_name":"mu Ara","st_metallicity":"0.0",'+
-  '"st_magV":"13.18","st_temperature":"6280.0","st_radius":"1.341","st_mass":"1.19","pl_inclination":"83.75",'+
-  '"pl_mass":"0.805","pl_eccentricity":"0.0","pl_period":"2.1746742","pl_impact_parameter":"0.608","pl_radius"'+
-  ':"1.461","pl_name":"mu Ara 99","pl_semi_major_axis":"0.0348"}],[{"sy_name":"11 Com","sy_declination":"+42d36m15.0s",'+
+  populate('[[[{"sy_name":"11 Com","sy_declination":"+42d36m15.0s",'+
   '"sy_distance":"855.00","sy_right_ascension":"19h17m04.50s","st_magJ_min":"0.025","st_magK_max":"0.028","st_temperature":'+
   '"5309.00","st_magJ_max":"0.025","st_mass":"0.90","st_magK_min":"0.028","st_name":"11 com","st_metallicity":"[M/H]",'+
   '"st_magH_min":"0.020","st_age":"9.700","st_magH_max":"0.020","st_radius":"0.79","st_magJ":"13.814","st_magK":"13.347"'+
   ',"st_magH":"13.436","pl_periastron":"330.0000","pl_temperature":"455","pl_name":"alright","pl_inclination":"87.400",'+
   '"pl_mass":"0.37600","pl_eccentricity":"0.014600","pl_period":"57.01100000","pl_temperature_min":"-13","pl_temperature_max"'+
-  ':"14","pl_semi_major_axis":"0.279900"}]],[],[],[],[],[],[],[],[],[],[],[]]');
+  ':"14","pl_semi_major_axis":"0.279900"}]],[],[],[[{"sy_distance":"530.0","sy_name":"mu Arae","sy_right_ascension":"246.692000015",'+
+'"sy_declination":"51.0411666736","st_spectral_type":"F7","st_name":"mu Ara","st_metallicity":"0.0",'+
+'"st_magV":"13.18","st_temperature":"6280.0","st_radius":"1.341","st_mass":"CONFLICT OCCURS","pl_inclination":"83.75",'+
+'"pl_mass":"0.805","pl_eccentricity":"0.0","pl_period":"2.1746742","pl_impact_parameter":"CONFLICT OCCURS","pl_radius"'+
+':"1.461","pl_name":"mu Ara 99","pl_semi_major_axis":"0.0348"}]],[],[],[],[],[],[],[],[]]');
   setNewRows(systemObjs);
   */
 }
@@ -393,7 +407,7 @@ function removeChecked(){
       var curr = systemObjs[i];
 
       while(curr != null){
-        if(curr.checked === true){
+        if(curr.checked === true && curr.conflict === false){
           curr.resetInfo();
         }
         curr = curr.child;
@@ -406,6 +420,12 @@ function removeChecked(){
           systemObjs.splice(i, 1);
         }
     }
+}
+
+function checkAllConflicts(){
+  for(var i in systemObjs){
+    systemObjs[i].setConflicts();
+  }
 }
 
 function commitChanges(){
@@ -427,6 +447,7 @@ function commitChanges(){
 
     console.log(JSON.stringify(result));
 
+    checkAllConflicts();
     removeChecked();
     setNewRows(systemObjs);
 
@@ -456,16 +477,13 @@ function exportAsJSON(systemObjList) {
     // Exporting it as a JSON
     var i = 0;
     for (i; i < systemObjList.length; i++) {
-        console.log(systemObjList[i].checked === true || systemObjList[i].child.checked === true ||systemObjList[i].child.child.checked === true);
         if (systemObjList[i].checked === true || systemObjList[i].child.checked === true || systemObjList[i].child.child.checked === true) {
         // looping through and making a temp dict
         var temp = {};
         var curr = systemObjList[i];
         while (curr != null) {
             // If the box is checked
-
-            console.log(curr.checked);
-            if (curr.checked === true) {
+            if (curr.checked === true && curr.conflict === false) {
                 var k = 1;
                 for (k; k < curr.info[0].length; k++) {
                     temp[curr.info[0][k]] = curr.info[4][k];

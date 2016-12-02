@@ -1,13 +1,6 @@
 package com.team23;
 
-import static com.team23.UpdateTools.DetectUpdates.detectUpdates;
-import static com.team23.UpdateTools.PullingTools.pullExoplanetEu;
-import static com.team23.UpdateTools.PullingTools.pullNasaArchive;
-import static com.team23.UpdateTools.PullingTools.pullOecOneFile;
-import static com.team23.UpdateTools.UpdateStorage.plPropConflicts;
-import static com.team23.UpdateTools.UpdateStorage.planetUpdates;
-import static com.team23.UpdateTools.UpdateStorage.stPropConflicts;
-import static com.team23.UpdateTools.UpdateStorage.starUpdates;
+import org.eclipse.jgit.api.errors.GitAPIException;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -25,6 +18,7 @@ import com.google.gson.reflect.TypeToken;
 import com.team23.ModelStarSystems.SystemBuilder;
 import com.team23.ModelStarSystems.Systems;
 import com.team23.UpdateTools.CreateOecClone;
+import com.team23.UpdateTools.SendPullRequest;
 import com.team23.UpdateTools.DifferenceDetector;
 import com.team23.UpdateTools.Merge;
 import com.team23.UpdateTools.PullingTools;
@@ -34,6 +28,19 @@ import com.team23.UpdateTools.UpdateClassifier;
 import com.team23.UpdateTools.UpdateStorage;
 import com.team23.UpdateTools.generateXML;
 
+import static com.team23.UpdateTools.DetectUpdates.detectUpdates;
+import static com.team23.UpdateTools.PullingTools.pullExoplanetEu;
+import static com.team23.UpdateTools.PullingTools.pullNasaArchive;
+import static com.team23.UpdateTools.PullingTools.pullOecOneFile;
+import static com.team23.UpdateTools.PullingTools.pullOecSeperateFiles;
+import static com.team23.UpdateTools.PullingTools.createLatestCatalogueCopy;
+import static com.team23.UpdateTools.UpdateStorage.findNewPlanetConflicts;
+import static com.team23.UpdateTools.UpdateStorage.plPropConflicts;
+import static com.team23.UpdateTools.UpdateStorage.planetUpdates;
+import static com.team23.UpdateTools.UpdateStorage.stPropConflicts;
+import static com.team23.UpdateTools.UpdateStorage.starUpdates;
+import static com.team23.UpdateTools.UpdateStorage.systemUpdates;
+import static com.team23.UpdateTools.UpdateStorage.updates;
 /**
  * Created by dhrumil on 06/11/16.
  *
@@ -79,6 +86,7 @@ public class Driver {
   public static void initialSetupOrResetLocalCopies() {
     //pull local files
     try {
+
       pullExoplanetEu();
       pullNasaArchive();
       CreateOecClone.gitCloneRepo();
@@ -138,12 +146,9 @@ public class Driver {
       UpdateStorage.clearAll();
       //need to create latest catalogue copy
       
-      /* Uncomment after
-      UpdateTools.PullingTools.createLatestCatalogueCopy();
-      */
+      createLatestCatalogueCopy();
       CreateOecClone.gitCloneRepo();
       CreateOecClone.createNewBranch();
-      
       
       //find updates between different versions of the nasa database
       detectUpdates(ReadCSV.mapPlanetToData(PullingTools.localNasaArchiveOld, ReadCSV.NASA),
@@ -424,6 +429,13 @@ public class Driver {
    * in terms of systems again
    */
   private static void createObjectFromJson(String json, ArrayList<ArrayList<Systems>> allData) {
+try {
+      ReadCSV.mapIndexes();
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (ReadCSV.MissingColumnNameException e) {
+      e.printStackTrace();
+    }
     //Make sure the provided list is empty
     allData.clear();
     Gson gson = new Gson();
@@ -436,13 +448,91 @@ public class Driver {
       temp = new ArrayList<>();
       for (HashMap<String, String> m : as) {
         try {
-          s = SystemBuilder.buildSystemWithHashMap(m, m.get("src"));
+          s = SystemBuilder.buildSystemWithHashMap(m, "user");
           temp.add(s);
         } catch (SystemBuilder.MissingCelestialObjectNameException e) {
           e.printStackTrace();
         }
       }
       allData.add(temp);
+    }
+  }
+  
+  public static void distributeData(String json) {
+    ArrayList<ArrayList<Systems>> data = new ArrayList<>();
+    UpdateStorage.clearAll();
+    createObjectFromJson(json, data);
+    ArrayList<Systems> singleton;
+    for (Systems s: data.get(0)) {
+      singleton = new ArrayList<>();
+      singleton.add(s);
+      UpdateStorage.systems.add(singleton);
+    }
+    //conflicts are stored in the same location
+    for (Systems s: data.get(3)) {
+      singleton = new ArrayList<>();
+      singleton.add(s);
+      UpdateStorage.systems.add(singleton);
+    }
+  
+    for (Systems s: data.get(1)) {
+      singleton = new ArrayList<>();
+      singleton.add(s);
+      UpdateStorage.stars.add(singleton);
+    }
+  
+    for (Systems s: data.get(4)) {
+      singleton = new ArrayList<>();
+      singleton.add(s);
+      UpdateStorage.stars.add(singleton);
+    }
+  
+    for (Systems s: data.get(2)) {
+      singleton = new ArrayList<>();
+      singleton.add(s);
+      UpdateStorage.planets.add(singleton);
+    }
+  
+    for (Systems s: data.get(5)) {
+      singleton = new ArrayList<>();
+      singleton.add(s);
+      UpdateStorage.planets.add(singleton);
+    }
+  
+    for (Systems s: data.get(6)) {
+      singleton = new ArrayList<>();
+      singleton.add(s);
+      UpdateStorage.systemUpdates.add(singleton);
+    }
+  
+    for (Systems s: data.get(9)) {
+      singleton = new ArrayList<>();
+      singleton.add(s);
+      UpdateStorage.systemUpdates.add(singleton);
+    }
+  
+    for (Systems s: data.get(7)) {
+      singleton = new ArrayList<>();
+      singleton.add(s);
+      UpdateStorage.starUpdates.add(singleton);
+    }
+  
+    for (Systems s: data.get(10)) {
+      singleton = new ArrayList<>();
+      singleton.add(s);
+      UpdateStorage.starUpdates.add(singleton);
+    }
+  
+    for (Systems s: data.get(8)) {
+      singleton = new ArrayList<>();
+      singleton.add(s);
+      UpdateStorage.planetUpdates.add(singleton);
+    }
+  
+    for (Systems s: data.get(11)) {
+      singleton = new ArrayList<>();
+      singleton.add(s);
+      UpdateStorage.planetUpdates.add(singleton);
     }
   }
   
@@ -486,10 +576,16 @@ public class Driver {
     return gson.toJson(convertToMap);
   }
   
-  public static void commitPushPullRequest(String token) {
+  public static boolean commitPushPullRequest(String token) {
     CreateOecClone.commitChanges();
-    CreateOecClone.pushChanges(token, CreateOecClone.getBranchName());
-    SendPullRequest.createPullRequest(token, CreateOecClone.getBranchName());
+    boolean valid = true;
+    try {
+      CreateOecClone.pushChanges(token, CreateOecClone.getBranchName());
+      SendPullRequest.createPullRequest(token, CreateOecClone.getBranchName());
+    } catch (GitAPIException e) {
+      valid = false;
+    }
+    return  valid;
   }
   
   public static void main(String[] args) {
@@ -592,9 +688,10 @@ public class Driver {
 //      createObjectFromJson(json);
       
       ///////////////////Test updating
-      ArrayList<String> sorted = new ArrayList<>();
-      //detectInitialUpdates();
-      updateDetection();
+//      ArrayList<String> sorted = new ArrayList<>();
+//      initialSetupOrResetLocalCopies();
+//      detectInitialUpdates();
+//      //updateDetection();
 //      System.out.println();
 //      System.out.println("planets");
 //      System.out.println();
@@ -641,66 +738,66 @@ public class Driver {
 //        System.out.println(str);
 //      }
       
-      System.out.println();
-      System.out.println("System Attribute changes");
-      System.out.println();
-      for (ArrayList<Systems> as : UpdateStorage.systemUpdates) {
-        System.out.println(as.get(0).getName());
-        System.out.println(as.get(0).getProperties());
-        System.out.println(as.get(1).getProperties());
-      }
-      
-      System.out.println();
-      System.out.println("Star Attribute changes");
-      System.out.println();
-      for (ArrayList<Systems> as : starUpdates) {
-        System.out.println(as.get(0).getChild().getName());
-        System.out.println(as.get(0).getChild().getProperties());
-        System.out.println(as.get(1).getChild().getProperties());
-      }
-      
-      System.out.println();
-      System.out.println("Planet Attribute changes");
-      System.out.println();
-      for (ArrayList<Systems> as : planetUpdates) {
-        System.out.println(as.get(0).getChild().getChild().getName());
-        System.out.println(as.get(0).getChild().getChild().getProperties());
-        System.out.println(as.get(1).getChild().getChild().getProperties());
-      }
-      
-      System.out.println();
-      System.out.println("System Attribute conflicts");
-      System.out.println();
-      for (ArrayList<Systems> as : UpdateStorage.syPropConflicts) {
-        System.out.println(as.get(0).getName());
-        System.out.println(as.get(0).getProperties());
-        System.out.println(as.get(1).getProperties());
-        System.out.println(as.get(2).getProperties());
-      }
-      
-      System.out.println();
-      System.out.println("Star Attribute conflicts");
-      System.out.println();
-      for (ArrayList<Systems> as : stPropConflicts) {
-        System.out.println(as.get(0).getChild().getName());
-        System.out.println(as.get(0).getChild().getProperties());
-        System.out.println(as.get(1).getChild().getProperties());
-        System.out.println(as.get(2).getChild().getProperties());
-      }
-      
-      System.out.println();
-      System.out.println("Planet Attribute conflicts");
-      System.out.println();
-      for (ArrayList<Systems> as : plPropConflicts) {
-        System.out.println(as.get(0).getChild().getChild().getName());
-        System.out.println(as.get(0).getChild().getChild().getProperties());
-        System.out.println(as.get(1).getChild().getChild().getProperties());
-        System.out.println(as.get(2).getChild().getChild().getProperties());
-      }
-      
-      
-      executeMerge();
-      commitPushPullRequest("a0e0b081561d3abaeae3bd2536b929d2c2c607d2");
+//      System.out.println();
+//      System.out.println("System Attribute changes");
+//      System.out.println();
+//      for (ArrayList<Systems> as : UpdateStorage.systemUpdates) {
+//        System.out.println(as.get(0).getName());
+//        System.out.println(as.get(0).getProperties());
+//        System.out.println(as.get(1).getProperties());
+//      }
+//
+//      System.out.println();
+//      System.out.println("Star Attribute changes");
+//      System.out.println();
+//      for (ArrayList<Systems> as : starUpdates) {
+//        System.out.println(as.get(0).getChild().getName());
+//        System.out.println(as.get(0).getChild().getProperties());
+//        System.out.println(as.get(1).getChild().getProperties());
+//      }
+//
+//      System.out.println();
+//      System.out.println("Planet Attribute changes");
+//      System.out.println();
+//      for (ArrayList<Systems> as : planetUpdates) {
+//        System.out.println(as.get(0).getChild().getChild().getName());
+//        System.out.println(as.get(0).getChild().getChild().getProperties());
+//        System.out.println(as.get(1).getChild().getChild().getProperties());
+//      }
+//
+//      System.out.println();
+//      System.out.println("System Attribute conflicts");
+//      System.out.println();
+//      for (ArrayList<Systems> as : UpdateStorage.syPropConflicts) {
+//        System.out.println(as.get(0).getName());
+//        System.out.println(as.get(0).getProperties());
+//        System.out.println(as.get(1).getProperties());
+//        System.out.println(as.get(2).getProperties());
+//      }
+//
+//      System.out.println();
+//      System.out.println("Star Attribute conflicts");
+//      System.out.println();
+//      for (ArrayList<Systems> as : stPropConflicts) {
+//        System.out.println(as.get(0).getChild().getName());
+//        System.out.println(as.get(0).getChild().getProperties());
+//        System.out.println(as.get(1).getChild().getProperties());
+//        System.out.println(as.get(2).getChild().getProperties());
+//      }
+//
+//      System.out.println();
+//      System.out.println("Planet Attribute conflicts");
+//      System.out.println();
+//      for (ArrayList<Systems> as : plPropConflicts) {
+//        System.out.println(as.get(0).getChild().getChild().getName());
+//        System.out.println(as.get(0).getChild().getChild().getProperties());
+//        System.out.println(as.get(1).getChild().getChild().getProperties());
+//        System.out.println(as.get(2).getChild().getChild().getProperties());
+//      }
+//
+//
+//      executeMerge();
+//      commitPushPullRequest("a0e0b081561d3abaeae3bd2536b929d2c2c607d2");
       
       ////////////////Test converting from json to system objects
 //      String x = "[[{'pl_name':'hi','st_name':'hello','sy_name':'bye', 'pl_mass':'999'}],[{'pl_name':'hi','st_name':'hello','sy_name':'bye', 'pl_mass':'999'}]]";
@@ -717,3 +814,4 @@ public class Driver {
     }
   }
 }
+

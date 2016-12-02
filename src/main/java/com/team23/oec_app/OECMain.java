@@ -24,6 +24,7 @@ public class OECMain extends HttpServlet
 	
 	private boolean updating = false;
 	private int counter = 0;
+	private String key = "";
 
 	/**
 	 * Default method used to handle all GET requests given to the server.
@@ -55,31 +56,37 @@ public class OECMain extends HttpServlet
         	if(!Driver.isInitialMergeDone()){
         		Driver.initialSetupOrResetLocalCopies();
         	}
-        	updating = true;
+			Driver.detectInitialUpdates();
+			updating = true;
+        	System.out.println("Flag is raised to true");
     	}
     	else if (req.getRequestURI().equals("/request")){
     		if(counter > 101){
      			resp.getWriter().print("Took too long..");
      			resp.getWriter().flush();
+     			System.out.println("Took too long");
      		}
     		else if(updating == false){
     			counter += 1;
     			resp.getWriter().print("Still updating...");
     			resp.getWriter().flush();
+    			System.out.println("Still updating");
     		}
     		else {
+
+    			System.out.println("Finished Updating");
     			resp.getWriter().print("[");
+        		resp.getWriter().print(Driver.getNewSystems());
+        		resp.getWriter().print(",");
+        		resp.getWriter().print(Driver.getNewStars());
+        		resp.getWriter().print(",");
+        		resp.getWriter().print(Driver.getNewPlanets());
+        		resp.getWriter().print(",");
         		resp.getWriter().print(Driver.getNewSystemConflicts());
         		resp.getWriter().print(",");
         		resp.getWriter().print(Driver.getNewStarConflicts());
         		resp.getWriter().print(",");
         		resp.getWriter().print(Driver.getNewPlanetConflicts());
-        		resp.getWriter().print(",");
-        		resp.getWriter().print(Driver.getNewPlanets());
-        		resp.getWriter().print(",");
-        		resp.getWriter().print(Driver.getNewStars());
-        		resp.getWriter().print(",");
-        		resp.getWriter().print(Driver.getNewSystems());
         		resp.getWriter().print(",");
         		resp.getWriter().print(Driver.getSystemAttributeUpdates());
                 resp.getWriter().print(",");
@@ -91,13 +98,11 @@ public class OECMain extends HttpServlet
                 resp.getWriter().print(",");
                 resp.getWriter().print(Driver.getStarAttributeConflicts());
                 resp.getWriter().print(",");
-                resp.getWriter().print(Driver.getPlanetAttributeUpdates());
+                resp.getWriter().print(Driver.getPlanetAttributeConflicts());
         		resp.getWriter().print("]");
         		resp.getWriter().flush();
     		}
     		resp.getWriter().close();
-    		
-    		SendPullRequest.createPullRequest("test", "Test");
     		
     		// Calling from Driver to get all the new updated celestial objects
         	// Doing the initial merge and setting up local repos
@@ -125,21 +130,32 @@ public class OECMain extends HttpServlet
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
     	if (req.getRequestURI().equals("/upload")){		
-            //get input from the user
+    		// The data from the key
+    		String data = req.getParameter("result");
+    		Driver.distributeData(data);
+    		resp.getWriter().print("Distribution Completed");
+    		resp.getWriter().flush();
+    		Driver.executeMerge();
+    		resp.getWriter().print("Merge Completed");
+    		resp.getWriter().flush();
     		
-    		/*
-            Driver.setNewSystems(json[0]);
-            Driver.setNewStars(json[1]);
-            Driver.setNewPlanets(json[2]);
-            Driver.setSystemtAttributes(json[3]);
-            Driver.setStarAttributes(json[4]);
-            Driver.setPlanetAttributes(json[5]);
-            */
-            
-            //Now execute merge
-            Driver.executeMerge();
-    		
+    		if(Driver.commitPushPullRequest(key)){
+        		resp.getWriter().print("Pull Request Completed");
+        		resp.getWriter().flush();
+    		}
+    		else{
+    			resp.getWriter().println("Pull went wrong");
+    			resp.getWriter().flush();
+    		}
+    	}
+    	else if (req.getRequestURI().equals("/setkey")){
+    		// The key from the github upload
+    		String key = req.getParameter("key");
+    		resp.getWriter().print("success");
+    		resp.getWriter().flush();
     		resp.getWriter().close();
+    		System.out.println("The key is" + key);
+    		this.key = key;
     	}
     	else{
     		super.doPost(req, resp);

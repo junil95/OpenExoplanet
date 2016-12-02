@@ -100,6 +100,13 @@ public class UpdateStorage {
         systemUpdates = new ArrayList<>();
         starUpdates = new ArrayList<>();
         planetUpdates = new ArrayList<>();
+        newSystemConflicts = new ArrayList<>();
+        newStarConflicts = new ArrayList<>();
+        newPlanetConflicts = new ArrayList<>();
+        syPropConflicts = new ArrayList<>();
+        stPropConflicts = new ArrayList<>();
+        plPropConflicts = new ArrayList<>();
+        
     }
 
     /**

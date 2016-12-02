@@ -1,9 +1,5 @@
 package com.team23.UpdateTools;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.UUID;
-
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.CheckoutCommand;
 import org.eclipse.jgit.api.CreateBranchCommand;
@@ -16,6 +12,9 @@ import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.transport.RefSpec;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
+import java.io.File;
+import java.io.IOException;
+import java.util.UUID;
 
 /**
  * Created by dhrumil on 26/11/16.
@@ -110,7 +109,7 @@ public class CreateOecClone {
    * @param token
    * @param name
    */
-  public static void pushChanges(String token, String name) {
+  public static void pushChanges(String token, String name) throws GitAPIException{
     try {
       File f = new File(oecClonePath);
       Repository repo = new FileRepositoryBuilder().readEnvironment().findGitDir(f).build();
@@ -120,13 +119,7 @@ public class CreateOecClone {
       pushCommand.setRemote("origin");
       pushCommand.setRefSpecs(new RefSpec(name));
       pushCommand.call();
-    } catch (InvalidRemoteException e) {
-      e.printStackTrace();
     } catch (IOException e) {
-      e.printStackTrace();
-    } catch (TransportException e) {
-      e.printStackTrace();
-    } catch (GitAPIException e) {
       e.printStackTrace();
     }
   }

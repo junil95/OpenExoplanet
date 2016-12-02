@@ -1,8 +1,7 @@
-
 // Global var for all system objs
 var systemObjs = [];
 
-function SystemObject(name, child, type){
+function SystemObject(name, child, type) {
     this.name = name;
     this.propAmount = 0;
     this.child = child || null;
@@ -25,163 +24,159 @@ function SystemObject(name, child, type){
     this.checked = false;
 }
 
-SystemObject.prototype.setCheck = function(index, checked){
-  // Sets whether the value is to be chcked or not
-  var curr = this;
-  if(index === 1){
-    curr = this.child;
-  }
-  else if(index === 2){
-    curr = this.child.child;
-  }
-  curr.checked = checked;
+SystemObject.prototype.setCheck = function(index, checked) {
+    // Sets whether the value is to be chcked or not
+    var curr = this;
+    if (index === 1) {
+        curr = this.child;
+    } else if (index === 2) {
+        curr = this.child.child;
+    }
+    curr.checked = checked;
 }
 
 SystemObject.prototype.addRow = function() {
-  var i = 0;
-  for(i; i < 5; i++){
-    this.info[i].push('N/A');
-  }
-  this.propAmount += 1;
+    var i = 0;
+    for (i; i < 5; i++) {
+        this.info[i].push('N/A');
+    }
+    this.propAmount += 1;
 };
 
 SystemObject.prototype.getChild = function(indent) {
-  // Setting a temp var for how to go down in
-  var curr = this;
-  var i = 0;
-  while(i < indent && curr != null){
-    curr = curr.child;
-    i++;
-  }
-  return curr;
+    // Setting a temp var for how to go down in
+    var curr = this;
+    var i = 0;
+    while (i < indent && curr != null) {
+        curr = curr.child;
+        i++;
+    }
+    return curr;
 };
 
-SystemObject.prototype.addAttribute = function(column_num, column_name, column_value){
-  //console.log(column_name + "   " + this.type);
-  //console.log(this.info[0]);
-  var rowNum = this.info[0].indexOf(column_name);
-  // If it doesn't exist
-  if(rowNum === -1){
-    this.addRow();
-    this.info[0][this.propAmount] = column_name;
-    this.info[column_num][this.propAmount] = column_value
-  }
-  else{
-    this.info[column_num][rowNum] = column_value;
-  }
+SystemObject.prototype.addAttribute = function(column_num, column_name, column_value) {
+    //console.log(column_name + "   " + this.type);
+    //console.log(this.info[0]);
+    var rowNum = this.info[0].indexOf(column_name);
+    // If it doesn't exist
+    if (rowNum === -1) {
+        this.addRow();
+        this.info[0][this.propAmount] = column_name;
+        this.info[column_num][this.propAmount] = column_value
+    } else {
+        this.info[column_num][rowNum] = column_value;
+    }
 }
 
-SystemObject.prototype.fill = function(){
-  var i = 0;
-  for(i; i < 5; i++){
-    var g = 1;
-    for(g; g < propAmount + 1; g++){
-        this.info[g][i] = 'N/A';
+SystemObject.prototype.fill = function() {
+    var i = 0;
+    for (i; i < 5; i++) {
+        var g = 1;
+        for (g; g < propAmount + 1; g++) {
+            this.info[g][i] = 'N/A';
+        }
     }
-  }
 }
 
-SystemObject.prototype.finalize = function(){
-  // Returns the row nums if there are conflicts
-  var i = 1;
-  var conflicts = [];
-  for(i; i < this.info[0].length; i++){
-    if(this.info[2][i] === "N/A" && this.info[3][i] != "N/A"){
-      this.info[4][i] = this.info[3][i];
+SystemObject.prototype.finalize = function() {
+    // Returns the row nums if there are conflicts
+    var i = 1;
+    var conflicts = [];
+    for (i; i < this.info[0].length; i++) {
+        if (this.info[2][i] === "N/A" && this.info[3][i] != "N/A") {
+            this.info[4][i] = this.info[3][i];
+        } else if (this.info[3][i] === "N/A" && this.info[2][i] != "N/A") {
+            this.info[4][i] = this.info[2][i];
+        } else if (this.info[2][i] === "N/A" && this.info[3][i] === "N/A") {
+            this.info[4][i] = this.info[1][i];
+        } else if (this.info[2][i] === this.info[3][i]) {
+            this.info[4][i] = this.info[2][i];
+        } else if (!isNaN(this.info[2][i]) && !isNaN(this.info[3][i]) && parseFloat(this.info[2][i]) === parseFloat(this.info[3][i])) {
+            this.info[4][i] = this.info[2][i];
+        } else {
+            conflicts.push(i);
+            this.info[4][i] = "CONFLICT OCCURS";
+        }
     }
-    else if(this.info[3][i] === "N/A" && this.info[2][i] != "N/A"){
-      this.info[4][i] = this.info[2][i];
-    }
-    else if(this.info[2][i] === "N/A" && this.info[3][i] === "N/A" ){
-      this.info[4][i] = this.info[1][i];
-    }
-    else if(this.info[2][i] === this.info[3][i]){
-      this.info[4][i] = this.info[2][i];
-    }
-    else{
-      conflicts.push(i);
-      this.info[4][i] = "CONFLICT OCCURS";
-    }
-  }
-  return conflicts;
+    return conflicts;
 }
 
-SystemObject.prototype.setSystemType = function(number){
-  var list =["newSystem", "newStar", "newPlanet", "newConflictingSystem", "newConflictingStar", "newConflictingPlanet", "existingSystem", "existingStar", "existingPlanet", "existingConflictingSystem", "existingConflictingStar", "existingConflictingPlanet"];
-  this.listType = list[number];
+SystemObject.prototype.setSystemType = function(number) {
+    var list = ["newSystem", "newStar", "newPlanet", "newConflictingSystem", "newConflictingStar", "newConflictingPlanet", "existingSystem", "existingStar", "existingPlanet", "existingConflictingSystem", "existingConflictingStar", "existingConflictingPlanet"];
+    this.listType = list[number];
 
-  if(this.child != null){
-    this.child.setSystemType(number);
-  }
+    if (this.child != null) {
+        this.child.setSystemType(number);
+    }
 }
 
 
-function selectRowType(rowName){
-  if(rowName === "All"){
-      setNewRows(systemObjs);
-  }
-  else{
-    setNewRows(seperateFunctions(rowName));
-  }
+function selectRowType(rowName) {
+    if (rowName === "All") {
+        setNewRows(systemObjs);
+    } else {
+        setNewRows(seperateFunctions(rowName));
+    }
 }
 
 // Dispalys the correct row for the table to permute
-function selectRow(systemObjNum, childNum){
-  // Saves the current row
-  if($(".selected > label").length){
-    var rowNum = $(".selected").prop("id").substring(3);
-    var i = 1;
-    var index = rowNum.split("-");
+function selectRow(systemObjNum, childNum) {
+    // Saves the current row
+    if ($(".selected > label").length) {
+        var rowNum = $(".selected").prop("id").substring(3);
+        var i = 1;
+        var index = rowNum.split("-");
 
-    var last = systemObjs[parseInt(index[0])].getChild(parseInt(index[1]));
-    for(i; i < last.propAmount; i++){
+        var last = systemObjs[parseInt(index[0])].getChild(parseInt(index[1]));
+        for (i; i < last.propAmount; i++) {
 
-      if(last.info[0][i].substring(3) != "name"){
-        last.info[4][i] = $("#info" + i).val();
-      }
+            if (last.info[0][i].substring(3) != "name") {
+                last.info[4][i] = $("#info" + i).val();
+            }
+        }
     }
-  }
 
-  // Changes the selected row class
-  $('.selected').removeClass('selected');
-  $('#row' + systemObjNum + '-' + childNum).addClass('selected');
+    // Changes the selected row class
+    $('.selected').removeClass('selected');
+    $('#row' + systemObjNum + '-' + childNum).addClass('selected');
 
-  //Clears the html
-  var systemObj = systemObjs[systemObjNum].getChild(childNum);
-  $('#current-title').text('Changes for: ' + systemObj.name);
+    //Clears the html
+    var systemObj = systemObjs[systemObjNum].getChild(childNum);
+    $('#current-title').text('Changes for: ' + systemObj.name);
 
-  $("#info-table").html("");
-  $("#info-table").append("<tr><th>Property</th><th>Current</th><th>Nasa</th><th>Exoplanet</th><th>Result</th></tr>");
+    $("#info-table").html("");
+    $("#info-table").append("<tr><th>Property</th><th>Current</th><th>Nasa</th><th>Exoplanet</th><th>Result</th></tr>");
 
-  var i = 1
-  // Looping with + 1
-  for(i; i < systemObj.info[0].length; i++){
-    if(systemObj.info[0][i].indexOf('name') === -1){
-      $("#info-table").append(generateRowHTML(systemObj.info[0][i], systemObj.info[1][i], systemObj.info[2][i], systemObj.info[3][i], systemObj.info[4][i], i));
+    var i = 1
+        // Looping with + 1
+    for (i; i < systemObj.info[0].length; i++) {
+        if (systemObj.info[0][i].indexOf('name') === -1) {
+            $("#info-table").append(generateRowHTML(systemObj.info[0][i], systemObj.info[1][i], systemObj.info[2][i], systemObj.info[3][i], systemObj.info[4][i], i));
+        }
     }
-  }
 }
 
-function generateRowHTML(info0, info1, info2, info3, info4, num){
-  var result = '';
+function generateRowHTML(info0, info1, info2, info3, info4, num) {
+    var result = '';
 
-  result += '<tr>' +
-  '<td>' + info0 +  '</td>' +
-  '<td>' + info1 +  '</td>' +
-  '<td>' + info2 +  '</td>' +
-  '<td>' + info3 +  '</td>' +
-  '<td>' +
-  '<div class="form-group">' +
-  '<input type="text" id="info' + num + '"value="' + info4 + '" placeholder="Wanted Value" class="form-control">' +
-  '</div>' +
-  '</td>' +
-  '</tr>';
-  return result;
+    result += '<tr>' +
+        '<td>' + info0 + '</td>' +
+        '<td>' + info1 + '</td>' +
+        '<td>' + info2 + '</td>' +
+        '<td>' + info3 + '</td>' +
+        '<td>' +
+        '<div class="form-group">' +
+        '<input type="text" id="info' + num + '"value="' + info4 + '" placeholder="Wanted Value" class="form-control">' +
+        '</div>' +
+        '</td>' +
+        '</tr>';
+    return result;
 }
 
-function update(){
-  // Getting the string data from the server
+function update() {
+    // Getting the string data from the server
 
+    });
   /*
   $("#update-button").text("UPDATING");
   $("#update-button").addClass("pulse");
@@ -192,6 +187,7 @@ function update(){
   request();
   */
 
+    '"sy_declination":"51.0411666736","st_spectral_type":"F7","st_name":"mu Ara","st_metallicity":"0.0",'+
 
   systemObjs = [];
   populate('[[[{"sy_distance":"530.0","sy_name":"mu Arae","sy_right_ascension":"246.692000015",'+
@@ -209,30 +205,28 @@ function update(){
 
 }
 
-function request(){
-  $.get("https://pacific-shelf-92985.herokuapp.com/request", function(data) {
-    console.log(data);
-    if(data === "Still updating..."){
-        setTimeout(function(){
-          request();
-      }, 5000);
-    }
-    else if(data === "Took too long.."){
-      $("#update-button").text("Update");
-      $("#update-button").removeClass("pulse");
-      $("#update-button").css("color", "");
-    }
-    else{
-      // Restting systemObjs
-      systemObjs = [];
-      populate(data);
-      setNewRows(systemObjs);
+function request() {
+    $.get("https://pacific-shelf-92985.herokuapp.com/request", function(data) {
+        console.log(data);
+        if (data === "Still updating...") {
+            setTimeout(function() {
+                request();
+            }, 5000);
+        } else if (data === "Took too long..") {
+            $("#update-button").text("Update");
+            $("#update-button").removeClass("pulse");
+            $("#update-button").css("color", "");
+        } else {
+            // Restting systemObjs
+            systemObjs = [];
+            populate(data);
+            setNewRows(systemObjs);
 
-      $("#update-button").text("Update");
-      $("#update-button").removeClass("pulse");
-      $("#update-button").css("color", "");
-    }
-  });
+            $("#update-button").text("Update");
+            $("#update-button").removeClass("pulse");
+            $("#update-button").css("color", "");
+        }
+    });
 }
 
 function setNewRows(wantedSystemObjs){
@@ -268,102 +262,97 @@ function setNewRows(wantedSystemObjs){
       childCounter++;
       obj = obj.child;
     }
-  }
 }
 
-function checkObj(obj){
+function checkObj(obj) {
     var index = $(obj).attr('id').substring(8).split('-');
     systemObjs[index[0]].setCheck(index[1], $(obj).is(":checked"));
 
     console.log(!$(obj).is(":checked"));
 }
 
-function clearRows(){
-  $("#changed-list").empty();
-  $("#current-title").text("");
-  $("#info-table").empty();
+function clearRows() {
+    $("#changed-list").empty();
+    $("#current-title").text("");
+    $("#info-table").empty();
 }
 
-function populate(data){
-  total = JSON.parse(data);
+function populate(data) {
+    total = JSON.parse(data);
 
-  // List type if based on which list was passed e.g. newPLanets, newSystems etc
-  for(var listTypeIndex in total){
-    var dataList = total[listTypeIndex];
-    var listTypeName = "newSystem";
+    // List type if based on which list was passed e.g. newPLanets, newSystems etc
+    for (var listTypeIndex in total) {
+        var dataList = total[listTypeIndex];
+        var listTypeName = "newSystem";
 
-    var system;
-    // Looping through the system changes
-    for(var system_key in dataList){
-      // Setting the system
-      system = dataList[system_key];
+        var system;
+        // Looping through the system changes
+        for (var system_key in dataList) {
+            // Setting the system
+            system = dataList[system_key];
 
-      if(system.length != 0){
-        // Some initial Vars to help us keep track
-        var column = 1;
+            if (system.length != 0) {
+                // Some initial Vars to help us keep track
+                var column = 1;
 
-        var sy_name = system[0]["sy_name"];
-        var st_name = system[0]["st_name"];
-        var pl_name = system[0]["pl_name"];
+                var sy_name = system[0]["sy_name"];
+                var st_name = system[0]["st_name"];
+                var pl_name = system[0]["pl_name"];
 
-        // The new system object created
-        var created = new SystemObject(sy_name, null, "system");
-        if(st_name){
-           created.child = new SystemObject(st_name, null, "star")
-           if(pl_name){
-             created.child.child = new SystemObject(pl_name, null, "planet");
-           }
+                // The new system object created
+                var created = new SystemObject(sy_name, null, "system");
+                if (st_name) {
+                    created.child = new SystemObject(st_name, null, "star")
+                    if (pl_name) {
+                        created.child.child = new SystemObject(pl_name, null, "planet");
+                    }
+                }
+
+                created.setSystemType(listTypeIndex);
+
+                // Looping through each source in the system
+                for (var source_key in system) {
+                    // Which column they belong to
+                    var source = system[source_key];
+                    var source_key = source["src"];
+                    if (source_key === "") {
+                        column = 1;
+                    } else if (source_key === "nasa") {
+                        column = 2;
+                    } else if (source_key === "eu") {
+                        column = 3;
+                    }
+
+                    // Looping through the keys
+                    for (var att_key in source) {
+                        // After seperating the planet/system/star from the tag
+                        var column_name = att_key.substring(0);
+
+                        // Looping through which key it is
+                        if (att_key.includes("sy_")) {
+                            created.addAttribute(column, column_name, source[att_key]);
+                        } else if (att_key.includes("st_")) {
+                            created.child.addAttribute(column, column_name, source[att_key]);
+                        } else if (att_key.includes("pl_")) {
+                            created.child.child.addAttribute(column, column_name, source[att_key]);
+                        }
+                    }
+                }
+                systemObjs.push(created);
+            }
         }
-
-        created.setSystemType(listTypeIndex);
-
-        // Looping through each source in the system
-        for(var source_key in system){
-          // Which column they belong to
-          var source = system[source_key];
-          var source_key = source["src"];
-          if (source_key === ""){
-            column = 1;
-          }
-          else if(source_key === "nasa"){
-            column = 2;
-          }
-          else if(source_key === "eu"){
-            column = 3;
-          }
-
-          // Looping through the keys
-          for(var att_key in source){
-            // After seperating the planet/system/star from the tag
-            var column_name = att_key.substring(0);
-
-            // Looping through which key it is
-            if(att_key.includes("sy_")){
-              created.addAttribute(column, column_name, source[att_key]);
-            }
-            else if(att_key.includes("st_")){
-              created.child.addAttribute(column, column_name, source[att_key]);
-            }
-            else if(att_key.includes("pl_")){
-              created.child.child.addAttribute(column, column_name, source[att_key]);
-            }
-          }
-        }
-        systemObjs.push(created);
-      }
     }
-  }
 }
 
-function seperateFunctions(listType){
-  var result = [];
-  for(systemObjIndex in systemObjs){
-    var curr = systemObjs[systemObjIndex];
-    if(curr.listType === listType){
-      result.push(curr);
-    }
-  };
-  return result;
+function seperateFunctions(listType) {
+    var result = [];
+    for (systemObjIndex in systemObjs) {
+        var curr = systemObjs[systemObjIndex];
+        if (curr.listType === listType) {
+            result.push(curr);
+        }
+    };
+    return result;
 }
 
 function removeChecked(){
@@ -379,26 +368,34 @@ function removeChecked(){
 function commitChanges(){
   var key = document.getElementById("commit-message").value;
 
-  var result = []
-  result.push(exportAsJSON(seperateFunctions("newSystem")));
-  result.push(exportAsJSON(seperateFunctions("newStar")));
-  result.push(exportAsJSON(seperateFunctions("newPlanet")));
-  result.push(exportAsJSON(seperateFunctions("newConflictingSystem")));
-  result.push(exportAsJSON(seperateFunctions("newConflictingStar")));
-  result.push(exportAsJSON(seperateFunctions("newConflictingPlanet")));
-  result.push(exportAsJSON(seperateFunctions("existingSystem")));
-  result.push(exportAsJSON(seperateFunctions("existingStar")));
-  result.push(exportAsJSON(seperateFunctions("existingPlanet")));
-  result.push(exportAsJSON(seperateFunctions("existingConflictingSystem")));
-  result.push(exportAsJSON(seperateFunctions("existingConflictingStar")));
-  result.push(exportAsJSON(seperateFunctions("existingConflictingPlanet")));
+    var result = []
+    result.push(exportAsJSON(seperateFunctions("newSystem")));
+    result.push(exportAsJSON(seperateFunctions("newStar")));
+    result.push(exportAsJSON(seperateFunctions("newPlanet")));
+    result.push(exportAsJSON(seperateFunctions("newConflictingSystem")));
+    result.push(exportAsJSON(seperateFunctions("newConflictingStar")));
+    result.push(exportAsJSON(seperateFunctions("newConflictingPlanet")));
+    result.push(exportAsJSON(seperateFunctions("existingSystem")));
+    result.push(exportAsJSON(seperateFunctions("existingStar")));
+    result.push(exportAsJSON(seperateFunctions("existingPlanet")));
+    result.push(exportAsJSON(seperateFunctions("existingConflictingSystem")));
+    result.push(exportAsJSON(seperateFunctions("existingConflictingStar")));
+    result.push(exportAsJSON(seperateFunctions("existingConflictingPlanet")));
 
-  // Sending it as a post
-  $.post("https://pacific-shelf-92985.herokuapp.com/setkey", {key: key}, function(text) {
-    if(text === "success"){
-      $.post("https://pacific-shelf-92985.herokuapp.com/upload", {result: JSON.stringify(result)}, function(data) {
-        if(data === "error"){
-            window.alert("Your Pull Request cannot be completed at this time");
+    // Sending it as a post
+    $.post("https://pacific-shelf-92985.herokuapp.com/setkey", {
+        key: key
+    }, function(text) {
+        if (text === "success") {
+            $.post("https://pacific-shelf-92985.herokuapp.com/upload", {
+                result: JSON.stringify(result)
+            }, function(data) {
+                if (data === "error") {
+                    window.alert("Your Pull Request cannot be completed at this time");
+                }
+            });
+        } else {
+            window.alert("Your Github key is invalid");
         }
         else{
           removeChecked();
@@ -413,47 +410,46 @@ function commitChanges(){
   });
 }
 
-function exportAsJSON(systemObjList){
-  var total = [];
+function exportAsJSON(systemObjList) {
+    var total = [];
 
-  // Exporting it as a JSON
-  var i = 0;
-  for(i; i < systemObjList.length; i++){
-    // looping through and making a temp dict
-    var temp = {};
-    var curr = systemObjList[i];
-    while(curr != null){
-      // If the box is checked
-      if(curr.checked === true){
-        var k = 1;
-        for(k; k < curr.info[0].length; k++){
-          temp[curr.info[0][k]] = curr.info[4][k];
+    // Exporting it as a JSON
+    var i = 0;
+    for (i; i < systemObjList.length; i++) {
+        // looping through and making a temp dict
+        var temp = {};
+        var curr = systemObjList[i];
+        while (curr != null) {
+            // If the box is checked
+            if (curr.checked === true) {
+                var k = 1;
+                for (k; k < curr.info[0].length; k++) {
+                    temp[curr.info[0][k]] = curr.info[4][k];
+                }
+            }
+            curr = curr.child;
         }
-      }
-      curr = curr.child;
-    }
-    // Adding names
-    curr = systemObjList[i];
-    temp["sy_name"] = curr.info[4][curr.info[0].indexOf("sy_name")];
-    curr = curr.child;
-    temp["st_name"] = curr.info[4][curr.info[0].indexOf("st_name")];
-    curr = curr.child;
-    temp["pl_name"] = curr.info[4][curr.info[0].indexOf("pl_name")];
+        // Adding names
+        curr = systemObjList[i];
+        temp["sy_name"] = curr.info[4][curr.info[0].indexOf("sy_name")];
+        curr = curr.child;
+        temp["st_name"] = curr.info[4][curr.info[0].indexOf("st_name")];
+        curr = curr.child;
+        temp["pl_name"] = curr.info[4][curr.info[0].indexOf("pl_name")];
 
-    // Pushing the dict past
-    total.push(temp);
-  }
-  return total;
+        // Pushing the dict past
+        total.push(temp);
+    }
+    return total;
 }
 
-function checkAll(){
-  if($( "#checkboxall" ).prop( "checked" )){
-    // Unchecking all boxes
-    $( ".custom-checkbox" ).prop( "checked", true);
-  }
-  else{
-    $( ".custom-checkbox" ).prop( "checked", false);
-  }
+function checkAll() {
+    if ($("#checkboxall").prop("checked")) {
+        // Unchecking all boxes
+        $(".custom-checkbox").prop("checked", true);
+    } else {
+        $(".custom-checkbox").prop("checked", false);
+    }
 }
 
 // Helper func
@@ -463,17 +459,17 @@ function createArray(length) {
 
     if (arguments.length > 1) {
         var args = Array.prototype.slice.call(arguments, 1);
-        while(i--) arr[length-1 - i] = createArray.apply(this, args);
+        while (i--) arr[length - 1 - i] = createArray.apply(this, args);
     }
 
     return arr;
 }
 
 // Helper func
-function findSystemObj(wanted, wantedType){
+function findSystemObj(wanted, wantedType) {
     for (x in systemObjs) {
-      if(x.name === wanted && x.type == wantedType){
-        return x;
-      }
+        if (x.name === wanted && x.type == wantedType) {
+            return x;
+        }
     }
 }

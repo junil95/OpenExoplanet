@@ -21,9 +21,6 @@ pl_inclination,inclination,pl_orbincl
 pl_mass,mass,pl_massj
 pl_mass_error_min,mass_error_min,pl_massjerr2
 pl_mass_error_max,mass_error_max,pl_massjerr1
-pl_mass_other,mass_sini,pl_msinij
-pl_mass_other_error_min,mass_sini_error_min,pl_msinijerr2
-pl_mass_other_error_max,mass_sini_error_max,pl_msinijerr1
 pl_radius_error_minpl_radius_error_min,radius_error_min,pl_radjerr2
 pl_radius_error_max,radius_error_max,pl_radjerr1
 pl_radius,radius,pl_radj

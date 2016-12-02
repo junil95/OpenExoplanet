@@ -24,39 +24,37 @@ function SystemObject(name, child, type) {
     this.checked = false;
 }
 
-SystemObject.prototype.totallyEmpty = function(){
-  var curr = this;
+SystemObject.prototype.totallyEmpty = function() {
+    var curr = this;
 
-  while(curr != null){
-    if(curr.propAmount > 2 === true){
-      return false;
+    while (curr != null) {
+        if (curr.propAmount > 2 === true) {
+            return false;
+        }
+        curr = curr.child;
     }
-    curr = curr.child;
-  }
-  return true;
+    return true;
 }
 
-SystemObject.prototype.resetInfo = function(){
-  this.propAmount = 0;
-  this.info = createArray(5, 1);
+SystemObject.prototype.resetInfo = function() {
+    this.propAmount = 0;
+    this.info = createArray(5, 1);
 
-  this.info[0][0] = 'Property';
-  this.info[1][0] = 'Current';
-  this.info[2][0] = 'Nasa';
-  this.info[3][0] = 'EU';
-  this.info[4][0] = 'Result';
+    this.info[0][0] = 'Property';
+    this.info[1][0] = 'Current';
+    this.info[2][0] = 'Nasa';
+    this.info[3][0] = 'EU';
+    this.info[4][0] = 'Result';
 
-  var type = this.type;
+    var type = this.type;
 
-  if(type === 'system'){
-    this.addAttribute(1, "sy_name", this.name);
-  }
-  else if(type === 'star'){
-    this.addAttribute(1, "st_name", this.name);
-  }
-  else if(type === 'planet'){
-    this.addAttribute(1, "pl_name", this.name);
-  }
+    if (type === 'system') {
+        this.addAttribute(1, "sy_name", this.name);
+    } else if (type === 'star') {
+        this.addAttribute(1, "st_name", this.name);
+    } else if (type === 'planet') {
+        this.addAttribute(1, "pl_name", this.name);
+    }
 }
 
 SystemObject.prototype.setCheck = function(index, checked) {
@@ -65,8 +63,7 @@ SystemObject.prototype.setCheck = function(index, checked) {
         this.child.checked = checked;
     } else if (index == 2) {
         this.child.child.checked = checked;
-    }
-    else{
+    } else {
         this.checked = checked;
     }
 }
@@ -137,6 +134,20 @@ SystemObject.prototype.finalize = function() {
     return conflicts;
 }
 
+SystemObject.prototype.hasConflict = function() {
+    return this.info[4].indexOf("CONFLICT OCCURS") != -1;
+}
+
+SystemObject.prototype.setConflicts = function() {
+    var curr = this;
+    while (curr != null) {
+        if (curr.hasConflict()) {
+            curr.conflict = true;
+        }
+        curr = curr.child;
+    }
+}
+
 SystemObject.prototype.setSystemType = function(number) {
     var list = ["newSystem", "newStar", "newPlanet", "newConflictingSystem", "newConflictingStar", "newConflictingPlanet", "existingSystem", "existingStar", "existingPlanet", "existingConflictingSystem", "existingConflictingStar", "existingConflictingPlanet"];
     this.listType = list[number];
@@ -153,22 +164,6 @@ function selectRowType(rowName) {
     } else {
         setNewRows(seperateFunctions(rowName));
     }
-}
-
-function saveCurrentRow(){
-  if ($(".selected > label").length) {
-      var rowNum = $(".selected").prop("id").substring(3);
-      var i = 1;
-      var index = rowNum.split("-");
-
-      var last = systemObjs[parseInt(index[0])].getChild(parseInt(index[1]));
-      for (i; i < last.propAmount; i++) {
-
-          if (last.info[0][i].substring(3) != "name") {
-              last.info[4][i] = $("#info" + i).val();
-          }
-      }
-  }
 }
 
 // Dispalys the correct row for the table to permute
@@ -229,28 +224,30 @@ function update() {
     // Getting the string data from the server
 
     /*
-  $("#update-button").text("UPDATING");
-  $("#update-button").addClass("pulse");
-  $("#update-button").css("color", "#1ABC9C");
-  $.get("https://pacific-shelf-92985.herokuapp.com/update", function(data) {
-    console.log(data);
-  });
-  request();
-  */
+    $("#update-button").text("UPDATING");
+    $("#update-button").addClass("pulse");
+    $("#update-button").css("color", "#1ABC9C");
+    $.get("https://pacific-shelf-92985.herokuapp.com/update", function(data) {
+        console.log(data);
+    });
+    request();
+    */
+
 
   systemObjs = [];
-  populate('[[[{"sy_distance":"530.0","sy_name":"mu Arae","sy_right_ascension":"246.692000015",'+
-  '"sy_declination":"51.0411666736","st_spectral_type":"F7","st_name":"mu Ara","st_metallicity":"0.0",'+
-  '"st_magV":"13.18","st_temperature":"6280.0","st_radius":"1.341","st_mass":"1.19","pl_inclination":"83.75",'+
-  '"pl_mass":"0.805","pl_eccentricity":"0.0","pl_period":"2.1746742","pl_impact_parameter":"0.608","pl_radius"'+
-  ':"1.461","pl_name":"mu Ara 99","pl_semi_major_axis":"0.0348"}],[{"sy_name":"11 Com","sy_declination":"+42d36m15.0s",'+
+  populate('[[[{"sy_name":"11 Com","sy_declination":"+42d36m15.0s",'+
   '"sy_distance":"855.00","sy_right_ascension":"19h17m04.50s","st_magJ_min":"0.025","st_magK_max":"0.028","st_temperature":'+
   '"5309.00","st_magJ_max":"0.025","st_mass":"0.90","st_magK_min":"0.028","st_name":"11 com","st_metallicity":"[M/H]",'+
   '"st_magH_min":"0.020","st_age":"9.700","st_magH_max":"0.020","st_radius":"0.79","st_magJ":"13.814","st_magK":"13.347"'+
   ',"st_magH":"13.436","pl_periastron":"330.0000","pl_temperature":"455","pl_name":"alright","pl_inclination":"87.400",'+
   '"pl_mass":"0.37600","pl_eccentricity":"0.014600","pl_period":"57.01100000","pl_temperature_min":"-13","pl_temperature_max"'+
-  ':"14","pl_semi_major_axis":"0.279900"}]],[],[],[],[],[],[],[],[],[],[],[]]');
+  ':"14","pl_semi_major_axis":"0.279900"}]],[],[],[[{"sy_distance":"530.0","sy_name":"mu Arae","sy_right_ascension":"246.692000015",'+
+'"sy_declination":"51.0411666736","st_spectral_type":"F7","st_name":"mu Ara","st_metallicity":"0.0",'+
+'"st_magV":"13.18","st_temperature":"6280.0","st_radius":"1.341","st_mass":"CONFLICT OCCURS","pl_inclination":"83.75",'+
+'"pl_mass":"0.805","pl_eccentricity":"0.0","pl_period":"2.1746742","pl_impact_parameter":"CONFLICT OCCURS","pl_radius"'+
+':"1.461","pl_name":"mu Ara 99","pl_semi_major_axis":"0.0348"}]],[],[],[],[],[],[],[],[]]');
   setNewRows(systemObjs);
+
 }
 
 function request() {
@@ -276,40 +273,40 @@ function request() {
     });
 }
 
-function setNewRows(wantedSystemObjs){
-  clearRows();
-  var i = 0;
-  for(obj in wantedSystemObjs){
-    i = systemObjs.indexOf(wantedSystemObjs[obj]);
-    // Pointing the obj correctly
-    obj = wantedSystemObjs[obj];
-    // Counter to do children
-    var childCounter = 0;
-    var lastId = 'changed-list';
-    var line = '';
-    // Loopign through to see if it has children
-    while(obj != null){
-      line = '<li class="child-' + childCounter + ' row changed-row" id="row' + i + '-' + childCounter + '" onclick="selectRow(' + i + ',' + childCounter + ')">' +
-             '<label class="checkbox col-xs-offset-1 col-xs-4" for="checkbox' + i + '-' + childCounter + '">' +
-             '<input type="checkbox" onchange="checkObj(this)" value="" id="checkbox' + i + '-' + childCounter + '"data-toggle="checkbox">' +
-             obj.name +
-             '</label></li>';
-      // Appending to the last Id
-      $('#changed-list').append(line);
-      // Indentding to get children
-      lastId = 'row' + i + '-' + childCounter;
-      // Marking conflicts
-      if(obj.checked){
-        $('#' + 'checkbox' + i + '-' + childCounter).attr('checked', true);
-      }
-      var conflicts = obj.finalize();
-      if(conflicts.length > 0){
-        $('#' + lastId).addClass("conflict")
-      }
-      childCounter++;
-      obj = obj.child;
+function setNewRows(wantedSystemObjs) {
+    clearRows();
+    var i = 0;
+    for (obj in wantedSystemObjs) {
+        i = systemObjs.indexOf(wantedSystemObjs[obj]);
+        // Pointing the obj correctly
+        obj = wantedSystemObjs[obj];
+        // Counter to do children
+        var childCounter = 0;
+        var lastId = 'changed-list';
+        var line = '';
+        // Loopign through to see if it has children
+        while (obj != null) {
+            line = '<li class="child-' + childCounter + ' row changed-row" id="row' + i + '-' + childCounter + '" onclick="selectRow(' + i + ',' + childCounter + ')">' +
+                '<label class="checkbox-label col-xs-offset-1 col-xs-4" for="checkbox' + i + '-' + childCounter + '">' +
+                '<input type="checkbox" onchange="checkObj(this)" value="" id="checkbox' + i + '-' + childCounter + '"data-toggle="checkbox">' +
+                obj.name +
+                '</label></li>';
+            // Appending to the last Id
+            $('#changed-list').append(line);
+            // Indentding to get children
+            lastId = 'row' + i + '-' + childCounter;
+            // Marking conflicts
+            if (obj.checked) {
+                $('#' + 'checkbox' + i + '-' + childCounter).attr('checked', true);
+            }
+            var conflicts = obj.finalize();
+            if (conflicts.length > 0) {
+                $('#' + lastId).addClass("conflict")
+            }
+            childCounter++;
+            obj = obj.child;
+        }
     }
-  }
 }
 
 function checkObj(obj) {
@@ -401,29 +398,38 @@ function seperateFunctions(listType) {
     return result;
 }
 
-function removeChecked(){
+function removeChecked() {
     var i = 0;
-    for(i; i < systemObjs.length; i++){
-      var curr = systemObjs[i];
+    for (i; i < systemObjs.length; i++) {
+        var curr = systemObjs[i];
 
-      while(curr != null){
-        if(curr.checked === true){
-          curr.resetInfo();
+        while (curr != null) {
+            if (curr.checked === true && curr.conflict === false) {
+                curr.resetInfo();
+            }
+            curr = curr.child;
         }
-        curr = curr.child;
-      }
     }
 
     var i = systemObjs.length
     while (i--) {
-        if(systemObjs[i].totallyEmpty()){
-          systemObjs.splice(i, 1);
+        if (systemObjs[i].totallyEmpty()) {
+            systemObjs.splice(i, 1);
         }
     }
 }
 
-function commitChanges(){
-  var key = document.getElementById("commit-message").value;
+function checkAllConflicts() {
+    for (var i in systemObjs) {
+        systemObjs[i].setConflicts();
+    }
+}
+
+function commitChanges() {
+    var key = document.getElementById("commit-message").value;
+
+    saveCurrentRow();
+    checkAllConflicts();
 
     var result = []
     result.push(exportAsJSON(seperateFunctions("newSystem")));
@@ -440,28 +446,29 @@ function commitChanges(){
     result.push(exportAsJSON(seperateFunctions("existingConflictingPlanet")));
 
     console.log(JSON.stringify(result));
-
     removeChecked();
     setNewRows(systemObjs);
 
     // Sending it as a post
-    $.post("https://pacific-shelf-92985.herokuapp.com/setkey", {key: key}, function(text) {
+    $.post("https://pacific-shelf-92985.herokuapp.com/setkey", {
+        key: key
+    }, function(text) {
         if (text === "success") {
-            $.post("https://pacific-shelf-92985.herokuapp.com/upload", {result: JSON.stringify(result)}, function(data) {
+            $.post("https://pacific-shelf-92985.herokuapp.com/upload", {
+                result: JSON.stringify(result)
+            }, function(data) {
                 if (data === "error") {
                     window.alert("Your Pull Request cannot be completed at this time");
-                }
-                else{
-                  removeChecked();
-                  setNewRows(systemObjs);
-                  window.alert("Your Pull Request has been successful");
+                } else {
+                    removeChecked();
+                    setNewRows(systemObjs);
+                    window.alert("Your Pull Request has been successful");
                 }
             });
-        }
-        else {
+        } else {
             window.alert("Your Github key is invalid");
         }
-      });
+    });
 }
 
 function exportAsJSON(systemObjList) {
@@ -470,44 +477,42 @@ function exportAsJSON(systemObjList) {
     // Exporting it as a JSON
     var i = 0;
     for (i; i < systemObjList.length; i++) {
-        console.log(systemObjList[i].checked === true || systemObjList[i].child.checked === true ||systemObjList[i].child.child.checked === true);
         if (systemObjList[i].checked === true || systemObjList[i].child.checked === true || systemObjList[i].child.child.checked === true) {
-        // looping through and making a temp dict
-        var temp = {};
-        var curr = systemObjList[i];
-        while (curr != null) {
-            // If the box is checked
-
-            console.log(curr.checked);
-            if (curr.checked === true) {
-                var k = 1;
-                for (k; k < curr.info[0].length; k++) {
-                    temp[curr.info[0][k]] = curr.info[4][k];
+            // looping through and making a temp dict
+            var temp = {};
+            var curr = systemObjList[i];
+            while (curr != null) {
+                // If the box is checked
+                if (curr.checked === true && curr.conflict === false) {
+                    var k = 1;
+                    for (k; k < curr.info[0].length; k++) {
+                        temp[curr.info[0][k]] = curr.info[4][k];
+                    }
                 }
+                curr = curr.child;
             }
+            // Adding names
+            curr = systemObjList[i];
+            temp["sy_name"] = curr.info[4][curr.info[0].indexOf("sy_name")];
             curr = curr.child;
-        }
-        // Adding names
-        curr = systemObjList[i];
-        temp["sy_name"] = curr.info[4][curr.info[0].indexOf("sy_name")];
-        curr = curr.child;
-        temp["st_name"] = curr.info[4][curr.info[0].indexOf("st_name")];
-        curr = curr.child;
-        temp["pl_name"] = curr.info[4][curr.info[0].indexOf("pl_name")];
+            temp["st_name"] = curr.info[4][curr.info[0].indexOf("st_name")];
+            curr = curr.child;
+            temp["pl_name"] = curr.info[4][curr.info[0].indexOf("pl_name")];
 
-        // Pushing the dict past
-        total.push(temp);
-      }
+            // Pushing the dict past
+            total.push(temp);
+        }
     }
     return total;
 }
 
 function checkAll() {
+  //$("#checkboxall").prop("disabled",true);
     if ($("#checkboxall").prop("checked")) {
         // Unchecking all boxes
-        $(".checkbox").children("input").prop("checked", true);
+        $(".checkbox-label").children("input").prop("checked", true);
     } else {
-        $(".checkbox").children("input").prop("checked", false);
+        $(".checkbox-label").children("input").prop("checked", false);
     }
 }
 

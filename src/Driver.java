@@ -582,19 +582,23 @@ public class Driver {
     return gson.toJson(convertToMap);
   }
   
-  public static String commitPushPullRequest(String token) {
+  public static boolean commitPushPullRequest(String token) {
     CreateOecClone.commitChanges();
-    String valid = "1";
+    boolean valid = true;
     try {
       CreateOecClone.pushChanges(token, CreateOecClone.getBranchName());
       SendPullRequest.createPullRequest(token, CreateOecClone.getBranchName());
     } catch (GitAPIException e) {
-      valid = "0";
+      valid = false;
     }
     return  valid;
   }
   
   public static void main(String[] args) {
+    initialSetupOrResetLocalCopies();
+    detectInitialUpdates();
+    executeMerge();
+    commitPushPullRequest("a0e0b081561d3abaeae3bd2536b929d2c2c607d2");
    // try {
      // ReadCSV.mapIndexes();
 //      detectUpdates(ReadCSV.mapPlanetToData(PullingTools.localExoplanetEuOld, ReadCSV.EU),
@@ -626,6 +630,7 @@ public class Driver {
 //      System.out.println("Planets\n");
 //      for (ArrayList<Systems> as : UpdateStorage.planets) {
 //        System.out.println(as.get(0).getChild().getChild().getName());
+//        System.out.println("sy " + as.get(0).getName());
 //        //System.out.println(as.get(0).getChild().getChild().getProperties());
 //        //System.out.println(as.get(1).getChild().getChild().getProperties());
 //      }
@@ -633,6 +638,7 @@ public class Driver {
 //      System.out.println("Stars\n");
 //      for (ArrayList<Systems> as : UpdateStorage.stars) {
 //        System.out.println(as.get(0).getChild().getName());
+//        System.out.println("sy " + as.get(0).getName());
 //        //System.out.println(as.get(0).getChild().getProperties());
 //        //System.out.println(as.get(1).getChild().getProperties());
 //      }
@@ -814,7 +820,7 @@ public class Driver {
 //          System.out.println(e.getProperties());
 //        }
 //      }
-    System.out.println(isInitialMergeDone());
+    //System.out.println(isInitialMergeDone());
      //initialSetupOrResetLocalCopies();
 //    } catch (IOException e) {
 //      e.printStackTrace();

@@ -182,7 +182,7 @@ function generateRowHTML(info0, info1, info2, info3, info4, num){
 function update(){
   // Getting the string data from the server
 
-
+  /*
   $("#update-button").text("UPDATING");
   $("#update-button").addClass("pulse");
   $("#update-button").css("color", "#1ABC9C");
@@ -190,8 +190,9 @@ function update(){
     console.log(data);
   });
   request();
+  */
 
-  /*
+
   systemObjs = [];
   populate('[[[{"sy_distance":"530.0","sy_name":"mu Arae","sy_right_ascension":"246.692000015",'+
   '"sy_declination":"51.0411666736","st_spectral_type":"F7","st_name":"mu Ara","st_metallicity":"0.0",'+
@@ -205,7 +206,7 @@ function update(){
   '"pl_mass":"0.37600","pl_eccentricity":"0.014600","pl_period":"57.01100000","pl_temperature_min":"-13","pl_temperature_max"'+
   ':"14","pl_semi_major_axis":"0.279900"}]],[],[],[],[],[],[],[],[],[],[],[]]');
   setNewRows(systemObjs);
-  */
+
 }
 
 function request(){
@@ -247,13 +248,21 @@ function setNewRows(wantedSystemObjs){
     var line = '';
     // Loopign through to see if it has children
     while(obj != null){
+
       line = '<li class="child-' + childCounter + ' row changed-row" id="row' + i + '-' + childCounter + '" onclick="selectRow(' + i + ',' + childCounter + ')">' +
              '<label class=" col-xs-4" for="checkbox' + i + '-' + childCounter + '">' +
-             '<input type="checkbox" value="" onclick="checkObj(this)" id="checkbox' + i + '-' + childCounter + '" data-toggle="checkbox" class="custom-checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>' +
-
+             '<input type="checkbox" value="Test" id="checkbox' + i + '-' + childCounter + '"data-toggle="checkbox" class="custom-checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>' +
              '</label><p>' +
              obj.name +
              '<p/></li>';
+
+
+            /*
+             line =                 '<label class=" col-xs-offset-1 col-xs-4" for="checkbox0">' +
+                               '<input type="checkbox" value="" id="checkbox0" data-toggle="checkbox" class="custom-checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>' +
+                               'Planet A' +
+                            '</label>';
+                            */
       // Appending to the last Id
       $('#changed-list').append(line);
       // Indentding to get children
@@ -275,6 +284,9 @@ function setNewRows(wantedSystemObjs){
 function checkObj(obj){
     var index = $(obj).attr('id').substring(8).split('-');
     systemObjs[index[0]].setCheck(index[1], $(obj).is(":checked"));
+
+    console.log(!$(obj).is(":checked"));
+    $(obj).prop('checked', !$(obj).is(":checked"));
 }
 
 function clearRows(){
@@ -365,6 +377,16 @@ function seperateFunctions(listType){
   return result;
 }
 
+function removeChecked(){
+    var i = 0;
+    for(i; i < systemObjs.length; i++){
+      var curr = systemObjs[i];
+      if(curr.empty()){
+
+      }
+    }
+}
+
 function commitChanges(){
   var key = document.getElementById("commit-message").value;
 
@@ -388,6 +410,11 @@ function commitChanges(){
       $.post("https://pacific-shelf-92985.herokuapp.com/upload", {result: JSON.stringify(result)}, function(data) {
         if(data === "error"){
             window.alert("Your Pull Request cannot be completed at this time");
+        }
+        else{
+          removeChecked();
+          setNewRows();
+          window.alert("Your Pull Request has been successful");
         }
       });
     }

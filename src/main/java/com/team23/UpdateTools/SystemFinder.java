@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package com.team23.UpdateTools;
 import java.io.IOException;
 import java.util.HashMap;
@@ -118,9 +123,9 @@ public class SystemFinder {
           }
         }
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws SAXException, XPathExpressionException {
 
-        /*try {
+        try {
             ReadCSV.mapIndexes();
         } catch (IOException | ReadCSV.MissingColumnNameException ex) {
             Logger.getLogger(SystemFinder.class.getName()).log(Level.SEVERE, null, ex);
@@ -142,10 +147,10 @@ public class SystemFinder {
             //Star s1 = new Star("kasfi",update2,p1,ReadCSV.EU);
             HashMap<String, String> update3 = new HashMap<>();
             Systems sys = new Systems("16 cYgni", update3, s1, ReadCSV.EU);
-            //System.out.println(UpdateTools.SystemFinder.getSystem(s1));
+            System.out.println(UpdateTools.SystemFinder.getSystem(s1));
             //System.out.println(UpdateTools.SystemFinder.systemCheck(sys));
         } catch (SystemFinder.MissingCelestialObjectException e) {
             e.printStackTrace();
-        }*/
+        }
     }
 }

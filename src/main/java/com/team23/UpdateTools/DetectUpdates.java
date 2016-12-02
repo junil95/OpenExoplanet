@@ -8,7 +8,6 @@ import java.util.Set;
 
 import com.team23.ModelStarSystems.SystemBuilder;
 import com.team23.ModelStarSystems.Systems;
-
 /**
  * Created by dhrumil on 11/10/16.
  */

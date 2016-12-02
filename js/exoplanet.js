@@ -249,14 +249,13 @@ function setNewRows(wantedSystemObjs){
     // Loopign through to see if it has children
     while(obj != null){
 
+      /*
       line = '<li class="child-' + childCounter + ' row changed-row" id="row' + i + '-' + childCounter + '" onclick="selectRow(' + i + ',' + childCounter + ')">' +
              '<label class=" col-xs-4" for="checkbox' + i + '-' + childCounter + '">' +
              '<input type="checkbox" value="Test" id="checkbox' + i + '-' + childCounter + '"data-toggle="checkbox" class="custom-checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>' +
              '</label><p>' +
              obj.name +
              '<p/></li>';
-
-
             /*
              line =                 '<label class=" col-xs-offset-1 col-xs-4" for="checkbox0">' +
                                '<input type="checkbox" value="" id="checkbox0" data-toggle="checkbox" class="custom-checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>' +

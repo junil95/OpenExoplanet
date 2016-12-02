@@ -409,32 +409,5 @@ public class Merge {
 
     }
   }
-  /**
-   * Warning! Running tests in your oecData path without providing a new system will overwrite old
-   * system files You can run tests in other directories by changing PullingTools.oecData to "C:\\"
-   * or preferred directory If running tests in C:\\ or different directory remember to RUN AS
-   * ADMINISTRATOR
-   **/
-  public static void main(String argv[]) {
-    /** Tests
-     * If running test in oecData path, be sure to give ai new system and remove s
-     **/
-    try {
-      
-      ReadCSV.mapIndexes();
-      CSVReader r = new CSVReader(new FileReader(PullingTools.localExoplanetEu));
-      List<String[]> allData = r.readAll();
-      Systems s = SystemBuilder.buildSystemWithCSVRow(Arrays.asList(allData.get(1)), ReadCSV.EU);
-      //merge star
-      s.setName("16 Cygni");
-      s.getChild().setName("Leo");
-      newStar(s, generateXML.xmlStar(s));
-      //merge planet
-      //s.getChild().setName("11 Com");
-      //s.getChild().getChild().setName("Ace");
-      //newPlanet(s, generateXML.xmlPlanet(s));
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-  }
+  
 }

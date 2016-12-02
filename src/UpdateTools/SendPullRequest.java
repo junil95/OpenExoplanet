@@ -47,23 +47,4 @@ public class SendPullRequest {
   }
   
   
-  public static void main(String[] args) {
-    try {
-      RepositoryService service = new RepositoryService();
-      service.getClient().setOAuth2Token("a0e0b081561d3abaeae3bd2536b929d2c2c607d2");
-      Repository r = service.getRepository("DhrumilSoft", "Token-Test");
-      //System.out.println(r.getCloneUrl());
-      //System.out.println(r.getHtmlUrl());
-      PullRequest pr = new PullRequest();
-      pr.setBase(new PullRequestMarker().setLabel("master"));
-      pr.setHead(new PullRequestMarker().setLabel("alternate"));
-      pr.setTitle("Pull request Test");
-      pr.setBody("Pull request between branches using java");
-      PullRequestService prs = new PullRequestService();
-      prs.getClient().setOAuth2Token("a0e0b081561d3abaeae3bd2536b929d2c2c607d2");
-      prs.createPullRequest(r, pr);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
 }

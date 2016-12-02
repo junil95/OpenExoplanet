@@ -265,33 +265,5 @@ public class ReadCSV {
   }
   
   
-  public static void main(String[] args) {
-    try {
-      mapIndexes();
-      //System.out.println(getIndexMappings());
-      //System.out.println(sigColWithIndexInCatalogue());
-//      System.out.println(mapPlanetToData(PullingTools.localNasaArchive, NASA).get("11 Com b"));
-      CSVReader r = new CSVReader(new FileReader(PullingTools.localExoplanetEu));
-      List<String[]> allData = r.readAll();
-      Systems s = SystemBuilder.buildSystemWithCSVRow(Arrays.asList(allData.get(1)), ReadCSV.EU);
-//      HashMap<String, String> test = new HashMap<>();
-//      test.put("pl_name", "ssslave");
-//      test.put("sy_name", "master");
-//      test.put("st_name", "slave");
-//      test.put("pl_radius", "0231");
-//      test.put("st_radius", "0932");
-      //Systems s = SystemBuilder.buildSystemWithHashMap(test, "eu");
-      System.out.println(s.getChild().getProperties());
-
-    } catch (IOException e) {
-      e.printStackTrace();
-    } catch (MissingColumnNameException e) {
-      e.printStackTrace();
-    }
-//    } catch (SystemBuilder.MissingCelestialObjectNameException e) {
-//      e.printStackTrace();
-//    }
-
-  }
   
 }

@@ -309,26 +309,4 @@ public class generateXML {
 			throw new RuntimeException(e);
 		}
 	}
-
-
-	public static void main(String argv[]){
-		try {
-			ReadCSV.mapIndexes();
-			CSVReader r = new CSVReader(new FileReader(PullingTools.localExoplanetEu));
-			CSVReader q = new CSVReader(new FileReader(PullingTools.localNasaArchive));
-			List<String[]> allEUData = r.readAll();
-			List<String[]> allNASAData = q.readAll();
-			Systems s = SystemBuilder.buildSystemWithCSVRow(Arrays.asList(allEUData.get(1)), ReadCSV.EU);
-			Systems n = SystemBuilder.buildSystemWithCSVRow(Arrays.asList(allNASAData.get(1)), ReadCSV.NASA);
-            //System.out.println(xmlPlanet(n));
-			System.out.println(xmlSystem(s));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (MissingColumnNameException e){
-			e.printStackTrace();
-		}
-
-
-	}
 }

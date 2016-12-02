@@ -173,18 +173,6 @@ public class PullingTools {
     PullingTools.pullNasaArchive();
   }
   
-  //Temp for testing purposes, remove after
-  public static void main(String[] args) {
-    try {
-      //pullExoplanetEu();
-//      pullNasaArchive();
-//      pullOecSeperateFiles();
-      pullOecOneFile();
-      System.out.println("Done");
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
 }
 
 

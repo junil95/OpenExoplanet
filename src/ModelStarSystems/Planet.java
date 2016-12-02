@@ -64,19 +64,6 @@ public class Planet extends CelestialObjects {
     return new String(charArray);
   }
 
-  /*
-  public static void main (String [] args){
-    HashMap<String,String> properties = new HashMap<>();
-    properties.put("hi_there", "stfu");
-    properties.put("detection_type", "radial");
-    properties.put("updated", "2015-11-11");
-
-    System.out.println("before: " + properties);
-    changePropertyName(properties);
-    System.out.println("after: " + properties);
-  }
-  */
-
 
 
 }

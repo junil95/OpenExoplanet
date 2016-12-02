@@ -84,13 +84,11 @@ public class generateXML {
 			 TransformerFactory transformerFactory = TransformerFactory.newInstance();
 			 Transformer transformer = transformerFactory.newTransformer();
              transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-			 //transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-			 //transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "6");
 		     DOMSource source = new DOMSource(document);
 		     StringWriter writer = new StringWriter();
 		     transformer.transform(source, new StreamResult(writer));
 		     String output = writer.getBuffer().toString();
-			String prettyOutput = toPrettyString(output, 4);
+			String prettyOutput = toformatString(output, 4);
 			return prettyOutput;
 
 			} catch (Exception e){
@@ -160,13 +158,11 @@ public class generateXML {
 			TransformerFactory transformerFactory = TransformerFactory.newInstance();
 			Transformer transformer = transformerFactory.newTransformer();
             transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-			//transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-			//transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
 		   	DOMSource source = new DOMSource(document);
 		   	StringWriter writer = new StringWriter();
 		   	transformer.transform(source, new StreamResult(writer));
 		   	String output = writer.getBuffer().toString();
-			String prettyOutput = toPrettyString(output, 4);
+			String prettyOutput = toformatString(output, 4);
 			return prettyOutput;
 
 			}catch (Exception e){
@@ -236,13 +232,11 @@ public class generateXML {
 			TransformerFactory transformerFactory = TransformerFactory.newInstance();
 			Transformer transformer = transformerFactory.newTransformer();
 			transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-			//transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-			//transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
 			DOMSource source = new DOMSource(document);
 			StringWriter writer = new StringWriter();
 			transformer.transform(source, new StreamResult(writer));
 			String output = writer.getBuffer().toString();
-			String prettyOutput = toPrettyString(output, 4);
+			String prettyOutput = toformatString(output, 4);
 			return prettyOutput;
 
 		}catch (Exception e){
@@ -273,8 +267,15 @@ public class generateXML {
 		return null;
 	}
 
-	public static String toPrettyString(String xml, int indent) {
+	public static String toformatString(String xml, int indent) {
 		try {
+			/**
+			 * Takes an XML string and an integer, and returns the XML string formatted with indents corresponding to
+			 * given integer
+			 * @param xml Is the XML string that needs formatting
+			 * @param indent Is the integer you want to indent your xml file
+			 * @return The formatted XML string
+			 */
 			// Turn xml string into a document
 			DocumentBuilder documentbuild = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			InputSource is = new InputSource();

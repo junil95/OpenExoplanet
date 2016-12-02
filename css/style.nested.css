@@ -56,6 +56,9 @@ body {
           position: relative;
           margin: 5px 5px;
           margin-right: 10px; }
+          .wrapper #left-panel #row-subpanel #changed-list li p {
+            position: relative;
+            right: 100px; }
         .wrapper #left-panel #row-subpanel #changed-list .child-1 {
           position: relative;
           left: 25px; }

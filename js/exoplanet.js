@@ -507,13 +507,13 @@ function exportAsJSON(systemObjList) {
 }
 
 function checkAll() {
-  $("#checkboxall").prop("disabled",true);
-    // if ($("#checkboxall").prop("checked")) {
-    //     // Unchecking all boxes
-    //     $(".checkbox-label").children("input").prop("checked", true);
-    // } else {
-    //     $(".checkbox-label").children("input").prop("checked", false);
-    // }
+  //$("#checkboxall").prop("disabled",true);
+    if ($("#checkboxall").prop("checked")) {
+        // Unchecking all boxes
+        $(".checkbox-label").children("input").prop("checked", true);
+    } else {
+        $(".checkbox-label").children("input").prop("checked", false);
+    }
 }
 
 // Helper func

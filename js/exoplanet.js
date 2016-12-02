@@ -506,24 +506,24 @@ function exportAsJSON(systemObjList) {
     return total;
 }
 
-function checkAll() {
-    if ($("#checkboxall").prop("checked")) {
-        // Unchecking all boxes
-        $(".checkbox-label").children("input").prop("checked", true);
-        for (i; i < systemObjs.length; i++) {
-            systemObjs[i].checked = true;
-            systemObjs[i].child.checked = true;
-            systemObjs[i].child.child.checked = true;
-        }
-    } else {
-        $(".checkbox-label").children("input").prop("checked", false);
-        for (i; i < systemObjs.length; i++) {
-            systemObjs[i].checked = false;
-            systemObjs[i].child.checked = false;
-            systemObjs[i].child.child.checked = false;
-        }
-    }
-}
+// function checkAll() {
+//     if ($("#checkboxall").prop("checked")) {
+//         // Unchecking all boxes
+//         $(".checkbox-label").children("input").prop("checked", true);
+//         for (i; i < systemObjs.length; i++) {
+//             systemObjs[i].checked = true;
+//             systemObjs[i].child.checked = true;
+//             systemObjs[i].child.child.checked = true;
+//         }
+//     } else {
+//         $(".checkbox-label").children("input").prop("checked", false);
+//         for (i; i < systemObjs.length; i++) {
+//             systemObjs[i].checked = false;
+//             systemObjs[i].child.checked = false;
+//             systemObjs[i].child.child.checked = false;
+//         }
+//     }
+// }
 
 // Helper func
 function createArray(length) {

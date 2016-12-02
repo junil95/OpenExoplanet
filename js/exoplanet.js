@@ -226,7 +226,7 @@ function generateRowHTML(info0, info1, info2, info3, info4, num) {
 function update() {
     // Getting the string data from the server
 
-    /*
+
   $("#update-button").text("UPDATING");
   $("#update-button").addClass("pulse");
   $("#update-button").css("color", "#1ABC9C");
@@ -234,9 +234,9 @@ function update() {
     console.log(data);
   });
   request();
-  */
 
 
+  /*
   systemObjs = [];
   populate('[[[{"sy_name":"11 Com","sy_declination":"+42d36m15.0s",'+
   '"sy_distance":"855.00","sy_right_ascension":"19h17m04.50s","st_magJ_min":"0.025","st_magK_max":"0.028","st_temperature":'+
@@ -250,7 +250,7 @@ function update() {
 '"pl_mass":"0.805","pl_eccentricity":"0.0","pl_period":"2.1746742","pl_impact_parameter":"CONFLICT OCCURS","pl_radius"'+
 ':"1.461","pl_name":"mu Ara 99","pl_semi_major_axis":"0.0348"}]],[],[],[],[],[],[],[],[]]');
   setNewRows(systemObjs);
-
+  */
 }
 
 function request() {

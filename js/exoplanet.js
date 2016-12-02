@@ -511,16 +511,16 @@ function checkAll() {
         // Unchecking all boxes
         $(".checkbox-label").children("input").prop("checked", true);
         for (i; i < systemObjs.length; i++) {
-            systemObjs[i].checked = false;
-            systemObjs[i].child.checked = false;
-            systemObjs[i].child.child.checked = false;
+            systemObjs[i].checked = true;
+            systemObjs[i].child.checked = true;
+            systemObjs[i].child.child.checked = true;
         }
     } else {
         $(".checkbox-label").children("input").prop("checked", false);
         for (i; i < systemObjs.length; i++) {
-            systemObjs[i].checked = true;
-            systemObjs[i].child.checked = true;
-            systemObjs[i].child.child.checked = true;
+            systemObjs[i].checked = false;
+            systemObjs[i].child.checked = false;
+            systemObjs[i].child.child.checked = false;
         }
     }
 }

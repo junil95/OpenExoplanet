@@ -185,7 +185,7 @@ function update() {
   });
   request();
 
-/*
+  /*
   systemObjs = [];
   populate('[[[{"sy_distance":"530.0","sy_name":"mu Arae","sy_right_ascension":"246.692000015",'+
   '"sy_declination":"51.0411666736","st_spectral_type":"F7","st_name":"mu Ara","st_metallicity":"0.0",'+
@@ -437,9 +437,9 @@ function exportAsJSON(systemObjList) {
 function checkAll() {
     if ($("#checkboxall").prop("checked")) {
         // Unchecking all boxes
-        $(".custom-checkbox").prop("checked", true);
+        $(".checkbox").children("input").prop("checked", true);
     } else {
-        $(".custom-checkbox").prop("checked", false);
+        $(".checkbox").children("input").prop("checked", false);
     }
 }
 

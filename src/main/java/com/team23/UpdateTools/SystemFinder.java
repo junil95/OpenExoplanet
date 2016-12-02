@@ -123,34 +123,4 @@ public class SystemFinder {
           }
         }
 
-    public static void main(String[] args) throws SAXException, XPathExpressionException {
-
-        try {
-            ReadCSV.mapIndexes();
-        } catch (IOException | ReadCSV.MissingColumnNameException ex) {
-            Logger.getLogger(SystemFinder.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            HashMap<String, String> updates = new HashMap<>();
-            //normal planet and stars test
-            //Planet p1 = new Planet("YBP1194 b",updates,ReadCSV.EU);
-            HashMap<String, String> update2 = new HashMap<>();
-            //Star s1 = new Star("nGC 2682 YBP 1514",update2,p1,ReadCSV.EU);
-            //double binary planet and stars
-            //Planet p1 = new Planet("HD 186427 B b",updates,ReadCSV.EU);
-            //Star s1 = new Star("WDS J19418+5032 Aa",update2,p1,ReadCSV.EU);
-            //single binary
-            Planet p1 = new Planet("XO-2N c", updates, ReadCSV.EU);
-            Star s1 = new Star("XO-2B", update2, p1, ReadCSV.EU);
-            //planet and stars that dont exist
-            //Planet p1 = new Planet("Abcdsfa",updates,ReadCSV.EU);
-            //Star s1 = new Star("kasfi",update2,p1,ReadCSV.EU);
-            HashMap<String, String> update3 = new HashMap<>();
-            Systems sys = new Systems("16 cYgni", update3, s1, ReadCSV.EU);
-            System.out.println(UpdateTools.SystemFinder.getSystem(s1));
-            //System.out.println(UpdateTools.SystemFinder.systemCheck(sys));
-        } catch (SystemFinder.MissingCelestialObjectException e) {
-            e.printStackTrace();
-        }
-    }
 }

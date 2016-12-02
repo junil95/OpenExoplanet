@@ -164,7 +164,7 @@ function selectRow(systemObjNum, childNum) {
         var index = rowNum.split("-");
 
         var last = systemObjs[parseInt(index[0])].getChild(parseInt(index[1]));
-        for (i; i < last.propAmount; i++) {
+        for (i; i < last.propAmount+1; i++) {
 
             if (last.info[0][i].substring(3) != "name") {
                 last.info[4][i] = $("#info" + i).val();
@@ -410,7 +410,19 @@ function removeChecked(){
 
 function commitChanges(){
   var key = document.getElementById("commit-message").value;
+  if ($(".selected > label").length) {
+      var rowNum = $(".selected").prop("id").substring(3);
+      var i = 1;
+      var index = rowNum.split("-");
 
+      var last = systemObjs[parseInt(index[0])].getChild(parseInt(index[1]));
+      for (i; i < last.propAmount+1; i++) {
+
+          if (last.info[0][i].substring(3) != "name") {
+              last.info[4][i] = $("#info" + i).val();
+          }
+      }
+  }
     var result = []
     result.push(exportAsJSON(seperateFunctions("newSystem")));
     result.push(exportAsJSON(seperateFunctions("newStar")));

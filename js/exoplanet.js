@@ -177,7 +177,7 @@ function update() {
     // Getting the string data from the server
 
     });
-  /*
+
   $("#update-button").text("UPDATING");
   $("#update-button").addClass("pulse");
   $("#update-button").css("color", "#1ABC9C");
@@ -185,10 +185,8 @@ function update() {
     console.log(data);
   });
   request();
-  */
 
-    '"sy_declination":"51.0411666736","st_spectral_type":"F7","st_name":"mu Ara","st_metallicity":"0.0",'+
-
+  /*
   systemObjs = [];
   populate('[[[{"sy_distance":"530.0","sy_name":"mu Arae","sy_right_ascension":"246.692000015",'+
   '"sy_declination":"51.0411666736","st_spectral_type":"F7","st_name":"mu Ara","st_metallicity":"0.0",'+
@@ -202,6 +200,7 @@ function update() {
   '"pl_mass":"0.37600","pl_eccentricity":"0.014600","pl_period":"57.01100000","pl_temperature_min":"-13","pl_temperature_max"'+
   ':"14","pl_semi_major_axis":"0.279900"}]],[],[],[],[],[],[],[],[],[],[],[]]');
   setNewRows(systemObjs);
+  */
 
 }
 

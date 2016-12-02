@@ -176,7 +176,6 @@ function generateRowHTML(info0, info1, info2, info3, info4, num) {
 function update() {
     // Getting the string data from the server
 
-    });
 
   $("#update-button").text("UPDATING");
   $("#update-button").addClass("pulse");
@@ -261,6 +260,7 @@ function setNewRows(wantedSystemObjs){
       childCounter++;
       obj = obj.child;
     }
+  }
 }
 
 function checkObj(obj) {
@@ -382,31 +382,23 @@ function commitChanges(){
     result.push(exportAsJSON(seperateFunctions("existingConflictingPlanet")));
 
     // Sending it as a post
-    $.post("https://pacific-shelf-92985.herokuapp.com/setkey", {
-        key: key
-    }, function(text) {
+    $.post("https://pacific-shelf-92985.herokuapp.com/setkey", {key: key}, function(text) {
         if (text === "success") {
-            $.post("https://pacific-shelf-92985.herokuapp.com/upload", {
-                result: JSON.stringify(result)
-            }, function(data) {
+            $.post("https://pacific-shelf-92985.herokuapp.com/upload", {result: JSON.stringify(result)}, function(data) {
                 if (data === "error") {
                     window.alert("Your Pull Request cannot be completed at this time");
                 }
+                else{
+                  removeChecked();
+                  setNewRows();
+                  window.alert("Your Pull Request has been successful");
+                }
             });
-        } else {
+        }
+        else {
             window.alert("Your Github key is invalid");
         }
-        else{
-          removeChecked();
-          setNewRows();
-          window.alert("Your Pull Request has been successful");
-        }
       });
-    }
-    else{
-       window.alert("Your Github key is invalid");
-    }
-  });
 }
 
 function exportAsJSON(systemObjList) {

@@ -41,6 +41,7 @@ import static com.team23.UpdateTools.UpdateStorage.stPropConflicts;
 import static com.team23.UpdateTools.UpdateStorage.starUpdates;
 import static com.team23.UpdateTools.UpdateStorage.systemUpdates;
 import static com.team23.UpdateTools.UpdateStorage.updates;
+import static com.team23.UpdateTools.PullingTools.createLatestCatalogueCopy;
 
 /**
  * Created by dhrumil on 06/11/16.
@@ -146,7 +147,7 @@ public class Driver {
       UpdateStorage.clearAll();
       //need to create latest catalogue copy
       
-      UpdateTools.PullingTools.createLatestCatalogueCopy();
+      createLatestCatalogueCopy();
       CreateOecClone.gitCloneRepo();
       CreateOecClone.createNewBranch();
       

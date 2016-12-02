@@ -56,7 +56,7 @@ public class Merge {
       //StreamResult result = new StreamResult(new File(PullingTools.oecData + system.getName() + ".xml"));
       transformer.transform(source, new StreamResult(writer));
       String output = writer.getBuffer().toString();
-      String prettyOutput = generateXML.toPrettyString(output, 4);
+      String prettyOutput = generateXML.toformatString(output, 4);
       try(  PrintWriter out = new PrintWriter(PullingTools.oecData + system.getName() + ".xml")  ){
         out.println( prettyOutput );
       }
@@ -123,7 +123,7 @@ public class Merge {
       //StreamResult result = new StreamResult(new File(PullingTools.oecData + system.getName() + ".xml"));
       transformer.transform(source, new StreamResult(writer));
       String output = writer.getBuffer().toString();
-      String prettyOutput = generateXML.toPrettyString(output, 4);
+      String prettyOutput = generateXML.toformatString(output, 4);
       try(  PrintWriter out = new PrintWriter(PullingTools.oecData + system.getName() + ".xml")  ){
         out.println( prettyOutput );
       }
@@ -198,7 +198,7 @@ public class Merge {
     //StreamResult result = new StreamResult(new File(PullingTools.oecData + system.getName() + ".xml"));
     transformer.transform(source, new StreamResult(writer));
     String output = writer.getBuffer().toString();
-    String prettyOutput = generateXML.toPrettyString(output, 4);
+    String prettyOutput = generateXML.toformatString(output, 4);
     try(  PrintWriter out = new PrintWriter(PullingTools.oecData + system.getName() + ".xml")  ){
       out.println( prettyOutput );
     }
@@ -255,7 +255,7 @@ public class Merge {
       //StreamResult result = new StreamResult(new File(PullingTools.oecData + system.getName() + ".xml"));
       transformer.transform(source, new StreamResult(writer));
       String output = writer.getBuffer().toString();
-      String prettyOutput = generateXML.toPrettyString(output, 4);
+      String prettyOutput = generateXML.toformatString(output, 4);
       try(  PrintWriter out = new PrintWriter(PullingTools.oecData + system.getName() + ".xml")  ){
         out.println( prettyOutput );
       }
@@ -342,7 +342,7 @@ public class Merge {
       //StreamResult result = new StreamResult(new File(PullingTools.oecData + system.getName() + ".xml"));
       transformer.transform(source, new StreamResult(writer));
       String output = writer.getBuffer().toString();
-      String prettyOutput = generateXML.toPrettyString(output, 4);
+      String prettyOutput = generateXML.toformatString(output, 4);
       try(  PrintWriter out = new PrintWriter(PullingTools.oecData + system.getName() + ".xml")  ){
         out.println( prettyOutput );
       }
@@ -399,7 +399,7 @@ public class Merge {
       //StreamResult result = new StreamResult(new File(PullingTools.oecData + system.getName() + ".xml"));
       transformer.transform(source, new StreamResult(writer));
       String output = writer.getBuffer().toString();
-      String prettyOutput = generateXML.toPrettyString(output, 4);
+      String prettyOutput = generateXML.toformatString(output, 4);
       try(  PrintWriter out = new PrintWriter(PullingTools.oecData + system.getName() + ".xml")  ){
         out.println( prettyOutput );
       }

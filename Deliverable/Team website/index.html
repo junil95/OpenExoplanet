@@ -2764,27 +2764,21 @@
                         </div>
                         <div class="row">
                             <div class="col-xs-3">
-                                <p class="header">4. Submit a brief overview of your project as it progressed from deliverable 3 to deliverable 4 </p>
+                                <p class="header">4. Submit a brief overview of your project as it progressed from deliverable 4 to deliverable 5 </p>
                             </div>
                             <div class="col-xs-9">
                                 <p class="text">
-                                    We have made a huge progress from deliverable 3 to deliverable 4. Since there were midterms going on during deliverable 3, everyone was busy studying so not a lot of work was completed; only minor fixes and 2 or 3 classes were completed. In deliverable
-                                    3 we only had our pulling tools and some parts of update working, but now in deliverable 4 we have classified the detected updates, determined conflicts in updates, created a major portion of the front end UI to select
-                                    conflicts, converted csv data to OEC XML format, and completed a major portion of the merge. We have the merging of new planets, new stars and new systems working.
+                                    Throughout the entire project, our group was well excited and motivated to come up with a unique, efficient and a working product. Initially, it was a challenge to come up with a system design, fully understand the requirements and assign and divide tasks through the product backlog. However once these three things were figured out, it was helpful to create sprint plans and product backlogs for each iteration. To stay on track of our assigned tasks, we used ZenHub. We divided the plan into 3 stages; in progress, testing and closed. This way, all tasks are recognized and managed by all developers. To ensure that we were building the right product with the right requirements, we met up with the client several times and discussed some challenges we were facing. By talking to him and his representatives, we understood the requirements and the goal of the project more and more and it became easier to plan out our sprints. Through this entire process of building our own project from scratch, we learnt a lot! Not only in terms of learning various CS concepts, but also learnt how to come together as a group, communicate and come up with a working product. It was a great challenge for all of us, but the all nighters, our pizza meetings and the fun code review sessions really made this project worthwhile.
                                 </p>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-3">
-                                <p class="header">5. How does the work done for deliverable 4 differ from the work done for deliverable 3, both in terms of progress and end result?</p>
+                                <p class="header">5. How does the work done for deliverable 5 differ from the work done for deliverable 4, both in terms of progress and end result?</p>
                             </div>
                             <div class="col-xs-9">
                                 <p class="text">
-                                    In deliverable 3, we were having some communication and planning problems. We just assigned what class each person was going to make but didn't really think about how the classes would interact with each other. In deliverable 4, we had to redesign a lot
-                                    of our classes so they could communicate easily. We had to change the input and output signature of the methods to make it easier to distribute the detected updates. In deliverable 4, we heavily discussed amongst group
-                                    members to ensure that the system design would function correctly. Also, sitting together and coming up with a more detailed version of our system design helped everyone get back on track and understand thoroughly how
-                                    everything is working. For the next deliverable we will be mostly focusing on linking the front end and back end together, along with managing the pull requests. We still have a lot of work to complete but we feel in
-                                    deliverable 4 we worked better because of more collaboration and detailed discussions rather than splitting tasks and leaving everyone off to do things on their own
+                                    This phase we focused mainly on connecting our UI(website) with our backend java code and implemented the Pull Request Manager. Since the UI is javascript based and our backend is Java based (two different languages), we decided to have a team meeting to revise our plan on how we could efficiently pass data back and forth from the UI and our backend. Having this meeting helped us come up with a clear plan and prevent future bottlenecks during implementation. During the UI implementation we mainly struggled with the server side of the UI (things were running too slow) because no one had sufficient knowledge on how servers worked.
                                 </p>
                             </div>
                         </div>
@@ -2794,10 +2788,7 @@
                             </div>
                             <div class="col-xs-9">
                                 <p class="text">
-                                    We had to replan the system design several times because it was hard for the different classes to communicate with each other. Initially, some of our classes were reading csv data, storing them in arraylists of hashmaps of hashmaps. It was hard for most
-                                    of the other classes to work with data in this format. So we had to replan and decided to create an hierarchy of system objects to translate the data found in the Eu and NASA catalogues into something that is easier
-                                    to use and access. We also created the update storage class, to avoid running into the problem of returning multiple different types of updates in a list. We also had to breakdown the merge into different components
-                                    to make it more managable.
+                                    We generally stuck to the sprint plan but we had to replan certain functionalities in our project. We did not account for the difficulties we faced when understanding Git APIs, it was something we thought we could pick up as easily as other APIs, but with authentication things got a little bit more complicated. Also we had to alter the way certain functionalities were implemented to ensure the flow between the backend and the UI was fluent. Both of these reasons required us to replan certain areas of our initial sprint plan.
                             </div>
                         </div>
                     </div>
@@ -3071,6 +3062,9 @@
                                 </p>
                             </div>
                         </div>
+
+                        <h1> Second Release (Release on Deliverable 5 due date)</h1>
+                        <p class="header">2 sprints, project velocity 70 story points</p>
                         <div class="row">
                             <div class="col-xs-3">
                                 <p class="header">Priority: 9</p>
@@ -3081,8 +3075,6 @@
                                 </p>
                             </div>
                         </div>
-                        <h1> Second Release (Release on Deliverable 5 due date)</h1>
-                        <p class="header">2 sprints, project velocity 70 story points</p>
                         <div class="row">
                             <div class="col-xs-3">
                                 <p class="header">Priority: 10</p>
@@ -3150,7 +3142,7 @@
                                 <p class="header">System Info</p>
                             </div>
                             <div class="col-xs-9">
-                                <img class="text" src="assets/images/d4/file.png">
+                                <img class="text" src="assets/images/d5/file.png">
                                 </img>
                             </div>
                         </div>
@@ -3284,12 +3276,7 @@
                             </div>
                             <div class="col-xs-9">
                                 <p class="text">
-                                    Our initial system design was not very detailed, and even made it hard for our group members to understand the overall flow of the project. Our initial design also had very generalized components and we had to break them down into smaller components to
-                                    make certain tasks like the merge and update detection more manageable. Our initial design also didn't show how certain classes communicate with one another and that was causing problems once we tried making them work
-                                    with each other. With this more detailed version everything is more straightforward and it is easier for each of us to see how the component we are working on fits into this whole project. It also helps us anticipate
-                                    the possible inputs and outputs from other classes. We added the Systems, planets and stars hierarchy and the update storage components to make it easier to pass information along. The system builder component was added
-                                    to construct the systems hierarchy out of raw csv data. The update classifier and conflict detector components were added to filter the updates and help the user see the different types of updates that occurred. Overall
-                                    this system design provides a clearer understanding of how everything flows to both our team and other users.
+                                  The only changes we made form our last system design, is that we added a few more details to the diagram. We added descriptions to each major component of our project, so it is easier for users to understand. With these updates and more detailed version everything seems straightforward. Overall this system design provides a clearer understanding of how everything flows to both our team and other users.
                                 </p>
                             </div>
                         </div>
@@ -3300,7 +3287,7 @@
                                 <p class="header">Burndown 1</p>
                             </div>
                             <div class="col-xs-9">
-                                <img class="text" src="assets/images/d4/Burndown1.png">
+                                <img class="text" src="assets/images/d5/Burndown1.png">
                                 </img>
                             </div>
                         </div>
@@ -3309,7 +3296,7 @@
                                 <p class="header">Taskboard 1 - Before</p>
                             </div>
                             <div class="col-xs-9">
-                                <img class="text" src="assets/images/d4/Taskboard1Before.png">
+                                <img class="text" src="assets/images/d5/Taskboard1Before.png">
                                 </img>
                             </div>
                         </div>
@@ -3318,7 +3305,7 @@
                                 <p class="header">Taskboard 1 - After</p>
                             </div>
                             <div class="col-xs-9">
-                                <img class="text" src="assets/images/d4/Taskboard1After.png">
+                                <img class="text" src="assets/images/d5/Taskboard1After.png">
                                 </img>
                             </div>
                         </div>
@@ -3327,7 +3314,7 @@
                                 <p class="header">Sprintplan 1 - Before</p>
                             </div>
                             <div class="col-xs-9">
-                                <img class="text" src="assets/images/d4/SprintPlan1Before.png">
+                                <img class="text" src="assets/images/d5/SprintPlan1Before.png">
                                 </img>
                             </div>
                         </div>
@@ -3336,7 +3323,16 @@
                                 <p class="header">Sprintplan 1 - After</p>
                             </div>
                             <div class="col-xs-9">
-                                <img class="text" src="assets/images/d4/SprintPlan1After.png">
+                                <img class="text" src="assets/images/d5/SprintPlan1After.png">
+                                </img>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <p class="header">Sprint 1</p>
+                            </div>
+                            <div class="col-xs-9">
+                                <img class="text" src="assets/images/d5/sprint1.png">
                                 </img>
                             </div>
                         </div>
@@ -3347,7 +3343,7 @@
                                 <p class="header">Burndown 2</p>
                             </div>
                             <div class="col-xs-9">
-                                <img class="text" src="assets/images/d4/Burndown2.png">
+                                <img class="text" src="assets/images/d5/Burndown2.png">
                                 </img>
                             </div>
                         </div>
@@ -3356,7 +3352,7 @@
                                 <p class="header">Taskboard 2 - Before</p>
                             </div>
                             <div class="col-xs-9">
-                                <img class="text" src="assets/images/d4/Taskboard2Before.png">
+                                <img class="text" src="assets/images/d5/Taskboard2Before.png">
                                 </img>
                             </div>
                         </div>
@@ -3365,7 +3361,7 @@
                                 <p class="header">Taskboard 2 - After</p>
                             </div>
                             <div class="col-xs-9">
-                                <img class="text" src="assets/images/d4/Taskboard2After.png">
+                                <img class="text" src="assets/images/d5/Taskboard2After.png">
                                 </img>
                             </div>
                         </div>
@@ -3374,7 +3370,7 @@
                                 <p class="header">Sprintplan 2 - Before</p>
                             </div>
                             <div class="col-xs-9">
-                                <img class="text" src="assets/images/d4/SprintPlan2Before.png">
+                                <img class="text" src="assets/images/d5/SprintPlan2Before.png">
                                 </img>
                             </div>
                         </div>
@@ -3383,20 +3379,30 @@
                                 <p class="header">Sprintplan 2 - After</p>
                             </div>
                             <div class="col-xs-9">
-                                <img class="text" src="assets/images/d4/SprintPlan2After.png">
+                                <img class="text" src="assets/images/d5/SprintPlan2After.png">
+                                </img>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <p class="header">Sprint 2</p>
+                            </div>
+                            <div class="col-xs-9">
+                                <img class="text" src="assets/images/d5/sprint2.png">
                                 </img>
                             </div>
                         </div>
                     </div>
 
+
                     <div id="deliverable5-code_review" class="tab-pane fade in">
-                        <iframe width="560" height="315" src="https://www.youtube.com/embed/CRpsL1Thfb8" frameborder="0" allowfullscreen></iframe>
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/aIcGqWyCWxk" frameborder="0" allowfullscreen></iframe>
                         <div class="row">
                             <div class="col-xs-3">
                                 <p class="header">Review by Dhrumil</p>
                             </div>
                             <div class="col-xs-9">
-                                <img class="text" src="assets/images/d4/dhrumilreview.png">
+                                <img class="text" src="assets/images/d5/dhrumilreview.png">
                                 </img>
                             </div>
                         </div>
@@ -3405,7 +3411,7 @@
                                 <p class="header">Review by Junil</p>
                             </div>
                             <div class="col-xs-9">
-                                <img class="text" src="assets/images/d4/junilreview.png">
+                                <img class="text" src="assets/images/d5/junilreview.png">
                                 </img>
                             </div>
                         </div>
@@ -3414,7 +3420,7 @@
                                 <p class="header">Review by Rishi</p>
                             </div>
                             <div class="col-xs-9">
-                                <img class="text" src="assets/images/d4/rishireview.png">
+                                <img class="text" src="assets/images/d5/rishireview.png">
                                 </img>
                             </div>
                         </div>
@@ -3423,7 +3429,7 @@
                                 <p class="header">Review by John</p>
                             </div>
                             <div class="col-xs-9">
-                                <img class="text" src="assets/images/d4/johnreview.png">
+                                <img class="text" src="assets/images/d5/johnreview.png">
                                 </img>
                             </div>
                         </div>
@@ -3432,7 +3438,7 @@
                                 <p class="header">Review By Tirth</p>
                             </div>
                             <div class="col-xs-9">
-                                <img class="text" src="assets/images/d4/tirthreview.png">
+                                <img class="text" src="assets/images/d5/tirthreview.png">
                                 </img>
                             </div>
                         </div>

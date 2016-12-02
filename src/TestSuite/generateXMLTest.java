@@ -4,6 +4,7 @@ import ModelStarSystems.SystemBuilder;
 import ModelStarSystems.Systems;
 import UpdateTools.PullingTools;
 import UpdateTools.ReadCSV;
+import UpdateTools.generateXML;
 import com.opencsv.CSVReader;
 import org.junit.Test;
 import org.w3c.dom.Document;
@@ -34,8 +35,28 @@ public class generateXMLTest {
      */
     @Test
     public void testxmlPlanet(){
-        String expectedEU = "<planet><name>11 Com b</name><discoverymethod>Radial Velocity</discoverymethod><discoveryyear>2008</discoveryyear><eccentricity errorminus=\"0.005\" errorplus=\"0.005\">0.231</eccentricity><lastupdate>2015-08-21</lastupdate><mass errorminus=\"1.5\" errorplus=\"1.5\">19.4</mass><massother errorminus=\"1.5\" errorplus=\"1.5\">19.4</massother><periastron errorminus=\"1.5\" errorplus=\"1.5\">94.8</periastron><period errorminus=\"0.32\" errorplus=\"0.32\">326.03</period><semimajoraxis errorminus=\"0.05\" errorplus=\"0.05\">1.29</semimajoraxis></planet>";
-        String expectedNASA = "<planet><name>HD 4308 b</name><discoverymethod>Radial Velocity</discoverymethod><discoveryyear>2005</discoveryyear><eccentricity errorminus=\"-0.010000\" errorplus=\"0.010000\">0.000000</eccentricity><lastupdate>2014-12-03</lastupdate><massother errorminus=\"\" errorplus=\"\">0.04420</massother><periastron errorminus=\"-47.0000\" errorplus=\"47.0000\">359.0000</periastron><period errorminus=\"-0.02000000\" errorplus=\"0.02000000\">15.56000000</period><semimajoraxis errorminus=\"\" errorplus=\"\">0.115000</semimajoraxis></planet>";
+        String expectedEU = toformatString("<planet>\n" +
+                "    <name>11 Com b</name>\n" +
+                "    <discoverymethod>Radial Velocity</discoverymethod>\n" +
+                "    <discoveryyear>2008</discoveryyear>\n" +
+                "    <eccentricity errorminus=\"0.005\" errorplus=\"0.005\">0.231</eccentricity>\n" +
+                "    <lastupdate>2015-08-21</lastupdate>\n" +
+                "    <mass errorminus=\"1.5\" errorplus=\"1.5\">19.4</mass>\n" +
+                "    <massother errorminus=\"1.5\" errorplus=\"1.5\">19.4</massother>\n" +
+                "    <periastron errorminus=\"1.5\" errorplus=\"1.5\">94.8</periastron>\n" +
+                "    <period errorminus=\"0.32\" errorplus=\"0.32\">326.03</period>\n" +
+                "    <semimajoraxis errorminus=\"0.05\" errorplus=\"0.05\">1.29</semimajoraxis>\n" +
+                "</planet>", 4);
+        String expectedNASA = toformatString("<planet>\n" +
+                "    <name>Kepler-139 c</name>\n" +
+                "    <discoverymethod>Transit</discoverymethod>\n" +
+                "    <discoveryyear>2014</discoveryyear>\n" +
+                "    <impactparameter errorminus=\"-0.3000\" errorplus=\"0.3000\">0.8300</impactparameter>\n" +
+                "    <lastupdate>2014-05-14</lastupdate>\n" +
+                "    <period errorminus=\"-0.00172000\" errorplus=\"0.00172000\">157.07287800</period>\n" +
+                "    <radius>0.302</radius>\n" +
+                "    <semimajoraxis>0.586000</semimajoraxis>\n" +
+                "</planet>", 4);
         try {
             ReadCSV.mapIndexes();
             CSVReader r = new CSVReader(new FileReader(PullingTools.localExoplanetEu));
@@ -65,8 +86,53 @@ public class generateXMLTest {
      */
     @Test
     public void testxmlStar(){
-        String expectedEU = "<star><name>11 Com</name><magV>4.74</magV><mass errorminus=\"0.3\" errorplus=\"0.3\">2.7</mass><metallicity>-0.35</metallicity><radius>19.0</radius><radiusmax>2.0</radiusmax><radiusmin>2.0</radiusmin><spectraltype>G8 III</spectraltype><temperature errorminus=\"100.0\" errorplus=\"100.0\">4742.0</temperature><planet><name>11 Com b</name><discoverymethod>Radial Velocity</discoverymethod><discoveryyear>2008</discoveryyear><eccentricity errorminus=\"0.005\" errorplus=\"0.005\">0.231</eccentricity><lastupdate>2015-08-21</lastupdate><mass errorminus=\"1.5\" errorplus=\"1.5\">19.4</mass><massother errorminus=\"1.5\" errorplus=\"1.5\">19.4</massother><periastron errorminus=\"1.5\" errorplus=\"1.5\">94.8</periastron><period errorminus=\"0.32\" errorplus=\"0.32\">326.03</period><semimajoraxis errorminus=\"0.05\" errorplus=\"0.05\">1.29</semimajoraxis></planet></star>";
-        String expectedNASA = "<star><name>HD 4308</name><age errorminus=\"\" errorplus=\"\">4.300</age><magH>5.101</magH><magHmax>0.016</magHmax><magHmin>0.016</magHmin><magI>5.835</magI><magJ>5.366</magJ><magJmax>0.024</magJmax><magJmin>0.024</magJmin><magK>4.945</magK><magKmax>0.020</magKmax><magKmin>0.020</magKmin><magV>6.560</magV><mass errorminus=\"-0.01\" errorplus=\"0.01\">0.83</mass><metallicity>[Fe/H]</metallicity><temperature errorminus=\"-13.00\" errorplus=\"13.00\">5685.00</temperature><planet><name>HD 4308 b</name><discoverymethod>Radial Velocity</discoverymethod><discoveryyear>2005</discoveryyear><eccentricity errorminus=\"-0.010000\" errorplus=\"0.010000\">0.000000</eccentricity><lastupdate>2014-12-03</lastupdate><massother errorminus=\"\" errorplus=\"\">0.04420</massother><periastron errorminus=\"-47.0000\" errorplus=\"47.0000\">359.0000</periastron><period errorminus=\"-0.02000000\" errorplus=\"0.02000000\">15.56000000</period><semimajoraxis errorminus=\"\" errorplus=\"\">0.115000</semimajoraxis></planet></star>";
+        String expectedEU = toformatString("<star>\n" +
+                "    <name>11 Com</name>\n" +
+                "    <magV>4.74</magV>\n" +
+                "    <mass errorminus=\"0.3\" errorplus=\"0.3\">2.7</mass>\n" +
+                "    <metallicity>-0.35</metallicity>\n" +
+                "    <radius errorminus=\"2.0\" errorplus=\"2.0\">19.0</radius>\n" +
+                "    <spectraltype>G8 III</spectraltype>\n" +
+                "    <temperature errorminus=\"100.0\" errorplus=\"100.0\">4742.0</temperature>\n" +
+                "    <planet>\n" +
+                "        <name>11 Com b</name>\n" +
+                "        <discoverymethod>Radial Velocity</discoverymethod>\n" +
+                "        <discoveryyear>2008</discoveryyear>\n" +
+                "        <eccentricity errorminus=\"0.005\" errorplus=\"0.005\">0.231</eccentricity>\n" +
+                "        <lastupdate>2015-08-21</lastupdate>\n" +
+                "        <mass errorminus=\"1.5\" errorplus=\"1.5\">19.4</mass>\n" +
+                "        <massother errorminus=\"1.5\" errorplus=\"1.5\">19.4</massother>\n" +
+                "        <periastron errorminus=\"1.5\" errorplus=\"1.5\">94.8</periastron>\n" +
+                "        <period errorminus=\"0.32\" errorplus=\"0.32\">326.03</period>\n" +
+                "        <semimajoraxis errorminus=\"0.05\" errorplus=\"0.05\">1.29</semimajoraxis>\n" +
+                "    </planet>" +
+                "</star>\n", 4);
+        String expectedNASA = toformatString("<star>\n" +
+                "    <name>Kepler-139</name>\n" +
+                "    <magH>11.222</magH>\n" +
+                "    <magHmax>0.018</magHmax>\n" +
+                "    <magHmin>0.018</magHmin>\n" +
+                "    <magJ>11.530</magJ>\n" +
+                "    <magJmax>0.021</magJmax>\n" +
+                "    <magJmin>0.021</magJmin>\n" +
+                "    <magK>11.167</magK>\n" +
+                "    <magKmax>0.015</magKmax>\n" +
+                "    <magKmin>0.015</magKmin>\n" +
+                "    <mass>1.08</mass>\n" +
+                "    <metallicity>[Fe/H]</metallicity>\n" +
+                "    <radius errorminus=\"-0.25\" errorplus=\"0.25\">1.30</radius>\n" +
+                "    <temperature errorminus=\"-100.00\" errorplus=\"100.00\">5594.00</temperature>\n" +
+                "    <planet>\n" +
+                "        <name>Kepler-139 c</name>\n" +
+                "        <discoverymethod>Transit</discoverymethod>\n" +
+                "        <discoveryyear>2014</discoveryyear>\n" +
+                "        <impactparameter errorminus=\"-0.3000\" errorplus=\"0.3000\">0.8300</impactparameter>\n" +
+                "        <lastupdate>2014-05-14</lastupdate>\n" +
+                "        <period errorminus=\"-0.00172000\" errorplus=\"0.00172000\">157.07287800</period>\n" +
+                "        <radius>0.302</radius>\n" +
+                "        <semimajoraxis>0.586000</semimajoraxis>\n" +
+                "    </planet>\n" +
+                "</star>", 4);
         try {
             ReadCSV.mapIndexes();
             CSVReader r = new CSVReader(new FileReader(PullingTools.localExoplanetEu));
@@ -96,8 +162,64 @@ public class generateXMLTest {
      */
     @Test
     public void testxmlSystem(){
-        String expectedEU = "<system><name>11 Com</name><declination>17.7927778</declination><distance errorminus=\"10.5\" errorplus=\"10.5\">110.6</distance><rightascension>185.1791667</rightascension><star><name>11 Com</name><magV>4.74</magV><mass errorminus=\"0.3\" errorplus=\"0.3\">2.7</mass><metallicity>-0.35</metallicity><radius>19.0</radius><radiusmax>2.0</radiusmax><radiusmin>2.0</radiusmin><spectraltype>G8 III</spectraltype><temperature errorminus=\"100.0\" errorplus=\"100.0\">4742.0</temperature><planet><name>11 Com b</name><discoverymethod>Radial Velocity</discoverymethod><discoveryyear>2008</discoveryyear><eccentricity errorminus=\"0.005\" errorplus=\"0.005\">0.231</eccentricity><lastupdate>2015-08-21</lastupdate><mass errorminus=\"1.5\" errorplus=\"1.5\">19.4</mass><massother errorminus=\"1.5\" errorplus=\"1.5\">19.4</massother><periastron errorminus=\"1.5\" errorplus=\"1.5\">94.8</periastron><period errorminus=\"0.32\" errorplus=\"0.32\">326.03</period><semimajoraxis errorminus=\"0.05\" errorplus=\"0.05\">1.29</semimajoraxis></planet></star></system>";
-        String expectedNASA = "<system><name>HD 4308</name><declination>-65d38m58.3s</declination><distance errorminus=\"-0.27\" errorplus=\"0.26\">21.85</distance><rightascension>00h44m39.27s</rightascension><star><name>HD 4308</name><age errorminus=\"\" errorplus=\"\">4.300</age><magH>5.101</magH><magHmax>0.016</magHmax><magHmin>0.016</magHmin><magI>5.835</magI><magJ>5.366</magJ><magJmax>0.024</magJmax><magJmin>0.024</magJmin><magK>4.945</magK><magKmax>0.020</magKmax><magKmin>0.020</magKmin><magV>6.560</magV><mass errorminus=\"-0.01\" errorplus=\"0.01\">0.83</mass><metallicity>[Fe/H]</metallicity><temperature errorminus=\"-13.00\" errorplus=\"13.00\">5685.00</temperature><planet><name>HD 4308 b</name><discoverymethod>Radial Velocity</discoverymethod><discoveryyear>2005</discoveryyear><eccentricity errorminus=\"-0.010000\" errorplus=\"0.010000\">0.000000</eccentricity><lastupdate>2014-12-03</lastupdate><massother errorminus=\"\" errorplus=\"\">0.04420</massother><periastron errorminus=\"-47.0000\" errorplus=\"47.0000\">359.0000</periastron><period errorminus=\"-0.02000000\" errorplus=\"0.02000000\">15.56000000</period><semimajoraxis errorminus=\"\" errorplus=\"\">0.115000</semimajoraxis></planet></star></system>";
+        String expectedEU = toformatString("<system>\n" +
+                "    <name>11 Com</name>\n" +
+                "    <declination>+18 48 34</declination>\n" +
+                "    <distance errorminus=\"10.5\" errorplus=\"10.5\">110.6</distance>\n" +
+                "    <rightascension>2 3 27</rightascension>\n" +
+                "    <star>\n" +
+                "        <name>11 Com</name>\n" +
+                "        <magV>4.74</magV>\n" +
+                "        <mass errorminus=\"0.3\" errorplus=\"0.3\">2.7</mass>\n" +
+                "        <metallicity>-0.35</metallicity>\n" +
+                "        <radius errorminus=\"2.0\" errorplus=\"2.0\">19.0</radius>\n" +
+                "        <spectraltype>G8 III</spectraltype>\n" +
+                "        <temperature errorminus=\"100.0\" errorplus=\"100.0\">4742.0</temperature>\n" +
+                "        <planet>\n" +
+                "            <name>11 Com b</name>\n" +
+                "            <discoverymethod>Radial Velocity</discoverymethod>\n" +
+                "            <discoveryyear>2008</discoveryyear>\n" +
+                "            <eccentricity errorminus=\"0.005\" errorplus=\"0.005\">0.231</eccentricity>\n" +
+                "            <lastupdate>2015-08-21</lastupdate>\n" +
+                "            <mass errorminus=\"1.5\" errorplus=\"1.5\">19.4</mass>\n" +
+                "            <massother errorminus=\"1.5\" errorplus=\"1.5\">19.4</massother>\n" +
+                "            <periastron errorminus=\"1.5\" errorplus=\"1.5\">94.8</periastron>\n" +
+                "            <period errorminus=\"0.32\" errorplus=\"0.32\">326.03</period>\n" +
+                "            <semimajoraxis errorminus=\"0.05\" errorplus=\"0.05\">1.29</semimajoraxis>\n" +
+                "        </planet>\n" +
+                "    </star>\n" +
+                "</system>", 4);
+        String expectedNASA = toformatString("<system>\n" +
+                "    <name>Kepler-139</name>\n" +
+                "    <declination>+43d53m21.7s</declination>\n" +
+                "    <rightascension>18h49m34.07s</rightascension>\n" +
+                "    <star>\n" +
+                "        <name>Kepler-139</name>\n" +
+                "        <magH>11.222</magH>\n" +
+                "        <magHmax>0.018</magHmax>\n" +
+                "        <magHmin>0.018</magHmin>\n" +
+                "        <magJ>11.530</magJ>\n" +
+                "        <magJmax>0.021</magJmax>\n" +
+                "        <magJmin>0.021</magJmin>\n" +
+                "        <magK>11.167</magK>\n" +
+                "        <magKmax>0.015</magKmax>\n" +
+                "        <magKmin>0.015</magKmin>\n" +
+                "        <mass>1.08</mass>\n" +
+                "        <metallicity>[Fe/H]</metallicity>\n" +
+                "        <radius errorminus=\"-0.25\" errorplus=\"0.25\">1.30</radius>\n" +
+                "        <temperature errorminus=\"-100.00\" errorplus=\"100.00\">5594.00</temperature>\n" +
+                "        <planet>\n" +
+                "            <name>Kepler-139 c</name>\n" +
+                "            <discoverymethod>Transit</discoverymethod>\n" +
+                "            <discoveryyear>2014</discoveryyear>\n" +
+                "            <impactparameter errorminus=\"-0.3000\" errorplus=\"0.3000\">0.8300</impactparameter>\n" +
+                "            <lastupdate>2014-05-14</lastupdate>\n" +
+                "            <period errorminus=\"-0.00172000\" errorplus=\"0.00172000\">157.07287800</period>\n" +
+                "            <radius>0.302</radius>\n" +
+                "            <semimajoraxis>0.586000</semimajoraxis>\n" +
+                "        </planet>\n" +
+                "    </star>\n" +
+                "</system>", 4);
         try {
             ReadCSV.mapIndexes();
             CSVReader r = new CSVReader(new FileReader(PullingTools.localExoplanetEu));
@@ -164,6 +286,63 @@ public class generateXMLTest {
         } catch (org.xml.sax.SAXException e){
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Check if XML string is formatted properly
+     */
+    @Test
+    public void testtoformatString(){
+        String expected = "<system>\n" +
+                "    <name>11 Com</name>\n" +
+                "    <declination>+18 48 34</declination>\n" +
+                "    <distance errorminus=\"10.5\" errorplus=\"10.5\">110.6</distance>\n" +
+                "    <rightascension>2 3 27</rightascension>\n" +
+                "    <star>\n" +
+                "        <name>11 Com</name>\n" +
+                "        <magV>4.74</magV>\n" +
+                "        <mass errorminus=\"0.3\" errorplus=\"0.3\">2.7</mass>\n" +
+                "        <metallicity>-0.35</metallicity>\n" +
+                "        <radius errorminus=\"2.0\" errorplus=\"2.0\">19.0</radius>\n" +
+                "        <spectraltype>G8 III</spectraltype>\n" +
+                "        <temperature errorminus=\"100.0\" errorplus=\"100.0\">4742.0</temperature>\n" +
+                "        <planet>\n" +
+                "            <name>11 Com b</name>\n" +
+                "            <discoverymethod>Radial Velocity</discoverymethod>\n" +
+                "            <discoveryyear>2008</discoveryyear>\n" +
+                "            <eccentricity errorminus=\"0.005\" errorplus=\"0.005\">0.231</eccentricity>\n" +
+                "            <lastupdate>2015-08-21</lastupdate>\n" +
+                "            <mass errorminus=\"1.5\" errorplus=\"1.5\">19.4</mass>\n" +
+                "            <massother errorminus=\"1.5\" errorplus=\"1.5\">19.4</massother>\n" +
+                "            <periastron errorminus=\"1.5\" errorplus=\"1.5\">94.8</periastron>\n" +
+                "            <period errorminus=\"0.32\" errorplus=\"0.32\">326.03</period>\n" +
+                "            <semimajoraxis errorminus=\"0.05\" errorplus=\"0.05\">1.29</semimajoraxis>\n" +
+                "        </planet>\n" +
+                "    </star>\n" +
+                "</system>";
+
+        String input = "<system><name>11 Com</name><declination>+18 48 34</declination><distance errorminus=\"10.5\" errorplus=\"10.5\">110.6</distance><rightascension>2 3 27</rightascension><star>\n" +
+                "    <name>11 Com</name>\n" +
+                "    <magV>4.74</magV>\n" +
+                "    <mass errorminus=\"0.3\" errorplus=\"0.3\">2.7</mass>\n" +
+                "    <metallicity>-0.35</metallicity>\n" +
+                "    <radius errorminus=\"2.0\" errorplus=\"2.0\">19.0</radius>\n" +
+                "    <spectraltype>G8 III</spectraltype>\n" +
+                "    <temperature errorminus=\"100.0\" errorplus=\"100.0\">4742.0</temperature>\n" +
+                "    <planet>\n" +
+                "        <name>11 Com b</name>\n" +
+                "        <discoverymethod>Radial Velocity</discoverymethod>\n" +
+                "        <discoveryyear>2008</discoveryyear>\n" +
+                "        <eccentricity errorminus=\"0.005\" errorplus=\"0.005\">0.231</eccentricity>\n" +
+                "        <lastupdate>2015-08-21</lastupdate>\n" +
+                "        <mass errorminus=\"1.5\" errorplus=\"1.5\">19.4</mass>\n" +
+                "        <massother errorminus=\"1.5\" errorplus=\"1.5\">19.4</massother>\n" +
+                "        <periastron errorminus=\"1.5\" errorplus=\"1.5\">94.8</periastron>\n" +
+                "        <period errorminus=\"0.32\" errorplus=\"0.32\">326.03</period>\n" +
+                "        <semimajoraxis errorminus=\"0.05\" errorplus=\"0.05\">1.29</semimajoraxis>\n" +
+                "    </planet>\n" +
+                "</star></system>";
+        String actual = generateXML.toformatString(input, 4);
     }
 
 }

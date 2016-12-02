@@ -24,15 +24,51 @@ function SystemObject(name, child, type) {
     this.checked = false;
 }
 
+SystemObject.prototype.totallyEmpty = function(){
+  var curr = this;
+
+  while(curr != null){
+    if(curr.propAmount > 2 === true){
+      return false;
+    }
+    curr = curr.child;
+  }
+  return true;
+}
+
+SystemObject.prototype.resetInfo = function(){
+  this.propAmount = 0;
+  this.info = createArray(5, 1);
+
+  this.info[0][0] = 'Property';
+  this.info[1][0] = 'Current';
+  this.info[2][0] = 'Nasa';
+  this.info[3][0] = 'EU';
+  this.info[4][0] = 'Result';
+
+  var type = this.type;
+
+  if(type === 'system'){
+    this.addAttribute(1, "sy_name", this.name);
+  }
+  else if(type === 'star'){
+    this.addAttribute(1, "st_name", this.name);
+  }
+  else if(type === 'planet'){
+    this.addAttribute(1, "pl_name", this.name);
+  }
+}
+
 SystemObject.prototype.setCheck = function(index, checked) {
     // Sets whether the value is to be chcked or not
-    var curr = this;
-    if (index === 1) {
-        curr = this.child;
-    } else if (index === 2) {
-        curr = this.child.child;
+    if (index == 1) {
+        this.child.checked = checked;
+    } else if (index == 2) {
+        this.child.child.checked = checked;
     }
-    curr.checked = checked;
+    else{
+        this.checked = checked;
+    }
 }
 
 SystemObject.prototype.addRow = function() {
@@ -184,6 +220,7 @@ function update() {
     console.log(data);
   });
   request();
+
 
   /*
   systemObjs = [];
@@ -354,9 +391,20 @@ function removeChecked(){
     var i = 0;
     for(i; i < systemObjs.length; i++){
       var curr = systemObjs[i];
-      if(curr.totallyEmpty()){
-        systemObjs.remove
+
+      while(curr != null){
+        if(curr.checked === true){
+          curr.resetInfo();
+        }
+        curr = curr.child;
       }
+    }
+
+    var i = systemObjs.length
+    while (i--) {
+        if(systemObjs[i].totallyEmpty()){
+          systemObjs.splice(i, 1);
+        }
     }
 }
 
@@ -379,6 +427,9 @@ function commitChanges(){
 
     console.log(JSON.stringify(result));
 
+    removeChecked();
+    setNewRows(systemObjs);
+
     // Sending it as a post
     $.post("https://pacific-shelf-92985.herokuapp.com/setkey", {key: key}, function(text) {
         if (text === "success") {
@@ -388,7 +439,7 @@ function commitChanges(){
                 }
                 else{
                   removeChecked();
-                  setNewRows();
+                  setNewRows(systemObjs);
                   window.alert("Your Pull Request has been successful");
                 }
             });
@@ -405,30 +456,33 @@ function exportAsJSON(systemObjList) {
     // Exporting it as a JSON
     var i = 0;
     for (i; i < systemObjList.length; i++) {
-        if (systemObjList[i].checked === true) {
-          // looping through and making a temp dict
-          var temp = {};
-          var curr = systemObjList[i];
-          while (curr != null) {
-              // If the box is checked
-              if (curr.checked === true) {
-                  var k = 1;
-                  for (k; k < curr.info[0].length; k++) {
-                      temp[curr.info[0][k]] = curr.info[4][k];
-                  }
-              }
-              curr = curr.child;
-          }
-          // Adding names
-          curr = systemObjList[i];
-          temp["sy_name"] = curr.info[4][curr.info[0].indexOf("sy_name")];
-          curr = curr.child;
-          temp["st_name"] = curr.info[4][curr.info[0].indexOf("st_name")];
-          curr = curr.child;
-          temp["pl_name"] = curr.info[4][curr.info[0].indexOf("pl_name")];
+        console.log(systemObjList[i].checked === true || systemObjList[i].child.checked === true ||systemObjList[i].child.child.checked === true);
+        if (systemObjList[i].checked === true || systemObjList[i].child.checked === true || systemObjList[i].child.child.checked === true) {
+        // looping through and making a temp dict
+        var temp = {};
+        var curr = systemObjList[i];
+        while (curr != null) {
+            // If the box is checked
 
-          // Pushing the dict past
-          total.push(temp);
+            console.log(curr.checked);
+            if (curr.checked === true) {
+                var k = 1;
+                for (k; k < curr.info[0].length; k++) {
+                    temp[curr.info[0][k]] = curr.info[4][k];
+                }
+            }
+            curr = curr.child;
+        }
+        // Adding names
+        curr = systemObjList[i];
+        temp["sy_name"] = curr.info[4][curr.info[0].indexOf("sy_name")];
+        curr = curr.child;
+        temp["st_name"] = curr.info[4][curr.info[0].indexOf("st_name")];
+        curr = curr.child;
+        temp["pl_name"] = curr.info[4][curr.info[0].indexOf("pl_name")];
+
+        // Pushing the dict past
+        total.push(temp);
       }
     }
     return total;

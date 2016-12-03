@@ -96,7 +96,7 @@ public class generateXML {
 		     StringWriter writer = new StringWriter();
 		     transformer.transform(source, new StreamResult(writer));
 		     String output = writer.getBuffer().toString();
-			String prettyOutput = toPrettyString(output, 6);
+			String prettyOutput = toPrettyString(output, 7);
 			return prettyOutput;
 
 			} catch (Exception e){
@@ -172,7 +172,7 @@ public class generateXML {
 		   	StringWriter writer = new StringWriter();
 		   	transformer.transform(source, new StreamResult(writer));
 		   	String output = writer.getBuffer().toString();
-			String prettyOutput = toPrettyString(output, 6);
+			String prettyOutput = toPrettyString(output, 7);
 			return prettyOutput;
 
 			}catch (Exception e){
@@ -248,7 +248,7 @@ public class generateXML {
 			StringWriter writer = new StringWriter();
 			transformer.transform(source, new StreamResult(writer));
 			String output = writer.getBuffer().toString();
-			String prettyOutput = toPrettyString(output, 6);
+			String prettyOutput = toPrettyString(output, 7);
 			return prettyOutput;
 
 		}catch (Exception e){

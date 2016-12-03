@@ -96,7 +96,7 @@ public class generateXML {
 		     StringWriter writer = new StringWriter();
 		     transformer.transform(source, new StreamResult(writer));
 		     String output = writer.getBuffer().toString();
-			String prettyOutput = toPrettyString(output, 7);
+			String prettyOutput = toPrettyString(output);
 			return prettyOutput;
 
 			} catch (Exception e){
@@ -172,7 +172,7 @@ public class generateXML {
 		   	StringWriter writer = new StringWriter();
 		   	transformer.transform(source, new StreamResult(writer));
 		   	String output = writer.getBuffer().toString();
-			String prettyOutput = toPrettyString(output, 7);
+			String prettyOutput = toPrettyString(output);
 			return prettyOutput;
 
 			}catch (Exception e){
@@ -248,7 +248,7 @@ public class generateXML {
 			StringWriter writer = new StringWriter();
 			transformer.transform(source, new StreamResult(writer));
 			String output = writer.getBuffer().toString();
-			String prettyOutput = toPrettyString(output, 7);
+			String prettyOutput = toPrettyString(output);
 			return prettyOutput;
 
 		}catch (Exception e){
@@ -279,7 +279,7 @@ public class generateXML {
 		return null;
 	}
 
-	public static String toPrettyString(String xml, int indent) {
+	public static String toPrettyString(String xml) {
 		try {
 			// Turn xml string into a document
 			DocumentBuilder documentbuild = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -300,7 +300,7 @@ public class generateXML {
 
 			// Setup pretty print options
 			TransformerFactory transformerFactory = TransformerFactory.newInstance();
-			transformerFactory.setAttribute("indent-number", indent);
+			transformerFactory.setAttribute("indent-number", "\t");
 			Transformer transformer = transformerFactory.newTransformer();
 			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
 			transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");

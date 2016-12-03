@@ -300,7 +300,7 @@ public class generateXML {
 
 			// Setup pretty print options
 			TransformerFactory transformerFactory = TransformerFactory.newInstance();
-			transformerFactory.setAttribute("indent-number", "\t");
+			transformerFactory.setAttribute("indent-number", 8);
 			Transformer transformer = transformerFactory.newTransformer();
 			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
 			transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");

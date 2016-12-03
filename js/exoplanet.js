@@ -211,8 +211,6 @@ function generateRowHTML(info0, info1, info2, info3, info4, num) {
 
 function update() {
     // Getting the string data from the server
-
-
   $("#update-button").text("UPDATING");
   $("#update-button").addClass("pulse");
   $("#update-button").css("color", "#1ABC9C");
@@ -220,8 +218,6 @@ function update() {
     console.log(data);
   });
   request();
-
-
   /*
   systemObjs = [];
   populate('[[[{"sy_distance":"530.0","sy_name":"mu Arae","sy_right_ascension":"246.692000015",'+
@@ -236,7 +232,7 @@ function update() {
   '"pl_mass":"0.37600","pl_eccentricity":"0.014600","pl_period":"57.01100000","pl_temperature_min":"-13","pl_temperature_max"'+
   ':"14","pl_semi_major_axis":"0.279900"}]],[],[],[],[],[],[],[],[],[],[],[]]');
   setNewRows(systemObjs);
-  */
+    */
 }
 
 function request() {
@@ -504,8 +500,22 @@ function checkAll() {
     if ($("#checkboxall").prop("checked")) {
         // Unchecking all boxes
         $(".checkbox").children("input").prop("checked", true);
+        for(var i in systemObjs){
+          var curr = systemObjs[i];
+          while(curr != null){
+            curr.checked = true;
+            curr = curr.child;
+          }
+        }
     } else {
         $(".checkbox").children("input").prop("checked", false);
+        for(var i in systemObjs){
+          var curr = systemObjs[i];
+          while(curr != null){
+            curr.checked = false;
+            curr = curr.child;
+          }
+        }
     }
 }
 

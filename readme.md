@@ -7,10 +7,7 @@ We created a front end for our system and placed it on a server. It is located a
 How to setup the application on the Heroku Server?
 
 1. Make an account on Heroku
-2. Clone the repoistory
-3. Create a new application on heroku
-4. Pull the remote applcation dir by calling "heroku git:clone reponame"
-5. Move the cloned repo into the application dir
-6. Ues Git add and Commit
-7. Then call "Git push heroku master"
-8. Application should be deployed on the given website
+2. Clone the uploaded copy branch by using the command git clone -b my-branch git@github.com:user/myproject.git.
+3. Open the terminal and cd to the cloned directory and enter the command heroku create. This should create an app on heroku with a random name. 
+4. Now the branch that we cloned from git needs to be pushed to heroku, use the command, git push heroku uploaded-copy:master. This will place the git branch onto heroku and deploy the application. 
+5. Now go to your heroku account, go to the created app and then settings to find the url where the application will be hosted. Go to the specified url to find deployed heroku app.

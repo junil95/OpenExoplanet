@@ -1,7 +1,6 @@
 package ModelStarSystems;
 
 import java.util.HashMap;
-import java.util.concurrent.atomic.DoubleAccumulator;
 
 import UpdateTools.ReadCSV;
 
@@ -112,7 +111,7 @@ public class Systems extends CelestialObjects {
 
 
 
-/*
+
   public static void main(String[] args) {
 
     System.out.println(convertEuDecToOecFormat("17.7927778"));
@@ -120,5 +119,5 @@ public class Systems extends CelestialObjects {
     System.out.println(convertNASAdecStrtoOecFormat("-65d38m58.3s"));
     System.out.println(convertNASAraStartoOecFormat("00h44m39.27s"));
   }
-*/
+
 }

@@ -109,6 +109,13 @@ public class UpdateStorage {
         systemUpdates = new ArrayList<>();
         starUpdates = new ArrayList<>();
         planetUpdates = new ArrayList<>();
+        newSystemConflicts = new ArrayList<>();
+        newStarConflicts = new ArrayList<>();
+        newPlanetConflicts = new ArrayList<>();
+        syPropConflicts = new ArrayList<>();
+        stPropConflicts = new ArrayList<>();
+        plPropConflicts = new ArrayList<>();
+        
     }
 
     /**
@@ -513,66 +520,5 @@ public class UpdateStorage {
         Collections.sort(decreasing, Collections.reverseOrder());
         for (int i : decreasing)
             planetUpdates.remove(i);
-    }
-    
-
-    public static void main(String[] args) {
-        try {
-            mapIndexes();
-//      CSVReader r1 = new CSVReader(new FileReader(PullingTools.localExoplanetEu));
-//      List<String[]> allData1 = r1.readAll();
-//      Systems s1 = SystemBuilder.buildSystemWithCSVRow(Arrays.asList(allData1.get(678)), ReadCSV.EU);
-//      //System.out.println(Arrays.asList((allData1.get(678))));
-//
-//      CSVReader r2 = new CSVReader(new FileReader(PullingTools.localNasaArchive));
-//      List<String[]> allData2 = r2.readAll();
-//      Systems s2 = SystemBuilder.buildSystemWithCSVRow(Arrays.asList(allData2.get(1)), ReadCSV.NASA);
-//      //System.out.println();
-//      //System.out.println(Arrays.asList((allData2.get(1))));
-//      s2.getChild().getChild().setName(s1.getChild().getChild().getName());
-//      Systems s3 = SystemBuilder.buildSystemWithCSVRow(Arrays.asList(allData2.get(3)), ReadCSV.NASA);
-//      ArrayList<Systems> as = new ArrayList<>();
-//      as.add(s1);
-//      UpdateStorage.planets.add(as);
-//      as = new ArrayList<>();
-//      as.add(s2);
-//      UpdateStorage.planets.add(as);
-//      as = new ArrayList<>();
-//      as.add(s3);
-//      UpdateStorage.planets.add(as);
-
-            //System.out.print("Planets Added: ");
-            //findNewPlanetConflicts();
-//      for (ArrayList<Systems> each : UpdateStorage.planets) {
-//        System.out.print(each.get(0).getChild().getChild().getName() + "   ");
-//      }
-
-//      System.out.println();
-//      System.out.print("Planet Conflicts: ");
-//      System.out.println(UpdateStorage.newPlanetConflicts.size());
-//      for (int i = 0; i < UpdateStorage.newPlanetConflicts.size(); i++) {
-//        System.out.println(UpdateStorage.newPlanetConflicts.get(i).get(0).getChild().getChild().getName() + "   ");
-//
-//      }
-            //System.out.println(us.findPlanetConflicts());
-
-
-        } catch (
-                IOException e)
-
-        {
-            e.printStackTrace();
-        } catch (
-                ReadCSV.MissingColumnNameException e)
-
-        {
-            e.printStackTrace();
-        } catch (
-                ArrayIndexOutOfBoundsException e)
-
-        {
-            e.printStackTrace();
-        }
-
     }
 }

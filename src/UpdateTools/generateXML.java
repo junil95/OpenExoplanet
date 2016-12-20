@@ -18,6 +18,9 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.OutputKeys;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathFactory;
+import javax.xml.xpath.XPathConstants;
 
 import com.opencsv.CSVReader;
 import org.w3c.dom.*;
@@ -81,14 +84,12 @@ public class generateXML {
 			 TransformerFactory transformerFactory = TransformerFactory.newInstance();
 			 Transformer transformer = transformerFactory.newTransformer();
              transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-			 transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-			 transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "6");
 		     DOMSource source = new DOMSource(document);
 		     StringWriter writer = new StringWriter();
 		     transformer.transform(source, new StreamResult(writer));
 		     String output = writer.getBuffer().toString();
-
-		     return output;
+			String prettyOutput = toformatString(output, 4);
+			return prettyOutput;
 
 			} catch (Exception e){
 
@@ -153,17 +154,16 @@ public class generateXML {
             rootElement.appendChild(imported);
 
 
-		     //write to XML String
+			//write to XML String
 			TransformerFactory transformerFactory = TransformerFactory.newInstance();
 			Transformer transformer = transformerFactory.newTransformer();
             transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
 		   	DOMSource source = new DOMSource(document);
 		   	StringWriter writer = new StringWriter();
 		   	transformer.transform(source, new StreamResult(writer));
 		   	String output = writer.getBuffer().toString();
-		   	return output;
+			String prettyOutput = toformatString(output, 4);
+			return prettyOutput;
 
 			}catch (Exception e){
 
@@ -228,18 +228,16 @@ public class generateXML {
             rootElement.appendChild(imported);
 
 
-				 //xml document
-				 TransformerFactory transformerFactory = TransformerFactory.newInstance();
-				 Transformer transformer = transformerFactory.newTransformer();
-                 transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-				 transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-				 transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
-				 DOMSource source = new DOMSource(document);
-                 StringWriter writer = new StringWriter();
-				 transformer.transform(source, new StreamResult(writer));
-				 String output = writer.getBuffer().toString();
-
-				 return output;
+			//xml document
+			TransformerFactory transformerFactory = TransformerFactory.newInstance();
+			Transformer transformer = transformerFactory.newTransformer();
+			transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+			DOMSource source = new DOMSource(document);
+			StringWriter writer = new StringWriter();
+			transformer.transform(source, new StreamResult(writer));
+			String output = writer.getBuffer().toString();
+			String prettyOutput = toformatString(output, 4);
+			return prettyOutput;
 
 		}catch (Exception e){
 
@@ -269,25 +267,46 @@ public class generateXML {
 		return null;
 	}
 
-
-	public static void main(String argv[]){
+	public static String toformatString(String xml, int indent) {
 		try {
-			ReadCSV.mapIndexes();
-			CSVReader r = new CSVReader(new FileReader(PullingTools.localExoplanetEu));
-			CSVReader q = new CSVReader(new FileReader(PullingTools.localNasaArchive));
-			List<String[]> allEUData = r.readAll();
-			List<String[]> allNASAData = q.readAll();
-			Systems s = SystemBuilder.buildSystemWithCSVRow(Arrays.asList(allEUData.get(1)), ReadCSV.EU);
-			Systems n = SystemBuilder.buildSystemWithCSVRow(Arrays.asList(allNASAData.get(1)), ReadCSV.NASA);
-            //System.out.println(xmlPlanet(n));
-			System.out.println(xmlSystem(s));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (MissingColumnNameException e){
-			e.printStackTrace();
+			/**
+			 * Takes an XML string and an integer, and returns the XML string formatted with indents corresponding to
+			 * given integer
+			 * @param xml Is the XML string that needs formatting
+			 * @param indent Is the integer you want to indent your xml file
+			 * @return The formatted XML string
+			 */
+			// Turn xml string into a document
+			DocumentBuilder documentbuild = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+			InputSource is = new InputSource();
+			is.setCharacterStream(new StringReader(xml));
+			Document document = documentbuild.parse(is);
+
+			// Remove whitespaces outside tags
+			XPath xPath = XPathFactory.newInstance().newXPath();
+			NodeList nodeList = (NodeList) xPath.evaluate("//text()[normalize-space()='']",
+					document,
+					XPathConstants.NODESET);
+
+			for (int i = 0; i < nodeList.getLength(); ++i) {
+				Node node = nodeList.item(i);
+				node.getParentNode().removeChild(node);
+			}
+
+			// Setup pretty print options
+			TransformerFactory transformerFactory = TransformerFactory.newInstance();
+			transformerFactory.setAttribute("indent-number", indent);
+			Transformer transformer = transformerFactory.newTransformer();
+			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+			transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+
+			// Return pretty print xml string
+			StringWriter stringWriter = new StringWriter();
+			transformer.transform(new DOMSource(document), new StreamResult(stringWriter));
+			return stringWriter.toString();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
-
-
 	}
 }

@@ -278,42 +278,4 @@ public class DetectUpdates {
     return diffBetweenData;
   }
   
-  //Temp for testing purposes, remove after
-  public static void main(String[] args) {
-    try {
-      //UpdateTools.PullingTools.createLatestCatalogueCopy();
-      ReadCSV.mapIndexes();
-      detectUpdates(ReadCSV.mapPlanetToData(PullingTools.localNasaArchiveOld, ReadCSV.NASA),
-              ReadCSV.mapPlanetToData(PullingTools.localNasaArchive, ReadCSV.NASA), ReadCSV.NASA);
-      UpdateClassifier.classify();
-      
-      System.out.println("Planets\n");
-      for (ArrayList<Systems> as : UpdateStorage.planetUpdates) {
-        System.out.println(as.get(0).getChild().getChild().getName());
-        System.out.println(as.get(0).getChild().getChild().getProperties());
-        //System.out.println(as.get(1).getChild().getChild().getProperties());
-      }
-  
-      System.out.println("Stars\n");
-      for (ArrayList<Systems> as : UpdateStorage.starUpdates) {
-        System.out.println(as.get(0).getChild().getName());
-        System.out.println(as.get(0).getChild().getProperties());
-        //System.out.println(as.get(1).getChild().getProperties());
-      }
-  
-      System.out.println("Systems\n");
-      for (ArrayList<Systems> as : UpdateStorage.systemUpdates) {
-        System.out.println(as.get(0).getName());
-        System.out.println(as.get(0).getProperties());
-        //System.out.println(as.get(1).getProperties());
-      }
-      
-    } catch (IOException e) {
-      e.printStackTrace();
-    } catch (ReadCSV.MissingColumnNameException e) {
-      e.printStackTrace();
-    }
-    
-  }
-  
 }

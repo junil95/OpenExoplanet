@@ -111,7 +111,7 @@ public class UpdateClassifier {
         //need to assign primary system name found in OEC
         assignOecSyName(s, "system");
         //doing this because the system and planet are the same in oec
-        assignOecSyName(s, "star");
+        assignOecSyName(s.getChild(), "star");
         temp = new ArrayList();
         temp.add(s);
         UpdateStorage.planets.add(temp);
@@ -153,7 +153,7 @@ public class UpdateClassifier {
           //system does exist, so assign the oec system name to the object
           assignOecSyName(s, "system");
           //star name is same as system name in eu and nasa so this will also be the same
-          assignOecSyName(s, "star");
+          assignOecSyName(s.getChild(), "star");
         }
       }
     }
@@ -170,7 +170,7 @@ public class UpdateClassifier {
           //system does exist, so assign the oec system name to the object
           assignOecSyName(s, "system");
           //star name is same as system name in eu and nasa so this will also be the same
-          assignOecSyName(s, "star");
+          assignOecSyName(s.getChild(), "star");
           assignOecSyName(s.getChild().getChild(), "planet");
         }
       }
@@ -415,109 +415,5 @@ Method adds data from OEC for each star in starUpdates
     }
     return c;
   }
-  
-  
-  
-  
-  
-  
-  public static void main(String[] args) throws SAXException, XPathExpressionException {
-    
-    try {
-      ReadCSV.mapIndexes();
-    } catch (IOException | ReadCSV.MissingColumnNameException ex) {
-      Logger.getLogger(SystemFinder.class.getName()).log(Level.SEVERE, null, ex);
-    }
-    
-    HashMap<String, String> updates = new HashMap<>();
-    //normal planet and stars test
-    Planet p2 = new Planet("YBP1194 b", updates, ReadCSV.EU);
-    HashMap<String, String> update2 = new HashMap<>();
-    Star s2 = new Star("nGC 2682 YBP 1514", update2, p2, ReadCSV.EU);
-    Systems sys2 = new Systems("YBP1514", update2, s2, ReadCSV.EU);
-    //double binary planet and stars
-    Planet p3 = new Planet("HD 186427 B b", updates, ReadCSV.EU);
-    Star s3 = new Star("WDS J19418+5032 Aa", update2, p3, ReadCSV.EU);
-    Systems sys3 = new Systems("16 Cygni", update2, s3, ReadCSV.EU);
-    //single binary
-    Planet p1 = new Planet("XO-2N c", updates, ReadCSV.EU);
-    Star s1 = new Star("XO-2ac", update2, p1, ReadCSV.EU);
-    Systems sys1 = new Systems("XO-2", update2, s1, ReadCSV.EU);
-    //planet and stars that dont exist
-    Planet p4 = new Planet("Abcdsfa", updates, ReadCSV.EU);
-    Star s4 = new Star("kasfi", update2, p4, ReadCSV.EU);
-    HashMap<String, String> update3 = new HashMap<>();
-    Systems sys4 = new Systems("16 gni", update3, s4, ReadCSV.EU);
-    //System.out.println(SystemFinder.getSystem(s1));
-    //System.out.println(systemCheck(sys));
-    
-    UpdateStorage.updates.add(sys1);
-    UpdateStorage.updates.add(sys2);
-    UpdateStorage.updates.add(sys3);
-    UpdateStorage.updates.add(sys4);
-    System.out.println("updates");
-    for (Systems s : UpdateStorage.updates) {
-      System.out.println(s.getName());
-      
-    }
-    classify();
-    System.out.println("updates systems");
-    for (ArrayList<Systems> s : UpdateStorage.systems) {
-      System.out.println(s.get(0).getName());
-      
-    }
-    System.out.println("updates stars");
-    for (ArrayList<Systems> s : UpdateStorage.stars) {
-      System.out.println(s.get(0).getChild().getName());
-      
-    }
-    System.out.println("updates planets");
-    for (ArrayList<Systems> s : UpdateStorage.planets) {
-      System.out.println(s.get(0).getChild().getChild().getName());
-      
-    }
-    //System.out.println("planets"+ new_updates.planets);
-    //System.out.println("stars" + new_updates.stars);
-    //System.out.println("systems" + new_updates.systems);
-    //System.out.println("updates" + new_updates.updates);
-    //TESTING JUNIL'S METHOD
-    try {
-      HashMap<String, String> test1 = new HashMap<>();
-      test1.put("sy_name", "14 Her");
-      test1.put("st_name", "14 Her");
-      test1.put("pl_name", "14 her b");
-      test1.put("st_mass", "10");
-      test1.put("st_temperature", "1766");
-      ArrayList<Systems> sarray = new ArrayList<>();
-      sarray.add(SystemBuilder.buildSystemWithHashMap(test1, "eu"));
-      starUpdates.add(sarray);
-      test1 = new HashMap<>();
-      test1.put("sy_name", "14 Her");
-      test1.put("st_name", "14 her");
-      test1.put("pl_name", "14 her b");
-      test1.put("st_mass", "5975");
-      test1.put("st_temperature", "5311.0");
-      //test1.put("st_period", "1766");
-      sarray = new ArrayList<>();
-      sarray.add(SystemBuilder.buildSystemWithHashMap(test1, "eu"));
-      starUpdates.add(sarray);
-      System.out.println(starUpdates.size());
-    } catch (SystemBuilder.MissingCelestialObjectNameException e1) {
-      e1.printStackTrace();
-    }
-  
-  
-    //sarray.add(s1);
-    addStarOECData();
-    System.out.println(starUpdates.size());
-  
-    for (ArrayList<Systems> as : starUpdates) {
-      for (Systems s : as) {
-        System.out.println(s.getChild().getProperties());
-      }
-    }
-    
-  }
-  
   
 }

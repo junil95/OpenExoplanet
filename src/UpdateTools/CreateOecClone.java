@@ -109,7 +109,7 @@ public class CreateOecClone {
    * @param token
    * @param name
    */
-  public static void pushChanges(String token, String name) {
+  public static void pushChanges(String token, String name) throws GitAPIException{
     try {
       File f = new File(oecClonePath);
       Repository repo = new FileRepositoryBuilder().readEnvironment().findGitDir(f).build();
@@ -119,13 +119,7 @@ public class CreateOecClone {
       pushCommand.setRemote("origin");
       pushCommand.setRefSpecs(new RefSpec(name));
       pushCommand.call();
-    } catch (InvalidRemoteException e) {
-      e.printStackTrace();
     } catch (IOException e) {
-      e.printStackTrace();
-    } catch (TransportException e) {
-      e.printStackTrace();
-    } catch (GitAPIException e) {
       e.printStackTrace();
     }
   }
@@ -136,72 +130,5 @@ public class CreateOecClone {
    */
   public static String getBranchName() {
     return branchName;
-  }
-  
-  public static void main(String[] args) {
-    //gitCloneRepo();
-    //createNewBranch();
-    //commitChanges();
-    //pushChanges("a0e0b081561d3abaeae3bd2536b929d2c2c607d2");
-    SendPullRequest.createPullRequest("a0e0b081561d3abaeae3bd2536b929d2c2c607d2", "OEC-Auto-Merge-Tool13a99be7");
-//    CreateBranchCommand bcc = null;
-//    CheckoutCommand checkout = null;
-//    Git git = null;
-//    String branch = "OEC-Auto-Merge-Tool";
-//    File file = new File("Data/Clone");
-//
-//    try
-//    {
-//      Repository repo = new FileRepositoryBuilder().readEnvironment().findGitDir(file).build();
-//      git = new Git(repo);
-//      bcc = git.branchCreate();
-//      checkout = git.checkout();
-//    } catch (IOException e){
-//      e.printStackTrace();
-//    }
-//
-//    try {
-//      bcc.setName(branch)
-//              .setStartPoint("origin/master")
-//              .setForce(false)
-//              .call();
-//
-//      checkout.setName(branch);
-//      checkout.call();
-//    } catch (Exception e) {
-//      e.printStackTrace();
-//    }
-//
-//
-//    //commit the data
-//    try
-//
-//    {
-//      git.add().addFilepattern("*").call();
-//      git.commit()
-//              .setMessage("Changes created by OEC Auto Merge Tool")
-//              .call();
-//    } catch (
-//            GitAPIException e)
-//
-//    {
-//      e.printStackTrace();
-//    }
-//
-//
-//    //For pushing the data
-//    try
-//
-//    {
-//      PushCommand pushCommand = git.push().setCredentialsProvider(new UsernamePasswordCredentialsProvider("a0e0b081561d3abaeae3bd2536b929d2c2c607d2", "")).setRemote("origin");
-//      pushCommand.setRemote("origin");
-//      pushCommand.setRefSpecs(new RefSpec("OEC-Auto-Merge-Tool"));
-//      pushCommand.call();
-//    } catch (
-//            GitAPIException e)
-//
-//    {
-//      e.printStackTrace();
-//    }
   }
 }

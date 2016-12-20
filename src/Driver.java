@@ -5,6 +5,8 @@ import com.opencsv.CSVReader;
 
 import net.lingala.zip4j.exception.ZipException;
 
+import org.eclipse.jgit.api.errors.GitAPIException;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,6 +14,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -149,12 +152,9 @@ public class Driver {
       UpdateStorage.clearAll();
       //need to create latest catalogue copy
       
-      /* Uncomment after
       UpdateTools.PullingTools.createLatestCatalogueCopy();
-      */
       CreateOecClone.gitCloneRepo();
       CreateOecClone.createNewBranch();
-      
       
       //find updates between different versions of the nasa database
       detectUpdates(ReadCSV.mapPlanetToData(PullingTools.localNasaArchiveOld, ReadCSV.NASA),
@@ -435,6 +435,13 @@ public class Driver {
    * in terms of systems again
    */
   private static void createObjectFromJson(String json, ArrayList<ArrayList<Systems>> allData) {
+    try {
+      ReadCSV.mapIndexes();
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (ReadCSV.MissingColumnNameException e) {
+      e.printStackTrace();
+    }
     //Make sure the provided list is empty
     allData.clear();
     Gson gson = new Gson();
@@ -447,13 +454,91 @@ public class Driver {
       temp = new ArrayList<>();
       for (HashMap<String, String> m : as) {
         try {
-          s = SystemBuilder.buildSystemWithHashMap(m, m.get("src"));
+          s = SystemBuilder.buildSystemWithHashMap(m, "user");
           temp.add(s);
         } catch (SystemBuilder.MissingCelestialObjectNameException e) {
           e.printStackTrace();
         }
       }
       allData.add(temp);
+    }
+  }
+  
+  public static void distributeData(String json) {
+    ArrayList<ArrayList<Systems>> data = new ArrayList<>();
+    UpdateStorage.clearAll();
+    createObjectFromJson(json, data);
+    ArrayList<Systems> singleton;
+    for (Systems s: data.get(0)) {
+      singleton = new ArrayList<>();
+      singleton.add(s);
+      UpdateStorage.systems.add(singleton);
+    }
+    //conflicts are stored in the same location
+    for (Systems s: data.get(3)) {
+      singleton = new ArrayList<>();
+      singleton.add(s);
+      UpdateStorage.systems.add(singleton);
+    }
+  
+    for (Systems s: data.get(1)) {
+      singleton = new ArrayList<>();
+      singleton.add(s);
+      UpdateStorage.stars.add(singleton);
+    }
+  
+    for (Systems s: data.get(4)) {
+      singleton = new ArrayList<>();
+      singleton.add(s);
+      UpdateStorage.stars.add(singleton);
+    }
+  
+    for (Systems s: data.get(2)) {
+      singleton = new ArrayList<>();
+      singleton.add(s);
+      UpdateStorage.planets.add(singleton);
+    }
+  
+    for (Systems s: data.get(5)) {
+      singleton = new ArrayList<>();
+      singleton.add(s);
+      UpdateStorage.planets.add(singleton);
+    }
+  
+    for (Systems s: data.get(6)) {
+      singleton = new ArrayList<>();
+      singleton.add(s);
+      UpdateStorage.systemUpdates.add(singleton);
+    }
+  
+    for (Systems s: data.get(9)) {
+      singleton = new ArrayList<>();
+      singleton.add(s);
+      UpdateStorage.systemUpdates.add(singleton);
+    }
+  
+    for (Systems s: data.get(7)) {
+      singleton = new ArrayList<>();
+      singleton.add(s);
+      UpdateStorage.starUpdates.add(singleton);
+    }
+  
+    for (Systems s: data.get(10)) {
+      singleton = new ArrayList<>();
+      singleton.add(s);
+      UpdateStorage.starUpdates.add(singleton);
+    }
+  
+    for (Systems s: data.get(8)) {
+      singleton = new ArrayList<>();
+      singleton.add(s);
+      UpdateStorage.planetUpdates.add(singleton);
+    }
+  
+    for (Systems s: data.get(11)) {
+      singleton = new ArrayList<>();
+      singleton.add(s);
+      UpdateStorage.planetUpdates.add(singleton);
     }
   }
   
@@ -497,234 +582,22 @@ public class Driver {
     return gson.toJson(convertToMap);
   }
   
-  public static void commitPushPullRequest(String token) {
+  public static boolean commitPushPullRequest(String token) {
     CreateOecClone.commitChanges();
-    CreateOecClone.pushChanges(token, CreateOecClone.getBranchName());
-    SendPullRequest.createPullRequest(token, CreateOecClone.getBranchName());
+    boolean valid = true;
+    try {
+      CreateOecClone.pushChanges(token, CreateOecClone.getBranchName());
+      SendPullRequest.createPullRequest(token, CreateOecClone.getBranchName());
+    } catch (GitAPIException e) {
+      valid = false;
+    }
+    return  valid;
   }
   
   public static void main(String[] args) {
-    try {
-      //UpdateTools.PullingTools.createLatestCatalogueCopy();
-      ReadCSV.mapIndexes();
-//      detectUpdates(ReadCSV.mapPlanetToData(PullingTools.localExoplanetEuOld, ReadCSV.EU),
-//              ReadCSV.mapPlanetToData(PullingTools.localExoplanetEu, ReadCSV.EU), ReadCSV.EU);
-//      DifferenceDetector.getNewPlanetIDs(PullingTools.localExoplanetEuOld, ReadCSV.EU);
-//      UpdateClassifier.classifyUpdates();
-
-//      System.out.println("Planets\n");
-//      for (ArrayList<Systems> as : UpdateStorage.planetUpdates) {
-//        System.out.println(as.get(0).getChild().getChild().getName());
-//        System.out.println(as.get(0).getChild().getChild().getProperties());
-//        //System.out.println(as.get(1).getChild().getChild().getProperties());
-//      }
-//
-//      System.out.println("Stars\n");
-//      for (ArrayList<Systems> as : UpdateStorage.starUpdates) {
-//        System.out.println(as.get(0).getChild().getName());
-//        System.out.println(as.get(0).getChild().getProperties());
-//        //System.out.println(as.get(1).getChild().getProperties());
-//      }
-//
-//      System.out.println("Systems\n");
-//      for (ArrayList<Systems> as : UpdateStorage.systemUpdates) {
-//        System.out.println(as.get(0).getName());
-//        System.out.println(as.get(0).getProperties());
-//        //System.out.println(as.get(1).getProperties());
-//      }
-//
-//      System.out.println("Planets\n");
-//      for (ArrayList<Systems> as : UpdateStorage.planets) {
-//        System.out.println(as.get(0).getChild().getChild().getName());
-//        //System.out.println(as.get(0).getChild().getChild().getProperties());
-//        //System.out.println(as.get(1).getChild().getChild().getProperties());
-//      }
-//
-//      System.out.println("Stars\n");
-//      for (ArrayList<Systems> as : UpdateStorage.stars) {
-//        System.out.println(as.get(0).getChild().getName());
-//        //System.out.println(as.get(0).getChild().getProperties());
-//        //System.out.println(as.get(1).getChild().getProperties());
-//      }
-//
-//      System.out.println("Systems\n");
-//      for (ArrayList<Systems> as : UpdateStorage.systems) {
-//        System.out.println(as.get(0).getName());
-//        //System.out.println(as.get(0).getProperties());
-//        //System.out.println(as.get(1).getProperties());
-//      }
-//
-//      System.out.println(getNewPlanets());
-//      System.out.println(getNewStars());
-//      System.out.println(getNewSystems());
-
-//      CSVReader r1 = new CSVReader(new FileReader(PullingTools.localExoplanetEu));
-//      List<String[]> allData1 = r1.readAll();
-//      Systems s1 = SystemBuilder.buildSystemWithCSVRow(Arrays.asList(allData1.get(678)), ReadCSV.EU);
-//      //System.out.println(Arrays.asList((allData1.get(678))));
-//
-//      CSVReader r2 = new CSVReader(new FileReader(PullingTools.localNasaArchive));
-//      List<String[]> allData2 = r2.readAll();
-//      Systems s2 = SystemBuilder.buildSystemWithCSVRow(Arrays.asList(allData2.get(1)), ReadCSV.NASA);
-//      //System.out.println();
-//      //System.out.println(Arrays.asList((allData2.get(1))));
-//      s2.getChild().getChild().setName(s1.getChild().getChild().getName());
-//      Systems s3 = SystemBuilder.buildSystemWithCSVRow(Arrays.asList(allData2.get(3)), ReadCSV.NASA);
-//      ArrayList<Systems> as = new ArrayList<>();
-//      as.add(s1);
-//      UpdateStorage.planets.add(as);
-//      as = new ArrayList<>();
-//      as.add(s2);
-//      UpdateStorage.planets.add(as);
-//      as = new ArrayList<>();
-//      as.add(s3);
-//      UpdateStorage.planets.add(as);
-//
-//      System.out.print("Planets Added: ");
-//      findNewPlanetConflicts();
-//      for (ArrayList<Systems> each : UpdateStorage.planets) {
-//        System.out.print(each.get(0).getChild().getChild().getName() + "   ");
-//      }
-
-//      System.out.print("Planet Conflicts: ");
-//      System.out.println(UpdateStorage.newPlanetConflicts.size());
-//      for (int i = 0; i < UpdateStorage.newPlanetConflicts.size(); i++) {
-//        System.out.print(UpdateStorage.newPlanetConflicts.get(i).get(0).getChild().getChild().getName() + "   ");
-//
-//      }
-      
-      
-      //System.out.println(getNewPlanetConflicts());
-      //System.out.println(getNewPlanets());
-      //initialSetupOrResetLocalCopies();
-
-//      System.out.println(isInitialMergeDone());
-//      String json = getNewPlanetConflicts();
-//      createObjectFromJson(json);
-      
-      ///////////////////Test updating
-      ArrayList<String> sorted = new ArrayList<>();
-      //detectInitialUpdates();
-      updateDetection();
-//      System.out.println();
-//      System.out.println("planets");
-//      System.out.println();
-//      for (ArrayList<Systems> as : UpdateStorage.planets) {
-//        sorted.add(as.get(0).getChild().getChild().getName());
-//      }
-//      Collections.sort(sorted);
-//      for (String str : sorted) {
-//        System.out.println(str);
-//      }
-//
-//      System.out.println();
-//      System.out.println("planet conflicts ");
-//      System.out.println();
-//      sorted = new ArrayList<>();
-//      for (ArrayList<Systems> as : UpdateStorage.newPlanetConflicts) {
-//        sorted.add(as.get(0).getChild().getChild().getName());
-//      }
-//      Collections.sort(sorted);
-//      for (String str : sorted) {
-//        System.out.println(str);
-//      }
-//
-//      System.out.println();
-//      System.out.println("systems");
-//      System.out.println();
-//      sorted = new ArrayList<>();
-//      for (ArrayList<Systems> as : UpdateStorage.systems) {
-//        sorted.add(as.get(0).getName());
-//      }
-//      Collections.sort(sorted);
-//      for (String str : sorted) {
-//        System.out.println(str);
-//      }
-//      sorted = new ArrayList<>();
-//      System.out.println();
-//      System.out.println("systems conflicts");
-//      System.out.println();
-//      for (ArrayList<Systems> as : UpdateStorage.newSystemConflicts) {
-//        sorted.add(as.get(0).getName());
-//      }
-//      Collections.sort(sorted);
-//      for (String str : sorted) {
-//        System.out.println(str);
-//      }
-      
-      System.out.println();
-      System.out.println("System Attribute changes");
-      System.out.println();
-      for (ArrayList<Systems> as : UpdateStorage.systemUpdates) {
-        System.out.println(as.get(0).getName());
-        System.out.println(as.get(0).getProperties());
-        System.out.println(as.get(1).getProperties());
-      }
-      
-      System.out.println();
-      System.out.println("Star Attribute changes");
-      System.out.println();
-      for (ArrayList<Systems> as : starUpdates) {
-        System.out.println(as.get(0).getChild().getName());
-        System.out.println(as.get(0).getChild().getProperties());
-        System.out.println(as.get(1).getChild().getProperties());
-      }
-      
-      System.out.println();
-      System.out.println("Planet Attribute changes");
-      System.out.println();
-      for (ArrayList<Systems> as : planetUpdates) {
-        System.out.println(as.get(0).getChild().getChild().getName());
-        System.out.println(as.get(0).getChild().getChild().getProperties());
-        System.out.println(as.get(1).getChild().getChild().getProperties());
-      }
-      
-      System.out.println();
-      System.out.println("System Attribute conflicts");
-      System.out.println();
-      for (ArrayList<Systems> as : UpdateStorage.syPropConflicts) {
-        System.out.println(as.get(0).getName());
-        System.out.println(as.get(0).getProperties());
-        System.out.println(as.get(1).getProperties());
-        System.out.println(as.get(2).getProperties());
-      }
-      
-      System.out.println();
-      System.out.println("Star Attribute conflicts");
-      System.out.println();
-      for (ArrayList<Systems> as : stPropConflicts) {
-        System.out.println(as.get(0).getChild().getName());
-        System.out.println(as.get(0).getChild().getProperties());
-        System.out.println(as.get(1).getChild().getProperties());
-        System.out.println(as.get(2).getChild().getProperties());
-      }
-      
-      System.out.println();
-      System.out.println("Planet Attribute conflicts");
-      System.out.println();
-      for (ArrayList<Systems> as : plPropConflicts) {
-        System.out.println(as.get(0).getChild().getChild().getName());
-        System.out.println(as.get(0).getChild().getChild().getProperties());
-        System.out.println(as.get(1).getChild().getChild().getProperties());
-        System.out.println(as.get(2).getChild().getChild().getProperties());
-      }
-      
-      
-      executeMerge();
-      commitPushPullRequest("a0e0b081561d3abaeae3bd2536b929d2c2c607d2");
-      
-      ////////////////Test converting from json to system objects
-//      String x = "[[{'pl_name':'hi','st_name':'hello','sy_name':'bye', 'pl_mass':'999'}],[{'pl_name':'hi','st_name':'hello','sy_name':'bye', 'pl_mass':'999'}]]";
-//      createObjectFromJson(x, UpdateStorage.planets);
-//      for (ArrayList<Systems> each:UpdateStorage.planets) {
-//        for (Systems e : each) {
-//          System.out.println(e.getChild().getChild().getProperties());
-//        }
-//      }
-    } catch (IOException e) {
-      e.printStackTrace();
-    } catch (ReadCSV.MissingColumnNameException e) {
-      e.printStackTrace();
-    }
+    initialSetupOrResetLocalCopies();
+    detectInitialUpdates();
+    executeMerge();
+    commitPushPullRequest("a0e0b081561d3abaeae3bd2536b929d2c2c607d2");
   }
 }

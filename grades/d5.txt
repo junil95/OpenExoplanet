@@ -1,0 +1,125 @@
+CSCC01 Deliverable 5 Marking Guide
+-----------------------------------
+Team: T23 SegFault
+Total: 75/110
+
+
+Project Management:  __________ (19/20%)
+
+  Release plan: 3/3
+    - each release corresponds to end of Sprint
+    - project fully laid out:
+      for each release date, list of user stories to implement
+    - project velocity specified and used
+    - highest priority user stories first modulo dependencies
+    - reasonable goals for each release
+
+  Product Backlog: 3/3
+    - user stories follow the correct format.
+    - user stories, together, reflect all the user requirements (from
+      all personas).
+    - user stories correspond to actual requirements (no "invented"
+      features).
+    - user stories contain enough information for devs to estimate how
+      long it would take to implement it.
+    - each user story addresses one specific requirement (no "world
+      peace" stories).
+
+  Sprint Backlog(s): 2/2
+    - user stories taken from the Product Backlog
+    - estimated costs
+    - estimated values
+
+  Sprint Plan(s): 2/3
+    * -1: Sprint backlog's stories not included in plan?
+    - user stories divided into tasks when appropriate.
+    - each Sprint Plan contains all the necessary information:
+      who is working on which task on which day
+    - sum of costs of user stories in the sprint = project velocity
+    - good planning decisions
+
+  Use of Task Board: 2/2
+    * See issue with sprint plan.
+    - correct format of task boards
+    - snapshots in the begginning and end of each Sprint are provided
+
+  Use of Burndown Charts: 3/3
+    - snapshots in the begginning and end of each Sprint are provided
+    - correctness of burndown charts
+
+  Use of Repo: 2/2
+    (including good use of branching from now on!)
+
+  Use of communication tools: 2/2
+    - evidence of using communication tools of their choice effectively
+
+
+Design and Implementation:  __________ (24/50%)
+
+  System Design: 6/10
+    * -2 What do the arrows mean?
+      * Is it data? If data, what format? Memory or on disk?
+    * -2 Need to show more of component design. Methods, functions, object
+      relationships, etc.
+    - good modular design
+    - general and easy to extend
+    - it is clear how the current implementation is going to be
+      extended should the requirements evolve
+
+  Implementation: 18/40
+    * -1 Various minor issues:
+      * What does the tree view represent?
+      * Why are there repeated entries within the tree view?
+      * What does reset data do? (it doesn't behave as expected?)
+    * -2 Changes aren't shown line-by-line.
+        * Entire chunks of files are modified -> Cannot tell what changed.
+    * -2 'CONFLICT_OCCURS' is accepted by system as valid field.
+    * -2 Bug: Repeated clicking of 'Confirm' gives faulty pull request.
+    * -15 Cannot setup app with given instructions. Issues with Heroku.
+      * Nothing mentioned on setting the buildpack.
+      * pom.xml, system.properties on different branch?
+      * Unable to test certain features as a result.
+    - 0 marks if it doesn't run
+    - all of the features are fully implemented
+    - quality and maturity of code
+
+
+Verification and Validation:  __________ (17/20%)
+
+  - quality of unit tests: 4/6
+    * -1 Redundancy: Tests cover more than the unit under test, or the condition
+      being tested.
+      * i.e. DetectUpdatesTest
+    * -1 Missing tests for a few components.
+    - good coverage
+    - no redundancy
+
+  - code review activities and outcomes: 9/10
+    * -1 Some comments only state the issue, doesn't mention location or give
+      suggestions.
+    * Video is good.
+    - each review follows a checklist (not necessarily the example one, but the
+      same checklist for all)
+    - each review is thorough
+    - evidence of addressing the outcomes of the review
+    - the video demonstrates an effective process used for the review/collection
+      meeting
+
+  - validation activities and outcomes: 4/4
+    - evidence of feedback from the user
+    - evidence of addressing feedback from the user
+
+
+Report: __________ (8/10%)
+  * -2 Instructions for setting up heroku did not mention which branch to use.
+    (assumed master, but it's missing system.properties and pom.xml)
+  - well-presented, is easy to read and to navigate
+  - spelling and grammar
+  - looks professional
+  - quality of the README file
+
+
+Interview: ________ (7/10%)
+  * -1 Answers to PM questions were largely irrelevant.
+  * -1 Could not setup on new environment, hosted externally.
+  * -1 Team assisted on testing and validation questions.
